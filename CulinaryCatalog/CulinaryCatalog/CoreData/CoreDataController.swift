@@ -1,5 +1,5 @@
 //
-//  Persistence.swift
+//  CoreDataController.swift
 //  CulinaryCatalog
 //
 //  Created by Sarah Clark on 1/27/25.
@@ -7,12 +7,12 @@
 
 import CoreData
 
-struct PersistenceController {
-    static let shared = PersistenceController()
+struct CoreDataController {
+    static let shared = CoreDataController()
 
     @MainActor
-    static let preview: PersistenceController = {
-        let result = PersistenceController(inMemory: true)
+    static let preview: CoreDataController = {
+        let result = CoreDataController(inMemory: true)
         let viewContext = result.container.viewContext
         for _ in 0..<10 {
             let newRecipe = Recipe(context: viewContext)
