@@ -1,0 +1,563 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		26CBB97B2D47FD0C003CD50D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 26CBB95D2D47FD0B003CD50D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 26CBB9642D47FD0B003CD50D;
+			remoteInfo = CulinaryCatalog;
+		};
+		26CBB9852D47FD0C003CD50D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 26CBB95D2D47FD0B003CD50D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 26CBB9642D47FD0B003CD50D;
+			remoteInfo = CulinaryCatalog;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		26CBB9652D47FD0B003CD50D /* CulinaryCatalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CulinaryCatalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		26CBB97A2D47FD0C003CD50D /* CulinaryCatalogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CulinaryCatalogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		26CBB9842D47FD0C003CD50D /* CulinaryCatalogUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CulinaryCatalogUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		26CBB9672D47FD0B003CD50D /* CulinaryCatalog */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CulinaryCatalog;
+			sourceTree = "<group>";
+		};
+		26CBB97D2D47FD0C003CD50D /* CulinaryCatalogTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CulinaryCatalogTests;
+			sourceTree = "<group>";
+		};
+		26CBB9872D47FD0C003CD50D /* CulinaryCatalogUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CulinaryCatalogUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		26CBB9622D47FD0B003CD50D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26CBB9772D47FD0C003CD50D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26CBB9812D47FD0C003CD50D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		26CBB95C2D47FD0B003CD50D = {
+			isa = PBXGroup;
+			children = (
+				26CBB9672D47FD0B003CD50D /* CulinaryCatalog */,
+				26CBB97D2D47FD0C003CD50D /* CulinaryCatalogTests */,
+				26CBB9872D47FD0C003CD50D /* CulinaryCatalogUITests */,
+				26CBB9662D47FD0B003CD50D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		26CBB9662D47FD0B003CD50D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				26CBB9652D47FD0B003CD50D /* CulinaryCatalog.app */,
+				26CBB97A2D47FD0C003CD50D /* CulinaryCatalogTests.xctest */,
+				26CBB9842D47FD0C003CD50D /* CulinaryCatalogUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		26CBB9642D47FD0B003CD50D /* CulinaryCatalog */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26CBB98E2D47FD0C003CD50D /* Build configuration list for PBXNativeTarget "CulinaryCatalog" */;
+			buildPhases = (
+				26CBB9612D47FD0B003CD50D /* Sources */,
+				26CBB9622D47FD0B003CD50D /* Frameworks */,
+				26CBB9632D47FD0B003CD50D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				26CBB9672D47FD0B003CD50D /* CulinaryCatalog */,
+			);
+			name = CulinaryCatalog;
+			packageProductDependencies = (
+			);
+			productName = CulinaryCatalog;
+			productReference = 26CBB9652D47FD0B003CD50D /* CulinaryCatalog.app */;
+			productType = "com.apple.product-type.application";
+		};
+		26CBB9792D47FD0C003CD50D /* CulinaryCatalogTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26CBB9912D47FD0C003CD50D /* Build configuration list for PBXNativeTarget "CulinaryCatalogTests" */;
+			buildPhases = (
+				26CBB9762D47FD0C003CD50D /* Sources */,
+				26CBB9772D47FD0C003CD50D /* Frameworks */,
+				26CBB9782D47FD0C003CD50D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				26CBB97C2D47FD0C003CD50D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				26CBB97D2D47FD0C003CD50D /* CulinaryCatalogTests */,
+			);
+			name = CulinaryCatalogTests;
+			packageProductDependencies = (
+			);
+			productName = CulinaryCatalogTests;
+			productReference = 26CBB97A2D47FD0C003CD50D /* CulinaryCatalogTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		26CBB9832D47FD0C003CD50D /* CulinaryCatalogUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26CBB9942D47FD0C003CD50D /* Build configuration list for PBXNativeTarget "CulinaryCatalogUITests" */;
+			buildPhases = (
+				26CBB9802D47FD0C003CD50D /* Sources */,
+				26CBB9812D47FD0C003CD50D /* Frameworks */,
+				26CBB9822D47FD0C003CD50D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				26CBB9862D47FD0C003CD50D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				26CBB9872D47FD0C003CD50D /* CulinaryCatalogUITests */,
+			);
+			name = CulinaryCatalogUITests;
+			packageProductDependencies = (
+			);
+			productName = CulinaryCatalogUITests;
+			productReference = 26CBB9842D47FD0C003CD50D /* CulinaryCatalogUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		26CBB95D2D47FD0B003CD50D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					26CBB9642D47FD0B003CD50D = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					26CBB9792D47FD0C003CD50D = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 26CBB9642D47FD0B003CD50D;
+					};
+					26CBB9832D47FD0C003CD50D = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 26CBB9642D47FD0B003CD50D;
+					};
+				};
+			};
+			buildConfigurationList = 26CBB9602D47FD0B003CD50D /* Build configuration list for PBXProject "CulinaryCatalog" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 26CBB95C2D47FD0B003CD50D;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 26CBB9662D47FD0B003CD50D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				26CBB9642D47FD0B003CD50D /* CulinaryCatalog */,
+				26CBB9792D47FD0C003CD50D /* CulinaryCatalogTests */,
+				26CBB9832D47FD0C003CD50D /* CulinaryCatalogUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		26CBB9632D47FD0B003CD50D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26CBB9782D47FD0C003CD50D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26CBB9822D47FD0C003CD50D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		26CBB9612D47FD0B003CD50D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26CBB9762D47FD0C003CD50D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26CBB9802D47FD0C003CD50D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		26CBB97C2D47FD0C003CD50D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 26CBB9642D47FD0B003CD50D /* CulinaryCatalog */;
+			targetProxy = 26CBB97B2D47FD0C003CD50D /* PBXContainerItemProxy */;
+		};
+		26CBB9862D47FD0C003CD50D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 26CBB9642D47FD0B003CD50D /* CulinaryCatalog */;
+			targetProxy = 26CBB9852D47FD0C003CD50D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		26CBB98C2D47FD0C003CD50D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		26CBB98D2D47FD0C003CD50D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		26CBB98F2D47FD0C003CD50D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CulinaryCatalog/Preview Content\"";
+				DEVELOPMENT_TEAM = P92GSKWU9W;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Sarah.CulinaryCatalog;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		26CBB9902D47FD0C003CD50D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CulinaryCatalog/Preview Content\"";
+				DEVELOPMENT_TEAM = P92GSKWU9W;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Sarah.CulinaryCatalog;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		26CBB9922D47FD0C003CD50D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P92GSKWU9W;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Sarah.CulinaryCatalogTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CulinaryCatalog.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CulinaryCatalog";
+			};
+			name = Debug;
+		};
+		26CBB9932D47FD0C003CD50D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P92GSKWU9W;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Sarah.CulinaryCatalogTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CulinaryCatalog.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CulinaryCatalog";
+			};
+			name = Release;
+		};
+		26CBB9952D47FD0C003CD50D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P92GSKWU9W;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Sarah.CulinaryCatalogUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CulinaryCatalog;
+			};
+			name = Debug;
+		};
+		26CBB9962D47FD0C003CD50D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P92GSKWU9W;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Sarah.CulinaryCatalogUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CulinaryCatalog;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		26CBB9602D47FD0B003CD50D /* Build configuration list for PBXProject "CulinaryCatalog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26CBB98C2D47FD0C003CD50D /* Debug */,
+				26CBB98D2D47FD0C003CD50D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26CBB98E2D47FD0C003CD50D /* Build configuration list for PBXNativeTarget "CulinaryCatalog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26CBB98F2D47FD0C003CD50D /* Debug */,
+				26CBB9902D47FD0C003CD50D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26CBB9912D47FD0C003CD50D /* Build configuration list for PBXNativeTarget "CulinaryCatalogTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26CBB9922D47FD0C003CD50D /* Debug */,
+				26CBB9932D47FD0C003CD50D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26CBB9942D47FD0C003CD50D /* Build configuration list for PBXNativeTarget "CulinaryCatalogUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26CBB9952D47FD0C003CD50D /* Debug */,
+				26CBB9962D47FD0C003CD50D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 26CBB95D2D47FD0B003CD50D /* Project object */;
+}
