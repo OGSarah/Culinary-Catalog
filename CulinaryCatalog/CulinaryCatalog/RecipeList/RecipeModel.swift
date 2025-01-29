@@ -7,32 +7,32 @@
 
 import CoreData
 
-struct RecipeModel: Identifiable {
+struct RecipeModel: Identifiable, Codable {
     let cuisineType: String
-    let id: UUID
+    let recipeName: String
     let photoLarge: String
     let photoSmall: String
-    let recipeName: String
     let sourceURL: String
+    let id: UUID
     let youTubeURL: String
 
-    init(cuisineType: String, id: UUID, photoLarge: String, photoSmall: String, recipeName: String, sourceURL: String, youTubeURL: String) {
+    init(cuisineType: String, recipeName: String, photoLarge: String, photoSmall: String, sourceURL: String, id: UUID, youTubeURL: String) {
         self.cuisineType = cuisineType
-        self.id = id
+        self.recipeName = recipeName
         self.photoLarge = photoLarge
         self.photoSmall = photoSmall
-        self.recipeName = recipeName
         self.sourceURL = sourceURL
+        self.id = id
         self.youTubeURL = youTubeURL
     }
 
     init(entity: Recipe) {
         self.cuisineType = entity.cuisineType ?? ""
-        self.id = entity.id ?? UUID()
+        self.recipeName = entity.recipeName ?? ""
         self.photoLarge = entity.photoLarge ?? ""
         self.photoSmall = entity.photoSmall ?? ""
-        self.recipeName = entity.recipeName ?? ""
         self.sourceURL = entity.sourceURL ?? ""
+        self.id = entity.id ?? UUID()
         self.youTubeURL = entity.youTubeURL ?? ""
     }
 

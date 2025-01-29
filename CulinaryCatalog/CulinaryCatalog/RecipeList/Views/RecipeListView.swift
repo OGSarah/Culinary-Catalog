@@ -16,8 +16,23 @@ struct RecipeListView: View {
     }
 
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            ForEach(recipeListViewModel.recipes) { recipe in
+                RecipeRowView(recipe: recipe)
+            }
+        }
+        .onAppear {
+            recipeListViewModel.loadRecipes()
+        }
+        .alert("Error", isPresented: .constant(recipeListViewModel.errorMessage != nil)) {
+            Button("OK") {
+                recipeListViewModel.errorMessage = nil
+            }
+        } message: {
+            Text(recipeListViewModel.errorMessage ?? "")
+        }
     }
+
 }
 
 // MARK: - Preview

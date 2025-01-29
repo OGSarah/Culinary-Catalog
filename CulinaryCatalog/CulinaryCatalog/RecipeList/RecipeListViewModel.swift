@@ -7,13 +7,25 @@
 
 import CoreData
 
+@MainActor
 final class RecipeListViewModel: ObservableObject {
     @Published var recipes: [RecipeModel] = []
     private let viewContext: NSManagedObjectContext
+    @Published var errorMessage: String?
 
     init(viewContext: NSManagedObjectContext) {
         self.viewContext = viewContext
         fetchRecipes()
+    }
+
+    func loadRecipes() {
+        Task {
+            do {
+                recipes = try await NetworkManager.shared.fetchRecipes()
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+        }
     }
 
     func filteredRecipes(searchText: String) -> [RecipeModel] {
