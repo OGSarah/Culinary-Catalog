@@ -35,7 +35,7 @@ struct ContentView: View {
                     }
             }
             .searchable(text: .constant("")) {
-                
+
             }
         }
     }

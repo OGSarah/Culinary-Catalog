@@ -7,5 +7,6 @@
         <attribute name="photoSmall" optional="YES" attributeType="String"/>
         <attribute name="recipeName" optional="YES" attributeType="String"/>
         <attribute name="sourceURL" optional="YES" attributeType="String"/>
+        <attribute name="youTubeURL" optional="YES" attributeType="String"/>
     </entity>
 </model>

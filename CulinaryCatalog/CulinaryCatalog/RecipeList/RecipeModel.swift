@@ -14,14 +14,16 @@ struct RecipeModel: Identifiable {
     let photoSmall: String
     let recipeName: String
     let sourceURL: String
+    let youTubeURL: String
 
-    init(cuisineType: String, id: UUID, photoLarge: String, photoSmall: String, recipeName: String, sourceURL: String) {
+    init(cuisineType: String, id: UUID, photoLarge: String, photoSmall: String, recipeName: String, sourceURL: String, youTubeURL: String) {
         self.cuisineType = cuisineType
         self.id = id
         self.photoLarge = photoLarge
         self.photoSmall = photoSmall
         self.recipeName = recipeName
         self.sourceURL = sourceURL
+        self.youTubeURL = youTubeURL
     }
 
     init(entity: Recipe) {
@@ -31,6 +33,7 @@ struct RecipeModel: Identifiable {
         self.photoSmall = entity.photoSmall ?? ""
         self.recipeName = entity.recipeName ?? ""
         self.sourceURL = entity.sourceURL ?? ""
+        self.youTubeURL = entity.youTubeURL ?? ""
     }
 
 }
