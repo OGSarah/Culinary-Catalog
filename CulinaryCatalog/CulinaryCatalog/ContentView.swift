@@ -23,23 +23,21 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            backgroundGradient
-                .edgesIgnoringSafeArea(.all)
-            RecipeListView(viewContext: viewContext)
-            .navigationTitle("Recipes")
-            .toolbar {
-                Image(systemName: "arrow.clockwise.circle")
-                    .foregroundStyle(.blue, .gray)
-                    .onTapGesture {
-                        // TODO: Add button action to refresh the recipes via a network call.
+            ZStack {
+                backgroundGradient
+                    .edgesIgnoringSafeArea(.all)
+                    .navigationTitle("Recipes")
+                    .toolbar {
+                        Image(systemName: "arrow.clockwise.circle")
+                            .foregroundStyle(.blue, .gray)
+                            .onTapGesture {
+                                // TODO: Add button action to refresh the recipes via a network call.
+                            }
                     }
-            }
-            .searchable(text: .constant("")) {
-
+                RecipeListView(viewContext: viewContext)
             }
         }
     }
-
 }
 
 #Preview ("Light Mode") {

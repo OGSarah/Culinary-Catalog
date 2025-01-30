@@ -10,6 +10,7 @@ import SwiftUI
 
 struct RecipeListView: View {
     @StateObject private var recipeListViewModel: RecipeListViewModel
+    @State private var searchText = ""
 
     init(viewContext: NSManagedObjectContext) {
         _recipeListViewModel = StateObject(wrappedValue: RecipeListViewModel(viewContext: viewContext))
@@ -17,10 +18,11 @@ struct RecipeListView: View {
 
     var body: some View {
         List {
-            ForEach(recipeListViewModel.recipes) { recipe in
+            ForEach(recipeListViewModel.filteredRecipes(searchText: searchText)) { recipe in
                 RecipeRowView(recipe: recipe)
             }
         }
+        .searchable(text: $searchText, prompt: "Search")
         .onAppear {
             recipeListViewModel.loadRecipes()
         }
@@ -32,7 +34,6 @@ struct RecipeListView: View {
             Text(recipeListViewModel.errorMessage ?? "")
         }
     }
-
 }
 
 // MARK: - Preview
