@@ -45,9 +45,6 @@ struct RecipeRowView: View {
         RecipeRowView(recipe: sampleRecipe)
             .preferredColorScheme(.light)
         Divider()
-        RecipeRowView(recipe: sampleRecipe)
-            .preferredColorScheme(.light)
-        Divider()
     }
 }
 
@@ -63,9 +60,6 @@ struct RecipeRowView: View {
     )
 
     Group {
-        Divider()
-        RecipeRowView(recipe: sampleRecipe)
-            .preferredColorScheme(.dark)
         Divider()
         RecipeRowView(recipe: sampleRecipe)
             .preferredColorScheme(.dark)

@@ -19,9 +19,12 @@ struct RecipeListView: View {
     var body: some View {
         List {
             ForEach(recipeListViewModel.filteredRecipes(searchText: searchText)) { recipe in
-                RecipeRowView(recipe: recipe)
+                NavigationLink(destination: RecipeDetailView(recipe: recipe)) {
+                    RecipeRowView(recipe: recipe)
+                }
             }
         }
+
         .searchable(text: $searchText, prompt: "Search")
         .onAppear {
             recipeListViewModel.loadRecipes()
