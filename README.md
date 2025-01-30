@@ -1,8 +1,7 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/dd591db49ac547498df52a153c09fb687839a26b/CulinaryCatalog/CulinaryCatalog/Assets.xcassets/AppIcon.appiconset/chefhat.jpg" width="200" alt="Culinary Catalog App Icon">
-</p>
-
-# Culinary Catalog
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/dd591db49ac547498df52a153c09fb687839a26b/CulinaryCatalog/CulinaryCatalog/Assets.xcassets/AppIcon.appiconset/chefhat.jpg" width="150" style="border: 3px solid white; border-radius: 15px; vertical-align: middle; margin-right: 20px;">
+  <h1 style="display: inline-block; vertical-align: middle;">Culinary Catalog</h1>
+</div>
 
 A modern iOS recipe management app built with SwiftUI that seamlessly integrates CoreData and async/await networking to provide a smooth, responsive recipe browsing experience. The app fetches and displays recipe data from a remote API, allowing users to explore, search, and interact with a comprehensive collection of culinary inspirations.
 
