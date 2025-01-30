@@ -1,6 +1,31 @@
-# Culinary-Catalog
+# Culinary Catalog
 
-### Summary: Include screen shots or a video of your app highlighting its features
+A modern iOS recipe management app built with SwiftUI that seamlessly integrates CoreData and async/await networking to provide a smooth, responsive recipe browsing experience. The app fetches and displays recipe data from a remote API, allowing users to explore, search, and interact with a comprehensive collection of culinary inspirations.
+
+*TODO:* Add screenshots and video to highlight features
+
+## Key Features:
+- SwiftUI interface
+- CoreData local storage
+- Asynchronous API data fetching
+- Responsive search functionality
+- Smooth recipe browsing experience
+- Code quality enforcement through SwiftLint
+- Test coverage with comprehensive unit and UI tests
+
+## Technologies:
+- Swift 6
+- SwiftUI
+- Swift Testing
+- XCTest
+- CoreData
+- Async/Await
+- RESTful API Integration
+- iOS 17 minimum OS target
+
+## Architecture & Design Patterns:
+- MVVM
+- Singleton
 
 ### Focus Areas: What specific areas of the project did you prioritize? Why did you choose to focus on these areas?
 
