@@ -19,18 +19,16 @@ final class RecipeListViewModel: ObservableObject {
         fetchRecipesFromCoreData()
     }
 
-    func refreshRecipes() {
+    func refreshRecipes() async throws {
         isRefreshing = true
-        Task {
-            do {
-                let newRecipes = try await NetworkManager.shared.fetchRecipesFromNetwork()
-                await saveRecipesToCoreData(newRecipes)
-                fetchRecipesFromCoreData()
-                isRefreshing = false
-            } catch {
-                errorMessage = error.localizedDescription
-                isRefreshing = false
-            }
+        do {
+            let newRecipes = try await NetworkManager.shared.fetchRecipesFromNetwork()
+            await saveRecipesToCoreData(newRecipes)
+            fetchRecipesFromCoreData()
+            isRefreshing = false
+        } catch {
+            isRefreshing = false
+            throw error
         }
     }
 
