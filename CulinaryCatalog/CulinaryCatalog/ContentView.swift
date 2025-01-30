@@ -10,6 +10,11 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @StateObject private var recipeListViewModel: RecipeListViewModel
+
+    init(viewContext: NSManagedObjectContext) {
+        _recipeListViewModel = StateObject(wrappedValue: RecipeListViewModel(viewContext: viewContext))
+    }
 
     let backgroundGradient = LinearGradient(
         stops: [
@@ -34,19 +39,19 @@ struct ContentView: View {
                 Image(systemName: "arrow.clockwise.circle")
                     .foregroundStyle(.blue, .gray)
                     .onTapGesture {
-                        // TODO: Add button action to refresh the recipes via a network call.
+                        recipeListViewModel.refreshRecipes()
                     }
             }
         }
     }
 }
 
-#Preview ("Light Mode") {
-    ContentView().environment(\.managedObjectContext, CoreDataController.preview.container.viewContext)
+#Preview("Light Mode") {
+    ContentView(viewContext: CoreDataController.preview.container.viewContext)
         .preferredColorScheme(.light)
 }
 
-#Preview ("Dark Mode") {
-    ContentView().environment(\.managedObjectContext, CoreDataController.preview.container.viewContext)
+#Preview("Dark Mode") {
+    ContentView(viewContext: CoreDataController.preview.container.viewContext)
         .preferredColorScheme(.dark)
 }

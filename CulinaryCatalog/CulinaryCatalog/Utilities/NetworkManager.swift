@@ -13,7 +13,7 @@ actor NetworkManager {
 
     private init() {}
 
-    func fetchRecipes() async throws -> [RecipeModel] {
+    func fetchRecipesFromNetwork() async throws -> [RecipeModel] {
         guard let url = URL(string: baseURL) else {
             throw NetworkError.invalidURL
         }

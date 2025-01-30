@@ -12,16 +12,32 @@ final class RecipeListViewModel: ObservableObject {
     @Published var recipes: [RecipeModel] = []
     private let viewContext: NSManagedObjectContext
     @Published var errorMessage: String?
+    @Published var isRefreshing = false
 
     init(viewContext: NSManagedObjectContext) {
         self.viewContext = viewContext
-        fetchRecipes()
+        fetchRecipesFromCoreData()
+    }
+
+    func refreshRecipes() {
+        isRefreshing = true
+        Task {
+            do {
+                let newRecipes = try await NetworkManager.shared.fetchRecipesFromNetwork()
+                await saveRecipesToCoreData(newRecipes)
+                fetchRecipesFromCoreData()
+                isRefreshing = false
+            } catch {
+                errorMessage = error.localizedDescription
+                isRefreshing = false
+            }
+        }
     }
 
     func loadRecipes() {
         Task {
             do {
-                recipes = try await NetworkManager.shared.fetchRecipes()
+                recipes = try await NetworkManager.shared.fetchRecipesFromNetwork()
             } catch {
                 errorMessage = error.localizedDescription
             }
@@ -39,7 +55,35 @@ final class RecipeListViewModel: ObservableObject {
     }
 
     // MARK: - Private functions
-    private func fetchRecipes() {
+    private func saveRecipesToCoreData(_ recipes: [RecipeModel]) async {
+        await viewContext.perform {
+            // First, delete existing recipes
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Recipe.fetchRequest()
+            let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+
+            do {
+                try self.viewContext.execute(batchDeleteRequest)
+
+                // Save new recipes
+                for recipeModel in recipes {
+                    let newRecipe = Recipe(context: self.viewContext)
+                    newRecipe.id = recipeModel.id
+                    newRecipe.recipeName = recipeModel.recipeName
+                    newRecipe.cuisineType = recipeModel.cuisineType
+                    newRecipe.photoSmall = recipeModel.photoSmall
+                    newRecipe.photoLarge = recipeModel.photoLarge
+                    newRecipe.sourceURL = recipeModel.sourceURL
+                    newRecipe.youTubeURL = recipeModel.youTubeURL
+                }
+
+                try self.viewContext.save()
+            } catch {
+                print("Error saving recipes to CoreData: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    private func fetchRecipesFromCoreData() {
         let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
 
         do {
