@@ -11,20 +11,38 @@ struct RecipeRowView: View {
     let recipe: RecipeModel
 
     var body: some View {
-        HStack {
+        HStack(spacing: 12) {
             AsyncImage(url: URL(string: recipe.photoSmall)) { image in
                 image.resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 50, height: 50)
-                    .cornerRadius(8)
+                    .frame(width: 60, height: 60)
+                    .cornerRadius(10)
+                    .shadow(color: .gray.opacity(0.3), radius: 4, x: 0, y: 2)
             } placeholder: {
                 ProgressView()
+                    .frame(width: 60, height: 60)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(10)
             }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(recipe.cuisineType)
+                    .font(.caption)
+                    .foregroundColor(.darkGray)
+
+                Text(recipe.recipeName)
+                    .font(.headline)
+                    .foregroundStyle(.black)
+                    .lineLimit(2)
+            }
+
             Spacer()
-            Text(recipe.recipeName)
-                .font(.headline)
         }
-        .padding()
+        .padding(.vertical, 8)
+        .padding(.horizontal, 12)
+        .background(Color.white)
+        .cornerRadius(12)
+        .shadow(color: .gray.opacity(0.2), radius: 4, x: 0, y: 2)
     }
 }
 
