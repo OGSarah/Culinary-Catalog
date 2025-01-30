@@ -26,6 +26,7 @@ struct ContentView: View {
             VStack {
                 RecipeListView(viewContext: viewContext)
             }
+
             .navigationTitle("Recipes")
             .background(backgroundGradient)
             .scrollContentBackground(.hidden)

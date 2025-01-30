@@ -17,7 +17,7 @@ struct RecipeRowView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 60, height: 60)
                     .cornerRadius(10)
-                    .shadow(color: .gray.opacity(0.3), radius: 4, x: 0, y: 2)
+                    .shadow(color: .secondary.opacity(0.2), radius: 4, x: 0, y: 2)
             } placeholder: {
                 ProgressView()
                     .frame(width: 60, height: 60)
@@ -28,11 +28,11 @@ struct RecipeRowView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(recipe.cuisineType)
                     .font(.caption)
-                    .foregroundColor(.darkGray)
+                    .foregroundColor(.secondary)
 
                 Text(recipe.recipeName)
                     .font(.headline)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.secondary)
                     .lineLimit(2)
             }
 
@@ -40,9 +40,9 @@ struct RecipeRowView: View {
         }
         .padding(.vertical, 8)
         .padding(.horizontal, 12)
-        .background(Color.white)
+        .background(Color.gray.opacity(0.2))
         .cornerRadius(12)
-        .shadow(color: .gray.opacity(0.2), radius: 4, x: 0, y: 2)
+        .shadow(color: .secondary.opacity(0.4), radius: 4, x: 0, y: 2)
     }
 }
 
