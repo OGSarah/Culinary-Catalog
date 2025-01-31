@@ -14,6 +14,7 @@ struct RecipeDetailView: View {
         _recipeDetailViewModel = StateObject(wrappedValue: RecipeDetailViewModel(recipe: recipe))
     }
 
+    // MARK: - Main View
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
@@ -32,6 +33,7 @@ struct RecipeDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
+    // MARK: - Private Variables for View
     private var recipeHeaderSection: some View {
         AsyncImage(url: URL(string: recipeDetailViewModel.recipe.photoLarge)) { image in
             image.resizable()
@@ -54,13 +56,12 @@ struct RecipeDetailView: View {
                         .font(.title2)
                         .fontWeight(.bold)
                 }
-
                 Spacer()
-
                 Text(recipeDetailViewModel.countryFlag(for: recipeDetailViewModel.recipe.cuisineType))
                     .font(.largeTitle)
             }
         }
+        .frame(maxWidth: .infinity)
         .padding()
         .background(Color(UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark
@@ -98,7 +99,7 @@ struct RecipeDetailView: View {
         Group {
             if let videoID = recipeDetailViewModel.youtubeVideoID {
                 VStack(alignment: .leading) {
-                    Text("Recipe Video")
+                    Text("Watch the Recipe in Action:")
                         .font(.headline)
                         .padding(.bottom, 8)
 
