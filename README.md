@@ -29,6 +29,7 @@ A modern iOS recipe management app built with SwiftUI that seamlessly integrates
 ## Architecture & Design Patterns:
 - MVVM
 - Singleton
+- Dependency Injection
 
 ### Focus Areas: What specific areas of the project did you prioritize? Why did you choose to focus on these areas?
 
