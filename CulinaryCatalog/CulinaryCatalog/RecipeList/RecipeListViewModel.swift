@@ -48,7 +48,7 @@ final class RecipeListViewModel: ObservableObject {
         }
 
         return recipes.filter {
-            $0.recipeName.localizedCaseInsensitiveContains(searchText)
+            $0.recipeName.localizedCaseInsensitiveContains(searchText) || $0.cuisineType.localizedCaseInsensitiveContains(searchText)
         }
     }
 
