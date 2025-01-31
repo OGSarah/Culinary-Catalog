@@ -11,11 +11,35 @@ struct RecipeDetailView: View {
     let recipe: RecipeModel
 
     var body: some View {
-        VStack {
-            Text(recipe.recipeName)
-            // Add more details about the recipe
+        ScrollView {
+            VStack(spacing: 0) {
+                AsyncImage(url: URL(string: recipe.photoLarge)) { image in
+                    image.resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: UIScreen.main.bounds.height * 0.3)
+                        .clipped()
+                } placeholder: {
+                    ProgressView()
+                        .frame(height: UIScreen.main.bounds.height * 0.3)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.gray.opacity(0.1))
+                }
+
+                VStack(alignment: .leading, spacing: 16) {
+                    Text(recipe.recipeName)
+                        .font(.title)
+                        .fontWeight(.bold)
+
+                    Text("Cuisine: \(recipe.cuisineType)")
+                        .font(.subheadline)
+
+                    Spacer()
+                }
+                .padding()
+            }
         }
-        .navigationTitle(recipe.recipeName)
+        .edgesIgnoringSafeArea(.top)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
