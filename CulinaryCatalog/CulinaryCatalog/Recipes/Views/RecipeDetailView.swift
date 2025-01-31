@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct RecipeDetailView: View {
-    @StateObject private var recipeDetailViewModel: RecipeDetailViewModel
+    @StateObject private var viewModel: RecipeDetailViewModel
 
     init(recipe: RecipeModel) {
-        _recipeDetailViewModel = StateObject(wrappedValue: RecipeDetailViewModel(recipe: recipe))
+        _viewModel = StateObject(wrappedValue: RecipeDetailViewModel(recipe: recipe))
     }
 
     // MARK: - Main View
@@ -35,7 +35,7 @@ struct RecipeDetailView: View {
 
     // MARK: - Private Variables for View
     private var recipeHeaderSection: some View {
-        AsyncImage(url: URL(string: recipeDetailViewModel.recipe.photoLarge)) { image in
+        AsyncImage(url: URL(string: viewModel.recipeDetails.photoLarge)) { image in
             image.resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(height: UIScreen.main.bounds.height * 0.3)
@@ -52,12 +52,12 @@ struct RecipeDetailView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 VStack(alignment: .leading) {
-                    Text(recipeDetailViewModel.recipe.recipeName)
+                    Text(viewModel.recipeDetails.recipeName)
                         .font(.title2)
                         .fontWeight(.bold)
                 }
                 Spacer()
-                Text(recipeDetailViewModel.countryFlag(for: recipeDetailViewModel.recipe.cuisineType))
+                Text(viewModel.getCountryFlag(for: viewModel.recipeDetails.cuisineType))
                     .font(.largeTitle)
             }
         }
@@ -74,7 +74,7 @@ struct RecipeDetailView: View {
 
     private var sourceURLSection: some View {
         Group {
-            if let url = URL(string: recipeDetailViewModel.recipe.sourceURL) {
+            if let url = URL(string: viewModel.recipeDetails.sourceURL) {
                 Link(destination: url) {
                     HStack {
                         Image(systemName: "safari")
@@ -97,7 +97,7 @@ struct RecipeDetailView: View {
 
     private var youtubeVideoSection: some View {
         Group {
-            if let videoID = recipeDetailViewModel.youtubeVideoID {
+            if let videoID = viewModel.recipeDetails.youtubeVideoID {
                 VStack(alignment: .leading) {
                     Text("Watch the Recipe in Action:")
                         .font(.headline)
