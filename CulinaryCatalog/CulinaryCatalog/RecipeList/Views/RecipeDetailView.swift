@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct RecipeDetailView: View {
-    let recipe: RecipeModel
+    @StateObject private var viewModel: RecipeDetailViewModel
+
+    init(recipe: RecipeModel) {
+        _viewModel = StateObject(wrappedValue: RecipeDetailViewModel(recipe: recipe))
+    }
 
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                AsyncImage(url: URL(string: recipe.photoLarge)) { image in
+                AsyncImage(url: URL(string: viewModel.recipe.photoLarge)) { image in
                     image.resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(height: UIScreen.main.bounds.height * 0.3)
@@ -26,12 +30,16 @@ struct RecipeDetailView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 16) {
-                    Text(recipe.recipeName)
-                        .font(.title)
-                        .fontWeight(.bold)
+                    HStack {
+                        Text(viewModel.recipe.recipeName)
+                            .font(.title)
+                            .fontWeight(.bold)
 
-                    Text("Cuisine: \(recipe.cuisineType)")
-                        .font(.subheadline)
+                        Spacer()
+
+                        Text(viewModel.countryFlag(for: viewModel.recipe.cuisineType))
+                            .font(.largeTitle)
+                    }
 
                     Spacer()
                 }
@@ -40,6 +48,7 @@ struct RecipeDetailView: View {
         }
         .edgesIgnoringSafeArea(.top)
         .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(viewModel.recipe.recipeName)
     }
 }
 
