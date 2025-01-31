@@ -57,6 +57,19 @@ struct RecipeDetailView: View {
                     }
 
                     Spacer()
+
+                    if let videoID = viewModel.youtubeVideoID {
+                        VStack {
+                            Text("Recipe Video")
+                                .font(.headline)
+                                .padding(.top)
+
+                            YouTubeVideoView(videoID: videoID)
+                                .frame(height: 250)
+                                .cornerRadius(10)
+                                .padding()
+                        }
+                    }
                 }
                 .padding()
             }
