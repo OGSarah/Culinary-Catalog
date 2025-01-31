@@ -8,34 +8,16 @@
 import SwiftUI
 
 struct RecipeRowView: View {
-    let recipe: RecipeModel
+    @StateObject private var viewModel: RecipeRowViewModel
+
+    init(recipe: RecipeModel) {
+        _viewModel = StateObject(wrappedValue: RecipeRowViewModel(recipe: recipe))
+    }
 
     var body: some View {
         HStack(spacing: 12) {
-            AsyncImage(url: URL(string: recipe.photoSmall)) { image in
-                image.resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 60, height: 60)
-                    .cornerRadius(10)
-                    .shadow(color: .secondary.opacity(0.2), radius: 4, x: 0, y: 2)
-            } placeholder: {
-                ProgressView()
-                    .frame(width: 60, height: 60)
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(10)
-            }
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(recipe.cuisineType)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-
-                Text(recipe.recipeName)
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
-            }
-
+            photoView
+            textContent
             Spacer()
         }
         .padding(.vertical, 8)
@@ -43,6 +25,34 @@ struct RecipeRowView: View {
         .background(Color.gray.opacity(0.2))
         .cornerRadius(12)
         .shadow(color: .secondary.opacity(0.4), radius: 4, x: 0, y: 2)
+    }
+
+    private var photoView: some View {
+        AsyncImage(url: viewModel.getPhotoURL()) { image in
+            image.resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 60, height: 60)
+                .cornerRadius(10)
+                .shadow(color: .secondary.opacity(0.2), radius: 4, x: 0, y: 2)
+        } placeholder: {
+            ProgressView()
+                .frame(width: 60, height: 60)
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(10)
+        }
+    }
+
+    private var textContent: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(viewModel.getFormattedCuisineType())
+                .font(.caption)
+                .foregroundColor(.secondary)
+
+            Text(viewModel.getFormattedRecipeName())
+                .font(.headline)
+                .foregroundStyle(.secondary)
+                .lineLimit(2)
+        }
     }
 }
 
