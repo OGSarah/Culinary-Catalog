@@ -8,29 +8,32 @@
 import SwiftUI
 
 struct RecipeDetailView: View {
-    @StateObject private var viewModel: RecipeDetailViewModel
+    @StateObject private var recipeDetailViewModel: RecipeDetailViewModel
 
     init(recipe: RecipeModel) {
-        _viewModel = StateObject(wrappedValue: RecipeDetailViewModel(recipe: recipe))
+        _recipeDetailViewModel = StateObject(wrappedValue: RecipeDetailViewModel(recipe: recipe))
     }
 
-    // MARK: - Main View
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                recipeImageSection
-                sourceURLLink
-                recipeDetailsSection
-                youtubeVideoSection
+                recipeHeaderSection
+
+                LazyVStack(spacing: 16) {
+                    recipeDetailsCard
+                    sourceURLSection
+                    youtubeVideoSection
+                }
+                .padding()
             }
         }
+        .background(Color(UIColor.systemGroupedBackground))
         .edgesIgnoringSafeArea(.top)
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    // MARK: - Private Variables for View
-    private var recipeImageSection: some View {
-        AsyncImage(url: URL(string: viewModel.recipe.photoLarge)) { image in
+    private var recipeHeaderSection: some View {
+        AsyncImage(url: URL(string: recipeDetailViewModel.recipe.photoLarge)) { image in
             image.resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(height: UIScreen.main.bounds.height * 0.3)
@@ -43,58 +46,79 @@ struct RecipeDetailView: View {
         }
     }
 
-    private var sourceURLLink: some View {
-        Group {
-            if let url = URL(string: viewModel.recipe.sourceURL) {
-                Link(destination: url) {
-                    HStack {
-                        Image(systemName: "link")
-                        Text("View Original Recipe")
-                            .font(.caption)
-                            .foregroundColor(.blue)
-                    }
-                    .padding(8)
-                    .background(Color.blue.opacity(0.1))
-                    .cornerRadius(8)
-                }
-                .padding(.vertical, 8)
-            }
-        }
-    }
-
-    private var recipeDetailsSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+    private var recipeDetailsCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text(viewModel.recipe.recipeName)
-                    .font(.title)
-                    .fontWeight(.bold)
+                VStack(alignment: .leading) {
+                    Text(recipeDetailViewModel.recipe.recipeName)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                }
 
                 Spacer()
 
-                Text(viewModel.countryFlag(for: viewModel.recipe.cuisineType))
+                Text(recipeDetailViewModel.countryFlag(for: recipeDetailViewModel.recipe.cuisineType))
                     .font(.largeTitle)
             }
-
         }
         .padding()
+        .background(Color(UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark
+            ? .darkGray
+            : .white
+        }))
+        .cornerRadius(10)
+        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
+    }
+
+    private var sourceURLSection: some View {
+        Group {
+            if let url = URL(string: recipeDetailViewModel.recipe.sourceURL) {
+                Link(destination: url) {
+                    HStack {
+                        Image(systemName: "safari")
+                        Text("View Original Recipe")
+                            .font(.subheadline)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color(UIColor { traitCollection in
+                        traitCollection.userInterfaceStyle == .dark
+                        ? .darkGray
+                        : .white
+                    }))
+                    .cornerRadius(10)
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
+                }
+            }
+        }
     }
 
     private var youtubeVideoSection: some View {
         Group {
-            if let videoID = viewModel.youtubeVideoID {
-                VStack {
+            if let videoID = recipeDetailViewModel.youtubeVideoID {
+                VStack(alignment: .leading) {
                     Text("Recipe Video")
                         .font(.headline)
-                        .padding(.top)
+                        .padding(.bottom, 8)
 
                     YouTubeVideoView(videoID: videoID)
                         .frame(height: 250)
                         .cornerRadius(10)
-                        .padding()
+                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
                 }
+                .padding()
+                .background(Color(UIColor { traitCollection in
+                    traitCollection.userInterfaceStyle == .dark
+                    ? .darkGray
+                    : .white
+                }))
+                .cornerRadius(10)
+                .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
             }
         }
     }
+
 }
 
 // MARK: - Preview
