@@ -14,68 +14,86 @@ struct RecipeDetailView: View {
         _viewModel = StateObject(wrappedValue: RecipeDetailViewModel(recipe: recipe))
     }
 
+    // MARK: - Main View
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                AsyncImage(url: URL(string: viewModel.recipe.photoLarge)) { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: UIScreen.main.bounds.height * 0.3)
-                        .clipped()
-                } placeholder: {
-                    ProgressView()
-                        .frame(height: UIScreen.main.bounds.height * 0.3)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.gray.opacity(0.1))
-                }
-
-                if let url = URL(string: viewModel.recipe.sourceURL) {
-                    Link(destination: url) {
-                        HStack {
-                            Image(systemName: "link")
-                            Text("View Original Recipe")
-                                .font(.caption)
-                                .foregroundColor(.blue)
-                        }
-                        .padding(8)
-                        .background(Color.blue.opacity(0.1))
-                        .cornerRadius(8)
-                    }
-                    .padding(.vertical, 8)
-                }
-
-                VStack(alignment: .leading, spacing: 16) {
-                    HStack {
-                        Text(viewModel.recipe.recipeName)
-                            .font(.title)
-                            .fontWeight(.bold)
-
-                        Spacer()
-
-                        Text(viewModel.countryFlag(for: viewModel.recipe.cuisineType))
-                            .font(.largeTitle)
-                    }
-
-                    Spacer()
-
-                    if let videoID = viewModel.youtubeVideoID {
-                        VStack {
-                            Text("Recipe Video")
-                                .font(.headline)
-                                .padding(.top)
-
-                            YouTubeVideoView(videoID: videoID)
-                                .frame(height: 250)
-                                .cornerRadius(10)
-                                .padding()
-                        }
-                    }
-                }
-                .padding()
+                recipeImageSection
+                sourceURLLink
+                recipeDetailsSection
+                youtubeVideoSection
             }
         }
         .edgesIgnoringSafeArea(.top)
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    // MARK: - Private Variables for View
+    private var recipeImageSection: some View {
+        AsyncImage(url: URL(string: viewModel.recipe.photoLarge)) { image in
+            image.resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: UIScreen.main.bounds.height * 0.3)
+                .clipped()
+        } placeholder: {
+            ProgressView()
+                .frame(height: UIScreen.main.bounds.height * 0.3)
+                .frame(maxWidth: .infinity)
+                .background(Color.gray.opacity(0.1))
+        }
+    }
+
+    private var sourceURLLink: some View {
+        Group {
+            if let url = URL(string: viewModel.recipe.sourceURL) {
+                Link(destination: url) {
+                    HStack {
+                        Image(systemName: "link")
+                        Text("View Original Recipe")
+                            .font(.caption)
+                            .foregroundColor(.blue)
+                    }
+                    .padding(8)
+                    .background(Color.blue.opacity(0.1))
+                    .cornerRadius(8)
+                }
+                .padding(.vertical, 8)
+            }
+        }
+    }
+
+    private var recipeDetailsSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Text(viewModel.recipe.recipeName)
+                    .font(.title)
+                    .fontWeight(.bold)
+
+                Spacer()
+
+                Text(viewModel.countryFlag(for: viewModel.recipe.cuisineType))
+                    .font(.largeTitle)
+            }
+
+        }
+        .padding()
+    }
+
+    private var youtubeVideoSection: some View {
+        Group {
+            if let videoID = viewModel.youtubeVideoID {
+                VStack {
+                    Text("Recipe Video")
+                        .font(.headline)
+                        .padding(.top)
+
+                    YouTubeVideoView(videoID: videoID)
+                        .frame(height: 250)
+                        .cornerRadius(10)
+                        .padding()
+                }
+            }
+        }
     }
 }
 

@@ -5,8 +5,6 @@
 //  Created by Sarah Clark on 1/30/25.
 //
 
-import Foundation
-
 extension String {
     func extractYouTubeID() -> String? {
         let patterns = [
