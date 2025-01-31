@@ -23,6 +23,7 @@ A modern iOS recipe management app built with SwiftUI that seamlessly integrates
 - XCTest
 - CoreData
 - Async/Await
+- WebKit
 - RESTful API Integration
 - iOS 17 minimum OS target
 
