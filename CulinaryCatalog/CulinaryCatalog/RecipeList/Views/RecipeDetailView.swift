@@ -29,6 +29,21 @@ struct RecipeDetailView: View {
                         .background(Color.gray.opacity(0.1))
                 }
 
+                if let url = URL(string: viewModel.recipe.sourceURL) {
+                    Link(destination: url) {
+                        HStack {
+                            Image(systemName: "link")
+                            Text("View Original Recipe")
+                                .font(.caption)
+                                .foregroundColor(.blue)
+                        }
+                        .padding(8)
+                        .background(Color.blue.opacity(0.1))
+                        .cornerRadius(8)
+                    }
+                    .padding(.vertical, 8)
+                }
+
                 VStack(alignment: .leading, spacing: 16) {
                     HStack {
                         Text(viewModel.recipe.recipeName)
@@ -48,7 +63,6 @@ struct RecipeDetailView: View {
         }
         .edgesIgnoringSafeArea(.top)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle(viewModel.recipe.recipeName)
     }
 }
 
