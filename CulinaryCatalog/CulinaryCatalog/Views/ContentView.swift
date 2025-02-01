@@ -12,6 +12,7 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @StateObject private var recipeListViewModel: RecipeListViewModel
     @State private var isRotating = false
+    private let recipeRepository: RecipeDataRepository
 
     /// Initializes the view with a recipe repository
     /// - Parameter viewContext: The Core Data managed object context
@@ -20,6 +21,7 @@ struct ContentView: View {
             networkManager: NetworkManager.shared,
             viewContext: viewContext
         )
+        self.recipeRepository = recipeRepository
         _recipeListViewModel = StateObject(wrappedValue: RecipeListViewModel(recipeRepository: recipeRepository))
     }
 
@@ -37,10 +39,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                RecipeListView(recipeRepository: RecipeDataRepository(
-                    networkManager: NetworkManager.shared,
-                    viewContext: viewContext
-                ))
+                RecipeListView(recipeRepository: recipeRepository)
             }
             .navigationTitle("Recipes")
             .background(backgroundGradient)
