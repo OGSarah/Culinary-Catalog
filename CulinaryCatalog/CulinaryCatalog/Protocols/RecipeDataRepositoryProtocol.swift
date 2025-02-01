@@ -20,7 +20,7 @@ protocol RecipeDataRepositoryProtocol {
     /// Retrieves recipes from the local data store.
     ///
     /// - Returns: An array of `RecipeModel` objects representing the recipes stored locally.
-    /// - Throws: Throws: An error if there's an issue with accessing or reading from CoreData.
+    /// - Throws: An error if there's an issue with accessing or reading from CoreData.
     func fetchRecipes() async throws -> [RecipeModel]
 
     /// Updates the local recipe database with the latest data from the network.

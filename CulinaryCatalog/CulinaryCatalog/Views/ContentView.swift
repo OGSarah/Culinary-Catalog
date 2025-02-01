@@ -12,6 +12,7 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @StateObject private var recipeListViewModel: RecipeListViewModel
     @State private var isRotating = false
+    @State private var recipes: [RecipeModel] = []
     private let recipeRepository: RecipeDataRepository
 
     /// Initializes the view with a recipe repository
@@ -39,14 +40,27 @@ struct ContentView: View {
     // MARK: Main View
     var body: some View {
         NavigationStack {
-            VStack {
-                RecipeListView(recipeRepository: recipeRepository)
+            Group {
+                if recipes.isEmpty {
+                    ContentUnavailableView(
+                        "No Recipes",
+                        systemImage: "fork.knife",
+                        description: Text("Try tapping on the Refresh button to reload recipes.")
+                    )
+                } else {
+                    VStack {
+                        RecipeListView(recipeRepository: recipeRepository)
+                    }
+                }
             }
             .navigationTitle("Recipes")
             .background(backgroundGradient)
             .scrollContentBackground(.hidden)
             .toolbar {
                 refreshButton
+            }
+            .task {
+                await loadRecipes()
             }
         }
     }
@@ -67,6 +81,15 @@ struct ContentView: View {
                     await refreshRecipes()
                 }
             }
+    }
+
+    /// Loads initial recipes
+    private func loadRecipes() async {
+        do {
+            recipes = try await recipeRepository.fetchRecipes()
+        } catch {
+            print("Failed to load recipes: \(error.localizedDescription)")
+        }
     }
 
     /// Refreshes recipes with animated loading state
@@ -100,3 +123,32 @@ struct ContentView: View {
     ContentView(viewContext: CoreDataController.preview.container.viewContext)
         .preferredColorScheme(.dark)
 }
+
+#Preview("Empty Recipes - Light Mode") {
+    let emptyContext = CoreDataController(inMemory: true).container.viewContext
+    let emptyRepository = EmptyMockRecipeRepository()
+
+    return ContentView(viewContext: emptyContext)
+        .preferredColorScheme(.light)
+}
+
+#Preview("Empty Recipes - Dark Mode") {
+    let emptyContext = CoreDataController(inMemory: true).container.viewContext
+    let emptyRepository = EmptyMockRecipeRepository()
+
+    return ContentView(viewContext: emptyContext)
+        .preferredColorScheme(.dark)
+}
+
+// MARK: - Mock Repository for Empty Recipes
+#if DEBUG
+struct EmptyMockRecipeRepository: RecipeDataRepositoryProtocol {
+    func fetchRecipes() async throws -> [RecipeModel] {
+        return []
+    }
+
+    func refreshRecipes() async throws -> [RecipeModel] {
+        return []
+    }
+}
+#endif

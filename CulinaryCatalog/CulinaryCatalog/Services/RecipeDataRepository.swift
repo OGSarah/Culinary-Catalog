@@ -35,14 +35,16 @@ final class RecipeDataRepository: RecipeDataRepositoryProtocol {
     ///
     /// This method fetches all `Recipe` entities from the local database and converts them to `RecipeModel` objects for use in the UI layer.
     ///
-    /// - Returns: An array of `RecipeModel` objects representing all recipes in local storage.
+    /// - Returns: An array of alphabetically sorted`RecipeModel` objects representing all recipes in local storage.
     /// - Throws: An error if there's an issue with fetching data from Core Data.
     func fetchRecipes() async throws -> [RecipeModel] {
         let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
 
         do {
             let entities = try viewContext.fetch(fetchRequest)
-            return entities.map { RecipeModel(entity: $0) }
+            return entities
+                .map { RecipeModel(entity: $0) }
+                .sorted { $0.recipeName.localizedCaseInsensitiveCompare($1.recipeName) == .orderedAscending }
         } catch {
             throw error
         }
