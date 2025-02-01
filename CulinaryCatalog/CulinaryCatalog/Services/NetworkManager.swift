@@ -36,21 +36,17 @@ actor NetworkManager: NetworkManagerProtocol {
     /// - Returns: An array of recipe models
     /// - Throws: Specific network-related errors
     func fetchRecipesFromNetwork() async throws -> [RecipeModel] {
-        // Validate URL
         guard let url = URL(string: baseURL) else {
             throw NetworkError.invalidURL
         }
 
-        // Perform network request
         let (data, response) = try await urlSession.data(from: url)
 
-        // Validate response
         guard let httpResponse = response as? HTTPURLResponse,
               (200...299).contains(httpResponse.statusCode) else {
             throw NetworkError.invalidResponse
         }
 
-        // Decode response
         do {
             let decoder = JSONDecoder()
             let response = try decoder.decode(RecipesResponse.self, from: data)

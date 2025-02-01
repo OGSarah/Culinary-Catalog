@@ -15,7 +15,7 @@ struct RecipeListView: View {
     @State private var isLoading = false
     @State private var errorMessage: String?
 
-    init(recipeRepository: RecipeRepositoryProtocol) {
+    init(recipeRepository: RecipeDataRepositoryProtocol) {
         _viewModel = StateObject(wrappedValue: RecipeListViewModel(recipeRepository: recipeRepository))
     }
 
@@ -95,7 +95,7 @@ struct RecipeListView: View {
 
 // MARK: - Mock Repository for Previews
 #if DEBUG
-struct MockRecipeRepository: RecipeRepositoryProtocol {
+struct MockRecipeRepository: RecipeDataRepositoryProtocol {
     func fetchRecipes() async throws -> [RecipeModel] {
         // Return sample recipes for preview
         return [

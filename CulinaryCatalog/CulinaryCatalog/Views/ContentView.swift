@@ -16,7 +16,7 @@ struct ContentView: View {
     /// Initializes the view with a recipe repository
     /// - Parameter viewContext: The Core Data managed object context
     init(viewContext: NSManagedObjectContext) {
-        let recipeRepository = RecipeRepository(
+        let recipeRepository = RecipeDataRepository(
             networkManager: NetworkManager.shared,
             viewContext: viewContext
         )
@@ -37,7 +37,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                RecipeListView(recipeRepository: RecipeRepository(
+                RecipeListView(recipeRepository: RecipeDataRepository(
                     networkManager: NetworkManager.shared,
                     viewContext: viewContext
                 ))
@@ -89,7 +89,6 @@ struct ContentView: View {
     }
 }
 
-// Previews with dependency injection
 #Preview("Light Mode") {
     ContentView(viewContext: CoreDataController.preview.container.viewContext)
         .preferredColorScheme(.light)

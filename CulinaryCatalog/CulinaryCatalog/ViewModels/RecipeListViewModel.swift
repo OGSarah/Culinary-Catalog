@@ -19,11 +19,11 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
     @Published private(set) var errorMessage: String?
 
     /// The repository responsible for fetching and managing recipe data
-    private let recipeRepository: RecipeRepositoryProtocol
+    private let recipeRepository: RecipeDataRepositoryProtocol
 
     /// Initializes the view model with a recipe repository
     /// - Parameter recipeRepository: The repository for managing recipe data
-    init(recipeRepository: RecipeRepositoryProtocol) {
+    init(recipeRepository: RecipeDataRepositoryProtocol) {
         self.recipeRepository = recipeRepository
     }
 
