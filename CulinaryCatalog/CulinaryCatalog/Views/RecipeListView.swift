@@ -8,13 +8,24 @@
 import CoreData
 import SwiftUI
 
+/// A view that displays a list of recipes with search functionality.
+///
+/// This view manages the display of recipes, including searching, loading, and refreshing capabilities.
 struct RecipeListView: View {
+    /// The view model responsible for managing the list of recipes and related operations.
     @StateObject private var viewModel: RecipeListViewModel
+    /// The current search text used for filtering recipes.
     @State private var searchText = ""
+    /// The list of recipes to display, which can be filtered based on the search text.
     @State private var recipes: [RecipeModel] = []
+    /// Indicates if the view is currently loading data.
     @State private var isLoading = false
+    /// Stores any error message to be shown to the user.
     @State private var errorMessage: String?
 
+    /// Initializes the `RecipeListView` with a repository for accessing recipe data.
+    ///
+    /// - Parameter recipeRepository: The protocol-conforming object for fetching and managing recipe data.
     init(recipeRepository: RecipeDataRepositoryProtocol) {
         _viewModel = StateObject(wrappedValue: RecipeListViewModel(recipeRepository: recipeRepository))
     }
@@ -50,6 +61,9 @@ struct RecipeListView: View {
     }
 
     // MARK: - Private Functions
+    /// Loads the initial set of recipes when the view appears.
+    ///
+    /// This method is called when the view first loads to populate the list with recipes.
     private func loadInitialRecipes() async {
         isLoading = true
         do {
@@ -63,6 +77,9 @@ struct RecipeListView: View {
         }
     }
 
+    /// Refreshes the recipe list, potentially fetching new or updated data.
+    ///
+    /// This method is invoked when the user performs a pull-to-refresh action.
     private func refreshRecipes() async {
         isLoading = true
         do {
@@ -76,6 +93,9 @@ struct RecipeListView: View {
         }
     }
 
+    /// Filters the list of recipes based on the current search text.
+    ///
+    /// - Parameter searchText: The text used to filter recipes by name or other attributes.
     private func filterRecipes(searchText: String) async {
         do {
             recipes = try await viewModel.filteredRecipes(searchText: searchText)
@@ -83,7 +103,6 @@ struct RecipeListView: View {
             errorMessage = error.localizedDescription
         }
     }
-
 }
 
 // MARK: - Previews

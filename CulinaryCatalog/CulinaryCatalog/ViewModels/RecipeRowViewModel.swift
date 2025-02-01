@@ -44,4 +44,5 @@ final class RecipeRowViewModel: ObservableObject, RecipeRowViewModelProtocol {
     func getPhotoURL() -> URL? {
         return URL(string: recipe.photoSmallURL)
     }
+
 }

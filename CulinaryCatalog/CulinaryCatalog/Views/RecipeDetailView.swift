@@ -7,9 +7,16 @@
 
 import SwiftUI
 
+/// A view displaying detailed information about a specific recipe.
+///
+/// This view provides an in-depth look at a recipe, including its image, name, cuisine, source, and an optional YouTube video.
 struct RecipeDetailView: View {
+    /// The view model managing the state and logic for this recipe detail view.
     @StateObject private var viewModel: RecipeDetailViewModel
 
+    /// Initializes the `RecipeDetailView` with a given recipe.
+    ///
+    /// - Parameter recipe: The `RecipeModel` containing the recipe data to be displayed.
     init(recipe: RecipeModel) {
         _viewModel = StateObject(wrappedValue: RecipeDetailViewModel(recipe: recipe))
     }
@@ -34,6 +41,7 @@ struct RecipeDetailView: View {
     }
 
     // MARK: - Private Variables for View
+    /// The header section of the recipe view, displaying the recipe's main image.
     private var recipeHeaderSection: some View {
         AsyncImage(url: URL(string: viewModel.recipeDetails.photoLarge)) { image in
             image.resizable()
@@ -48,6 +56,7 @@ struct RecipeDetailView: View {
         }
     }
 
+    /// Displays detailed information about the recipe including name and cuisine type.
     private var recipeDetailsCard: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -72,6 +81,7 @@ struct RecipeDetailView: View {
         .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
     }
 
+    /// A section showing a link to the original recipe if available.
     private var sourceURLSection: some View {
         Group {
             if let url = URL(string: viewModel.recipeDetails.sourceURL) {
@@ -95,6 +105,7 @@ struct RecipeDetailView: View {
         }
     }
 
+    /// Displays a YouTube video related to the recipe if a video ID is available.
     private var youtubeVideoSection: some View {
         Group {
             if let videoID = viewModel.recipeDetails.youtubeVideoID {

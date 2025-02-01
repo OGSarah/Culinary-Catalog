@@ -7,14 +7,22 @@
 
 import CoreData
 
+/// A controller for managing Core Data operations in the app.
+///
+/// This struct provides a singleton instance for managing the Core Data stack, including the persistent container and context setup.
 struct CoreDataController {
+    /// The shared instance of `CoreDataController` for use throughout the app.
     static let shared = CoreDataController()
 
+    /// A preview instance of `CoreDataController` for SwiftUI previews or testing.
+    ///
+    /// This instance uses an in-memory store to avoid persisting changes to disk, and it populates the context with sample data.
     @MainActor
     static let preview: CoreDataController = {
         let result = CoreDataController(inMemory: true)
         let viewContext = result.container.viewContext
 
+        // Populate the context with sample data for preview purposes
         for _ in 0..<10 {
             let newRecipe = Recipe(context: viewContext)
             newRecipe.id = UUID()
@@ -36,8 +44,12 @@ struct CoreDataController {
         return result
     }()
 
+    /// The Core Data persistent container which manages the persistent stores.
     let container: NSPersistentContainer
 
+    /// Initializes the `CoreDataController`.
+    ///
+    /// - Parameter inMemory: If `true`, uses an in-memory store for testing or preview purposes. Defaults to `false`.
     init(inMemory: Bool = false) {
         guard let modelURL = Bundle.main.url(forResource: "CulinaryCatalog", withExtension: "momd"),
               let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL) else {
@@ -47,6 +59,7 @@ struct CoreDataController {
         container = NSPersistentContainer(name: "CulinaryCatalog", managedObjectModel: managedObjectModel)
 
         if inMemory {
+            // Use an in-memory store for non-persistent data
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
             container.persistentStoreDescriptions.first?.type = NSInMemoryStoreType
         }
@@ -61,7 +74,9 @@ struct CoreDataController {
             }
         }
 
+        // Configure the view context to automatically merge changes from parent contexts and use a specific merge policy
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     }
+
 }

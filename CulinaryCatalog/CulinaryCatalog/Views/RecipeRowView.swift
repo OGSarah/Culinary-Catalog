@@ -7,9 +7,16 @@
 
 import SwiftUI
 
+/// A view representing a single recipe row in a list.
+///
+/// This view displays a recipe's photo, cuisine type, and name in a horizontal layout.
 struct RecipeRowView: View {
+    /// The view model for the recipe row, managing the data and logic for this view.
     @StateObject private var viewModel: RecipeRowViewModel
 
+    /// Initializes a new `RecipeRowView` with the provided recipe.
+    ///
+    /// - Parameter recipe: The `RecipeModel` to display in this row.
     init(recipe: RecipeModel) {
         _viewModel = StateObject(wrappedValue: RecipeRowViewModel(recipe: recipe))
     }
@@ -27,6 +34,9 @@ struct RecipeRowView: View {
         .shadow(color: .secondary.opacity(0.4), radius: 4, x: 0, y: 2)
     }
 
+    /// The photo view component of the recipe row.
+    ///
+    /// It displays an image from a URL or a placeholder while loading.
     private var photoView: some View {
         AsyncImage(url: viewModel.getPhotoURL()) { image in
             image.resizable()
@@ -42,6 +52,7 @@ struct RecipeRowView: View {
         }
     }
 
+    /// The text content of the recipe row, showing cuisine type and recipe name.
     private var textContent: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(viewModel.getFormattedCuisineType())

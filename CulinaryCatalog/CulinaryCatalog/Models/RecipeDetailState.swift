@@ -16,14 +16,14 @@ struct RecipeDetailState {
     ///
     /// Displays the full, descriptive name of the recipe in the user interface.
     ///
-    /// - Example: "Homemade Margherita Pizza"
+    /// - Example: "Blackberry Fool"
     let recipeName: String
 
     /// The type of cuisine the recipe belongs to.
     ///
     /// Represents the cultural or regional origin of the recipe.
     ///
-    /// - Example: "Italian", "Mexican", "Chinese"
+    /// - Example: "Italian", "Russian", "British"
     let cuisineType: String
 
     /// The URL of the large-sized photo representing the recipe.

@@ -56,4 +56,5 @@ actor NetworkManager: NetworkManagerProtocol {
             throw NetworkError.decodingError
         }
     }
+
 }
