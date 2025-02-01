@@ -9,12 +9,12 @@ import SwiftUI
 
 @main
 struct CulinaryCatalogApp: App {
-    let persistenceController = CoreDataController.shared
+    let coreDataController = CoreDataController.shared
 
     var body: some Scene {
         WindowGroup {
-            ContentView(viewContext: persistenceController.container.viewContext)
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            ContentView(viewContext: coreDataController.container.viewContext)
+                .environment(\.managedObjectContext, coreDataController.container.viewContext)
         }
     }
 }

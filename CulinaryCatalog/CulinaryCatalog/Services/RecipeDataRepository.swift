@@ -8,19 +8,21 @@
 import CoreData
 import Network
 
-/// A concrete implementation of `RecipeRepositoryProtocol` for handling recipe data operations.
+/// A concrete implementation of `RecipeDataRepositoryProtocol` for handling recipe data operations.
+///
+/// This class manages both the fetching of recipes from a network source and their persistence in local storage via Core Data.
 final class RecipeDataRepository: RecipeDataRepositoryProtocol {
-    /// The network manager responsible for API calls to fetch recipe data.
+    /// The network manager responsible for API calls to fetch recipe data from remote services.
     private let networkManager: NetworkManagerProtocol
 
     /// The Core Data managed object context used for local data persistence.
     private let viewContext: NSManagedObjectContext
 
-    /// Sets up the repository with its dependencies.
+    /// Sets up the repository with its dependencies for network and local storage operations.
     ///
     /// - Parameters:
-    ///   - networkManager: An instance of `NetworkManagerProtocol` for fetching recipes from the network.
-    ///   - viewContext: The `NSManagedObjectContext` for local storage operations.
+    ///   - networkManager: An instance of `NetworkManagerProtocol` for fetching recipes from the network. Defaults to `NetworkManager.shared`.
+    ///   - viewContext: The `NSManagedObjectContext` for local storage operations using Core Data.
     init(
         networkManager: NetworkManagerProtocol = NetworkManager.shared,
         viewContext: NSManagedObjectContext
@@ -31,8 +33,10 @@ final class RecipeDataRepository: RecipeDataRepositoryProtocol {
 
     /// Retrieves all recipes currently stored in Core Data.
     ///
+    /// This method fetches all `Recipe` entities from the local database and converts them to `RecipeModel` objects for use in the UI layer.
+    ///
     /// - Returns: An array of `RecipeModel` objects representing all recipes in local storage.
-    /// - Throws: Any Core Data related error that occurs during the fetch operation.
+    /// - Throws: An error if there's an issue with fetching data from Core Data.
     func fetchRecipes() async throws -> [RecipeModel] {
         let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
 
@@ -46,11 +50,13 @@ final class RecipeDataRepository: RecipeDataRepositoryProtocol {
 
     /// Synchronizes local data with the latest from the server.
     ///
-    /// This method first clears all local recipes, then fetches new ones from the network,
-    /// and finally saves this new data to Core Data.
+    /// This method performs a full refresh by:
+    /// 1. Clearing all existing recipes from Core Data.
+    /// 2. Fetching new recipes from the network.
+    /// 3. Saving these new recipes to Core Data.
     ///
     /// - Returns: An array of `RecipeModel` objects representing the updated set of recipes.
-    /// - Throws: An error if network fetching fails or if there's a problem saving to Core Data.
+    /// - Throws: An error if network fetching fails, or if there's a problem saving to or clearing from Core Data.
     func refreshRecipes() async throws -> [RecipeModel] {
         // Fetch new recipes from the network
         let newRecipes = try await networkManager.fetchRecipesFromNetwork()
