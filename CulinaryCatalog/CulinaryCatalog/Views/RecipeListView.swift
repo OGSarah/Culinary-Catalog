@@ -52,7 +52,7 @@ struct RecipeListView: View {
         isLoading = true
         do {
             await viewModel.loadRecipes()
-            recipes = await viewModel.filteredRecipes(searchText: searchText)
+            recipes = try await viewModel.filteredRecipes(searchText: searchText)
             isLoading = false
             errorMessage = nil
         } catch {
@@ -64,8 +64,8 @@ struct RecipeListView: View {
     private func refreshRecipes() async {
         isLoading = true
         do {
-            await viewModel.refreshRecipes()
-            recipes = await viewModel.filteredRecipes(searchText: searchText)
+            try await viewModel.refreshRecipes()
+            recipes = try await viewModel.filteredRecipes(searchText: searchText)
             isLoading = false
             errorMessage = nil
         } catch {
@@ -76,12 +76,14 @@ struct RecipeListView: View {
 
     private func filterRecipes(searchText: String) async {
         do {
-            recipes = await viewModel.filteredRecipes(searchText: searchText)
+            recipes = try await viewModel.filteredRecipes(searchText: searchText)
         } catch {
             errorMessage = error.localizedDescription
         }
     }
+
 }
+
 // MARK: - Previews
 #Preview("Light Mode") {
     RecipeListView(recipeRepository: MockRecipeRepository())
@@ -97,31 +99,29 @@ struct RecipeListView: View {
 #if DEBUG
 struct MockRecipeRepository: RecipeDataRepositoryProtocol {
     func fetchRecipes() async throws -> [RecipeModel] {
-        // Return sample recipes for preview
         return [
             RecipeModel(
-                cuisineType: "Italian",
-                recipeName: "Pasta Carbonara",
-                photoLarge: "",
-                photoSmall: "",
-                sourceURL: "",
+                cuisineType: "British",
+                recipeName: "Apple & Blackberry Crumble",
+                photoLarge: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/large.jpg",
+                photoSmall: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/small.jpg",
+                sourceURL: "https://www.bbcgoodfood.com/recipes/778642/apple-and-blackberry-crumble",
                 id: UUID(),
-                youTubeURL: ""
+                youTubeURL: "https://www.youtube.com/watch?v=4vhcOwVBDO4"
             )
         ]
     }
 
     func refreshRecipes() async throws -> [RecipeModel] {
-        // Return sample recipes for refresh
         return [
             RecipeModel(
-                cuisineType: "French",
-                recipeName: "Coq au Vin",
-                photoLarge: "",
-                photoSmall: "",
-                sourceURL: "",
+                cuisineType: "British",
+                recipeName: "Blackberry Fool",
+                photoLarge: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/ff52841a-df5b-498c-b2ae-1d2e09ea658d/large.jpg",
+                photoSmall: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/ff52841a-df5b-498c-b2ae-1d2e09ea658d/small.jpg",
+                sourceURL: "https://www.bbc.co.uk/food/recipes/blackberry_fool_with_11859",
                 id: UUID(),
-                youTubeURL: ""
+                youTubeURL: "https://www.youtube.com/watch?v=kniRGjDLFrQ"
             )
         ]
     }

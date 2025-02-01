@@ -52,7 +52,7 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
     /// Attempts to fetch and update recipes from the repository.
     ///
     /// - Note: Sets `isRefreshing` to manage UI state during refresh
-    func refreshRecipes() async {
+    func refreshRecipes() async throws {
         // Prevent multiple simultaneous refresh attempts
         guard !isRefreshing else { return }
 
@@ -78,7 +78,7 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
     ///
     /// - Parameter searchText: The text to use for filtering recipes
     /// - Returns: A filtered list of recipes matching the search text
-    func filteredRecipes(searchText: String) async -> [RecipeModel] {
+    func filteredRecipes(searchText: String) async throws -> [RecipeModel] {
         // Return all recipes if search text is empty
         guard !searchText.isEmpty else { return recipes }
 

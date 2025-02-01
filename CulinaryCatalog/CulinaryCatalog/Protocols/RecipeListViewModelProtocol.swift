@@ -19,13 +19,13 @@ protocol RecipeListViewModelProtocol: ObservableObject {
     var errorMessage: String? { get async }
 
     /// Loads recipes from the repository
-    func loadRecipes() async
+    func loadRecipes() async throws
 
     /// Refreshes the list of recipes
-    func refreshRecipes() async
+    func refreshRecipes() async throws
 
     /// Filters recipes based on a search text
     /// - Parameter searchText: The text to filter recipes by
     /// - Returns: Filtered list of recipes
-    func filteredRecipes(searchText: String) async -> [RecipeModel]
+    func filteredRecipes(searchText: String) async throws -> [RecipeModel]
 }
