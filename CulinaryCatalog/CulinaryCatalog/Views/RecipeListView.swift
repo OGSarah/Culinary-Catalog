@@ -19,6 +19,7 @@ struct RecipeListView: View {
         _viewModel = StateObject(wrappedValue: RecipeListViewModel(recipeRepository: recipeRepository))
     }
 
+    // MARK: Main View
     var body: some View {
         List {
             ForEach(recipes) { recipe in
@@ -48,6 +49,7 @@ struct RecipeListView: View {
         }
     }
 
+    // MARK: - Private Functions
     private func loadInitialRecipes() async {
         isLoading = true
         do {

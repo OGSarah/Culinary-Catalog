@@ -16,7 +16,7 @@ import Foundation
 ///
 /// - Note: Conforms to `ObservableObject` for reactive UI updates
 /// - SeeAlso: `YouTubeVideoModel`, `YouTubeVideoView`
-class YouTubeVideoViewModel: ObservableObject, YouTubeVideoViewModelProtocol {
+final class YouTubeVideoViewModel: ObservableObject, YouTubeVideoViewModelProtocol {
     /// The underlying data model for the YouTube video
     ///
     /// Provides core data and URL generation logic for the video

@@ -36,6 +36,7 @@ struct ContentView: View {
         endPoint: .bottom
     )
 
+    // MARK: Main View
     var body: some View {
         NavigationStack {
             VStack {
@@ -71,7 +72,7 @@ struct ContentView: View {
     /// Refreshes recipes with animated loading state
     ///
     /// - Note: Manages the rotation animation and calls the view model's refresh method
-    func refreshRecipes() async {
+    private func refreshRecipes() async {
         isRotating = true
 
         do {
@@ -86,8 +87,10 @@ struct ContentView: View {
             isRotating = false
         }
     }
+
 }
 
+// MARK: - Preview
 #Preview("Light Mode") {
     ContentView(viewContext: CoreDataController.preview.container.viewContext)
         .preferredColorScheme(.light)

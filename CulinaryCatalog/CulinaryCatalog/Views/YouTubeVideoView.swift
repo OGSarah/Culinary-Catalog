@@ -29,6 +29,13 @@ struct YouTubeVideoView: UIViewRepresentable {
     }
 }
 
-#Preview {
+// MARK: - Preview
+#Preview("Light Mode") {
     YouTubeVideoView(videoID: "1ahpSTf_Pvk")
+        .preferredColorScheme(.light)
+}
+
+#Preview("Dark Mode") {
+    YouTubeVideoView(videoID: "1ahpSTf_Pvk")
+        .preferredColorScheme(.dark)
 }
