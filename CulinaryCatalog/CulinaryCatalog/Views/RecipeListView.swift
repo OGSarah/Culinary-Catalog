@@ -33,8 +33,8 @@ struct RecipeListView: View {
     // MARK: Main View
     var body: some View {
         List {
-            ForEach(recipes) { recipe in
-                NavigationLink(destination: RecipeDetailView(recipe: recipe)) {
+            ForEach(viewModel.recipes) { recipe in
+                NavigationLink(destination: RecipeDetailView(viewModel: RecipeDetailViewModel(recipe: recipe))) {
                     RecipeRowView(recipe: recipe)
                 }
             }

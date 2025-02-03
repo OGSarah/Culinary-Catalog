@@ -12,13 +12,13 @@ import SwiftUI
 /// This view provides an in-depth look at a recipe, including its image, name, cuisine, source, and an optional YouTube video.
 struct RecipeDetailView: View {
     /// The view model managing the state and logic for this recipe detail view.
-    @StateObject private var viewModel: RecipeDetailViewModel
+    @ObservedObject private var viewModel: RecipeDetailViewModel
 
     /// Initializes the `RecipeDetailView` with a given recipe.
     ///
     /// - Parameter recipe: The `RecipeModel` containing the recipe data to be displayed.
-    init(recipe: RecipeModel) {
-        _viewModel = StateObject(wrappedValue: RecipeDetailViewModel(recipe: recipe))
+    init(viewModel: RecipeDetailViewModel) {
+        self.viewModel = viewModel
     }
 
     // MARK: - Main View
@@ -145,7 +145,7 @@ struct RecipeDetailView: View {
         youTubeURL: "https://www.youtube.com/watch?v=4vhcOwVBDO4"
     )
 
-    RecipeDetailView(recipe: sampleRecipe)
+    RecipeDetailView(viewModel: RecipeDetailViewModel(recipe: sampleRecipe))
         .preferredColorScheme(.light)
 }
 
@@ -160,6 +160,6 @@ struct RecipeDetailView: View {
         youTubeURL: "https://www.youtube.com/watch?v=4vhcOwVBDO4"
     )
 
-    RecipeDetailView(recipe: sampleRecipe)
+    RecipeDetailView(viewModel: RecipeDetailViewModel(recipe: sampleRecipe))
         .preferredColorScheme(.dark)
 }

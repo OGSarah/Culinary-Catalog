@@ -126,7 +126,6 @@ struct ContentView: View {
 
 #Preview("Empty Recipes - Light Mode") {
     let emptyContext = CoreDataController(inMemory: true).container.viewContext
-    let emptyRepository = EmptyMockRecipeRepository()
 
     return ContentView(viewContext: emptyContext)
         .preferredColorScheme(.light)
@@ -134,7 +133,6 @@ struct ContentView: View {
 
 #Preview("Empty Recipes - Dark Mode") {
     let emptyContext = CoreDataController(inMemory: true).container.viewContext
-    let emptyRepository = EmptyMockRecipeRepository()
 
     return ContentView(viewContext: emptyContext)
         .preferredColorScheme(.dark)
