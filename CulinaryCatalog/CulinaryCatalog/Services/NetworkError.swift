@@ -19,3 +19,16 @@ enum NetworkError: Error {
     /// A generic network error
     case networkError(Error)
 }
+
+// For unit testing to check for equality.
+extension NetworkError {
+    func isSameAs(_ other: NetworkError) -> Bool {
+        switch (self, other) {
+            case (.invalidURL, .invalidURL),
+                (.invalidResponse, .invalidResponse):
+                return true
+            default:
+                return false
+        }
+    }
+}

@@ -16,7 +16,7 @@ actor NetworkManager: NetworkManagerProtocol {
     private let baseURL: String
 
     /// Optional dependency injection for URLSession
-    private let urlSession: URLSession
+    private let urlSession: URLSessionProtocol
 
     /// Initializes the NetworkManager
     ///
@@ -25,7 +25,7 @@ actor NetworkManager: NetworkManagerProtocol {
     ///   - urlSession: A custom URLSession (defaults to shared session)
     init(
         baseURL: String = "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json",
-        urlSession: URLSession = .shared
+        urlSession: URLSessionProtocol = URLSession.shared
     ) {
         self.baseURL = baseURL
         self.urlSession = urlSession
