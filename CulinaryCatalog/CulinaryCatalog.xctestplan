@@ -1,0 +1,37 @@
+{
+  "configurations" : [
+    {
+      "id" : "AEBDF991-BDDB-4D12-B5F2-9D26D6D5DAF9",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:CulinaryCatalog.xcodeproj",
+      "identifier" : "26CBB9642D47FD0B003CD50D",
+      "name" : "CulinaryCatalog"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:CulinaryCatalog.xcodeproj",
+        "identifier" : "26CBB9792D47FD0C003CD50D",
+        "name" : "CulinaryCatalogTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:CulinaryCatalog.xcodeproj",
+        "identifier" : "26CBB9832D47FD0C003CD50D",
+        "name" : "CulinaryCatalogUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

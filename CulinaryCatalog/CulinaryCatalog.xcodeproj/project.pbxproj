@@ -24,6 +24,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		267278CE2D52DDA2009BAF22 /* CulinaryCatalog.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CulinaryCatalog.xctestplan; sourceTree = "<group>"; };
 		26CBB9652D47FD0B003CD50D /* CulinaryCatalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CulinaryCatalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26CBB97A2D47FD0C003CD50D /* CulinaryCatalogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CulinaryCatalogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		26CBB9842D47FD0C003CD50D /* CulinaryCatalogUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CulinaryCatalogUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +76,7 @@
 		26CBB95C2D47FD0B003CD50D = {
 			isa = PBXGroup;
 			children = (
+				267278CE2D52DDA2009BAF22 /* CulinaryCatalog.xctestplan */,
 				26CBB9672D47FD0B003CD50D /* CulinaryCatalog */,
 				26CBB97D2D47FD0C003CD50D /* CulinaryCatalogTests */,
 				26CBB9872D47FD0C003CD50D /* CulinaryCatalogUITests */,
