@@ -12,12 +12,12 @@ import CoreData
 /// This class conforms to `RecipeListViewModelProtocol` and provides the implementation
 /// for managing recipe data, including loading, refreshing, and filtering operations.
 /// It ensures that all operations are performed on the main actor for SwiftUI compatibility.
-@MainActor
+
 final class RecipeListViewModel: RecipeListViewModelProtocol {
     /// The list of recipes to be displayed in the view.
     ///
     /// This property is automatically published for SwiftUI view updates.
-    @Published private(set) var recipes: [RecipeModel] = []
+    @Published var recipes: [RecipeModel] = []
 
     /// Indicates whether a recipe refresh operation is currently in progress.
     ///
@@ -58,6 +58,7 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
     /// It clears any existing error messages upon successful loading.
     ///
     /// - Note: Safe to call multiple times, will overwrite the current list of recipes.
+    /// 
     func loadRecipes() async {
         do {
             // Fetch recipes from the repository
@@ -102,15 +103,14 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
     /// - Parameter searchText: The text to use for filtering recipes by name or cuisine type.
     /// - Returns: A new array of `RecipeModel` objects that match the search criteria.
     /// - Throws: An error if the filtering process encounters an issue (unlikely in this simple implementation).
-    func filteredRecipes(searchText: String) async throws -> [RecipeModel] {
-        // If the search text is empty, return all recipes
+    func filteredRecipes(searchText: String) -> [RecipeModel] {
         guard !searchText.isEmpty else { return recipes }
 
-        // Filter recipes case-insensitively on name and cuisine type
         return recipes.filter { recipe in
             recipe.recipeName.localizedCaseInsensitiveContains(searchText) ||
             recipe.cuisineType.localizedCaseInsensitiveContains(searchText)
         }
+
     }
 
     /// Handles errors by logging and updating the error message state.

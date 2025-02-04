@@ -8,32 +8,20 @@
 import CoreData
 import SwiftUI
 
-/// A view that displays a list of recipes with search functionality.
-///
-/// This view manages the display of recipes, including searching, loading, and refreshing capabilities.
 struct RecipeListView: View {
-    /// The view model responsible for managing the list of recipes and related operations.
-    @StateObject private var viewModel: RecipeListViewModel
-    /// The current search text used for filtering recipes.
     @State private var searchText = ""
-    /// Indicates if the view is currently loading data.
+
+    @StateObject private var viewModel: RecipeListViewModel
     @State private var isLoading = false
-    /// Stores any error message to be shown to the user.
     @State private var errorMessage: String?
 
-    /// Initializes the `RecipeListView` with a repository and view context for accessing recipe data.
-    ///
-    /// - Parameters:
-    ///   - recipeRepository: The protocol-conforming object for fetching and managing recipe data.
-    ///   - viewContext: The Core Data managed object context for local data operations.
     init(recipeRepository: RecipeDataRepositoryProtocol, viewContext: NSManagedObjectContext) {
         _viewModel = StateObject(wrappedValue: RecipeListViewModel(recipeRepository: recipeRepository, viewContext: viewContext, networkManager: NetworkManager.shared))
     }
 
-    // MARK: Main View
     var body: some View {
         List {
-            ForEach(viewModel.recipes) { recipe in
+            ForEach(viewModel.filteredRecipes(searchText: searchText)) { recipe in
                 NavigationLink(destination: RecipeDetailView(viewModel: RecipeDetailViewModel(recipe: recipe))) {
                     RecipeRowView(recipe: recipe)
                 }
@@ -43,18 +31,35 @@ struct RecipeListView: View {
         .onChange(of: searchText) { _, newValue in
             Task {
                 do {
-                    try await viewModel.filteredRecipes(searchText: newValue)
-            } catch {
+                    if newValue.isEmpty {
+                        await viewModel.loadRecipes()
+                    } else {
+                        viewModel.recipes = try await viewModel.filteredRecipes(searchText: newValue)
+                    }
+                } catch {
                     errorMessage = error.localizedDescription
                 }
             }
         }
         .task {
-            await viewModel.loadRecipes()
+            // Load recipes on view appearance, respecting any existing search text
+            if searchText.isEmpty {
+                await viewModel.loadRecipes()
+            } else {
+                do {
+                    viewModel.recipes = try await viewModel.filteredRecipes(searchText: searchText)
+                } catch {
+                    errorMessage = error.localizedDescription
+                }
+            }
         }
         .refreshable {
             do {
                 try await viewModel.refreshRecipes()
+                // If there's a search text, refilter after refresh
+                if !searchText.isEmpty {
+                    viewModel.recipes = try await viewModel.filteredRecipes(searchText: searchText)
+                }
             } catch {
                 errorMessage = error.localizedDescription
             }
@@ -73,6 +78,7 @@ struct RecipeListView: View {
             Text(errorMessage ?? "")
         }
     }
+
 }
 
 // MARK: - Previews

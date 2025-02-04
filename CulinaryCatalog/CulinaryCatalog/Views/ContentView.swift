@@ -70,7 +70,7 @@ struct ContentView: View {
             .rotationEffect(Angle(degrees: isRotating ? 360 : 0))
             .shadow(color: isRotating ? .white : .clear, radius: isRotating ? 15 : 0)
             .scaleEffect(isRotating ? 1.3 : 1)
-            .animation(.linear(duration: 1).repeatForever(autoreverses: false), value: isRotating)
+            .animation(.linear(duration: 1), value: isRotating)
             .onTapGesture {
                 Task {
                     await self.refreshRecipes()
@@ -82,16 +82,21 @@ struct ContentView: View {
     ///
     /// - Note: Manages the rotation animation and calls the view model's refresh method
     private func refreshRecipes() async {
-        isRotating = true
+        // Start the rotation
+        await MainActor.run {
+            isRotating = true
+        }
 
         do {
             try await viewModel.refreshRecipes()
         } catch {
-            // Optionally handle or log the error
             print("Refresh failed: \(error.localizedDescription)")
         }
 
-        // Ensure UI updates happen on the main thread
+        // Create a small delay to ensure the rotation completes at least one full turn
+        try? await Task.sleep(for: .seconds(1))
+
+        // Stop the rotation
         await MainActor.run {
             isRotating = false
         }

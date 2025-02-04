@@ -47,5 +47,5 @@ protocol RecipeListViewModelProtocol: ObservableObject {
     /// - Parameter searchText: The text to filter recipes by. This can match against recipe names, ingredients, or any other relevant attribute.
     /// - Returns: A filtered list of `RecipeModel` objects matching the search criteria.
     /// - Throws: An error if filtering fails, for example, due to data corruption or network issues when fetching additional data for filtering.
-    func filteredRecipes(searchText: String) async throws -> [RecipeModel]
+    func filteredRecipes(searchText: String) -> [RecipeModel]
 }

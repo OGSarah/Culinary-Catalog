@@ -43,7 +43,7 @@ final class RecipeDataRepository: RecipeDataRepositoryProtocol {
         do {
             let entities = try viewContext.fetch(fetchRequest)
             return entities
-                .map { RecipeModel(entity: $0) }
+                .compactMap { RecipeModel(entity: $0) }
                 .sorted { $0.recipeName.localizedCaseInsensitiveCompare($1.recipeName) == .orderedAscending }
         } catch {
             throw error
