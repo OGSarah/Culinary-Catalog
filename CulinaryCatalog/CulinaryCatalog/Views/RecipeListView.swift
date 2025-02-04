@@ -16,18 +16,18 @@ struct RecipeListView: View {
     @StateObject private var viewModel: RecipeListViewModel
     /// The current search text used for filtering recipes.
     @State private var searchText = ""
-    /// The list of recipes to display, which can be filtered based on the search text.
-    @State private var recipes: [RecipeModel] = []
     /// Indicates if the view is currently loading data.
     @State private var isLoading = false
     /// Stores any error message to be shown to the user.
     @State private var errorMessage: String?
 
-    /// Initializes the `RecipeListView` with a repository for accessing recipe data.
+    /// Initializes the `RecipeListView` with a repository and view context for accessing recipe data.
     ///
-    /// - Parameter recipeRepository: The protocol-conforming object for fetching and managing recipe data.
-    init(recipeRepository: RecipeDataRepositoryProtocol) {
-        _viewModel = StateObject(wrappedValue: RecipeListViewModel(recipeRepository: recipeRepository))
+    /// - Parameters:
+    ///   - recipeRepository: The protocol-conforming object for fetching and managing recipe data.
+    ///   - viewContext: The Core Data managed object context for local data operations.
+    init(recipeRepository: RecipeDataRepositoryProtocol, viewContext: NSManagedObjectContext) {
+        _viewModel = StateObject(wrappedValue: RecipeListViewModel(recipeRepository: recipeRepository, viewContext: viewContext, networkManager: NetworkManager.shared))
     }
 
     // MARK: Main View
@@ -42,14 +42,28 @@ struct RecipeListView: View {
         .searchable(text: $searchText, prompt: "Search")
         .onChange(of: searchText) { _, newValue in
             Task {
-                await filterRecipes(searchText: newValue)
+                do {
+                    try await viewModel.filteredRecipes(searchText: newValue)
+            } catch {
+                    errorMessage = error.localizedDescription
+                }
             }
         }
         .task {
-            await loadInitialRecipes()
+            await viewModel.loadRecipes()
         }
         .refreshable {
-            await refreshRecipes()
+            do {
+                try await viewModel.refreshRecipes()
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+        }
+        .overlay {
+            if viewModel.isRefreshing {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+            }
         }
         .alert("Error", isPresented: .constant(errorMessage != nil)) {
             Button("OK") {
@@ -59,60 +73,20 @@ struct RecipeListView: View {
             Text(errorMessage ?? "")
         }
     }
-
-    // MARK: - Private Functions
-    /// Loads the initial set of recipes when the view appears.
-    ///
-    /// This method is called when the view first loads to populate the list with recipes.
-    private func loadInitialRecipes() async {
-        isLoading = true
-        do {
-            await viewModel.loadRecipes()
-            recipes = try await viewModel.filteredRecipes(searchText: searchText)
-            isLoading = false
-            errorMessage = nil
-        } catch {
-            errorMessage = error.localizedDescription
-            isLoading = false
-        }
-    }
-
-    /// Refreshes the recipe list, potentially fetching new or updated data.
-    ///
-    /// This method is invoked when the user performs a pull-to-refresh action.
-    private func refreshRecipes() async {
-        isLoading = true
-        do {
-            try await viewModel.refreshRecipes()
-            recipes = try await viewModel.filteredRecipes(searchText: searchText)
-            isLoading = false
-            errorMessage = nil
-        } catch {
-            errorMessage = error.localizedDescription
-            isLoading = false
-        }
-    }
-
-    /// Filters the list of recipes based on the current search text.
-    ///
-    /// - Parameter searchText: The text used to filter recipes by name or other attributes.
-    private func filterRecipes(searchText: String) async {
-        do {
-            recipes = try await viewModel.filteredRecipes(searchText: searchText)
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-    }
 }
 
 // MARK: - Previews
 #Preview("Light Mode") {
-    RecipeListView(recipeRepository: MockRecipeRepository())
+    let inMemoryContainer = CoreDataController(inMemory: true).container
+    let mockRepository = MockRecipeRepository()
+    return RecipeListView(recipeRepository: mockRepository, viewContext: inMemoryContainer.viewContext)
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark Mode") {
-    RecipeListView(recipeRepository: MockRecipeRepository())
+    let inMemoryContainer = CoreDataController(inMemory: true).container
+    let mockRepository = MockRecipeRepository()
+    return RecipeListView(recipeRepository: mockRepository, viewContext: inMemoryContainer.viewContext)
         .preferredColorScheme(.dark)
 }
 

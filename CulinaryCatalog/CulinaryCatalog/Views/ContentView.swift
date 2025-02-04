@@ -10,10 +10,8 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @StateObject private var recipeListViewModel: RecipeListViewModel
+    @StateObject private var viewModel: RecipeListViewModel
     @State private var isRotating = false
-    @State private var recipes: [RecipeModel] = []
-    private let recipeRepository: RecipeDataRepository
 
     /// Initializes the view with a recipe repository
     /// - Parameter viewContext: The Core Data managed object context
@@ -22,12 +20,11 @@ struct ContentView: View {
             networkManager: NetworkManager.shared,
             viewContext: viewContext
         )
-        self.recipeRepository = recipeRepository
-        _recipeListViewModel = StateObject(wrappedValue: RecipeListViewModel(recipeRepository: recipeRepository))
+        _viewModel = StateObject(wrappedValue: RecipeListViewModel(recipeRepository: recipeRepository, viewContext: viewContext, networkManager: NetworkManager.shared))
     }
 
     /// Background gradient for the view
-    let backgroundGradient = LinearGradient(
+    private let backgroundGradient = LinearGradient(
         stops: [
             Gradient.Stop(color: .blue.opacity(0.6), location: 0),
             Gradient.Stop(color: .blue.opacity(0.3), location: 0.256),
@@ -41,16 +38,14 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if recipes.isEmpty {
+                if viewModel.recipes.isEmpty {
                     ContentUnavailableView(
                         "No Recipes",
                         systemImage: "fork.knife",
                         description: Text("Try tapping on the Refresh button to reload recipes.")
                     )
                 } else {
-                    VStack {
-                        RecipeListView(recipeRepository: recipeRepository)
-                    }
+                    RecipeListView(recipeRepository: viewModel.recipeRepository, viewContext: viewModel.viewContext)
                 }
             }
             .navigationTitle("Recipes")
@@ -60,7 +55,7 @@ struct ContentView: View {
                 refreshButton
             }
             .task {
-                await loadRecipes()
+                await viewModel.loadRecipes()
             }
         }
     }
@@ -75,21 +70,12 @@ struct ContentView: View {
             .rotationEffect(Angle(degrees: isRotating ? 360 : 0))
             .shadow(color: isRotating ? .white : .clear, radius: isRotating ? 15 : 0)
             .scaleEffect(isRotating ? 1.3 : 1)
-            .animation(.linear(duration: 1).repeatCount(1, autoreverses: false), value: isRotating)
+            .animation(.linear(duration: 1).repeatForever(autoreverses: false), value: isRotating)
             .onTapGesture {
                 Task {
-                    await refreshRecipes()
+                    await self.refreshRecipes()
                 }
             }
-    }
-
-    /// Loads initial recipes
-    private func loadRecipes() async {
-        do {
-            recipes = try await recipeRepository.fetchRecipes()
-        } catch {
-            print("Failed to load recipes: \(error.localizedDescription)")
-        }
     }
 
     /// Refreshes recipes with animated loading state
@@ -99,7 +85,7 @@ struct ContentView: View {
         isRotating = true
 
         do {
-            try await recipeListViewModel.refreshRecipes()
+            try await viewModel.refreshRecipes()
         } catch {
             // Optionally handle or log the error
             print("Refresh failed: \(error.localizedDescription)")
@@ -126,15 +112,27 @@ struct ContentView: View {
 
 #Preview("Empty Recipes - Light Mode") {
     let emptyContext = CoreDataController(inMemory: true).container.viewContext
+    let emptyViewModel = RecipeListViewModel(
+        recipeRepository: EmptyMockRecipeRepository(),
+        viewContext: emptyContext,
+        networkManager: MockNetworkManager()
+    )
 
     return ContentView(viewContext: emptyContext)
+        .environmentObject(emptyViewModel)
         .preferredColorScheme(.light)
 }
 
 #Preview("Empty Recipes - Dark Mode") {
     let emptyContext = CoreDataController(inMemory: true).container.viewContext
+    let emptyViewModel = RecipeListViewModel(
+        recipeRepository: EmptyMockRecipeRepository(),
+        viewContext: emptyContext,
+        networkManager: MockNetworkManager()
+    )
 
     return ContentView(viewContext: emptyContext)
+        .environmentObject(emptyViewModel)
         .preferredColorScheme(.dark)
 }
 
@@ -146,6 +144,12 @@ struct EmptyMockRecipeRepository: RecipeDataRepositoryProtocol {
     }
 
     func refreshRecipes() async throws -> [RecipeModel] {
+        return []
+    }
+}
+
+struct MockNetworkManager: NetworkManagerProtocol {
+    func fetchRecipesFromNetwork() async throws -> [RecipeModel] {
         return []
     }
 }

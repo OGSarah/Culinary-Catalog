@@ -32,13 +32,24 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
     /// The repository responsible for fetching and managing recipe data.
     ///
     /// This abstraction allows for different data sources or mock data in testing scenarios.
-    private let recipeRepository: RecipeDataRepositoryProtocol
+    let recipeRepository: RecipeDataRepositoryProtocol
 
-    /// Initializes the view model with a recipe repository.
+    /// The managed object context for Core Data operations.
+    let viewContext: NSManagedObjectContext
+
+    /// The network manager for fetching recipes from the network.
+    private let networkManager: NetworkManagerProtocol
+
+    /// Initializes the view model with necessary dependencies.
     ///
-    /// - Parameter recipeRepository: The repository for managing recipe data. This dependency injection allows for flexibility in data sourcing.
-    init(recipeRepository: RecipeDataRepositoryProtocol) {
+    /// - Parameters:
+    ///   - recipeRepository: The repository for managing recipe data.
+    ///   - viewContext: The Core Data managed object context.
+    ///   - networkManager: The network manager for API calls.
+    init(recipeRepository: RecipeDataRepositoryProtocol, viewContext: NSManagedObjectContext, networkManager: NetworkManagerProtocol) {
         self.recipeRepository = recipeRepository
+        self.viewContext = viewContext
+        self.networkManager = networkManager
     }
 
     /// Loads recipes from the repository into the view model.
