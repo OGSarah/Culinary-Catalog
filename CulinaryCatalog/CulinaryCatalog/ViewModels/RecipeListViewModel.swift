@@ -58,17 +58,18 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
     /// It clears any existing error messages upon successful loading.
     ///
     /// - Note: Safe to call multiple times, will overwrite the current list of recipes.
-    /// 
+    ///
     func loadRecipes() async {
         do {
             // Fetch recipes from the repository
-            recipes = try await recipeRepository.fetchRecipes()
-
-            // Clear any previous error messages on success
-            errorMessage = nil
+            let fetchedRecipes = try await recipeRepository.fetchRecipes()
+            await MainActor.run {
+                self.recipes = fetchedRecipes
+                self.errorMessage = nil
+            }
         } catch {
             // Handle errors by storing them for UI feedback
-            handleError(error)
+            await handleError(error)
         }
     }
 
@@ -82,18 +83,26 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
         // Avoid multiple simultaneous refresh attempts
         guard !isRefreshing else { return }
 
-        isRefreshing = true
-        defer { isRefreshing = false }
+        await MainActor.run {
+            self.isRefreshing = true
+        }
+
+        defer {
+            Task { @MainActor in
+                self.isRefreshing = false
+            }
+        }
 
         do {
             // Refresh recipes from the repository
-            recipes = try await recipeRepository.refreshRecipes()
-
-            // Clear any existing error messages
-            errorMessage = nil
+            let refreshedRecipes = try await recipeRepository.refreshRecipes()
+            await MainActor.run {
+                self.recipes = refreshedRecipes
+                self.errorMessage = nil
+            }
         } catch {
             // Handle errors that occur during refresh
-            handleError(error)
+            await handleError(error)
             throw error // Re-throw for error propagation if needed
         }
     }
@@ -116,12 +125,14 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
     /// Handles errors by logging and updating the error message state.
     ///
     /// - Parameter error: The error to be handled and potentially displayed to the user.
-    private func handleError(_ error: Error) {
+    private func handleError(_ error: Error) async {
         // Log the error for debugging
         print("Recipe List Error: \(error.localizedDescription)")
 
-        // Update the error message for user feedback
-        errorMessage = error.localizedDescription
+        await MainActor.run {
+            // Update the error message for user feedback
+            self.errorMessage = error.localizedDescription
+        }
     }
 
 }
