@@ -20,7 +20,6 @@ A modern iOS recipe management app built with SwiftUI that seamlessly integrates
 - Swift 6
 - SwiftUI
 - Swift Testing
-- XCTest
 - CoreData
 - Async/Await
 - WebKit
