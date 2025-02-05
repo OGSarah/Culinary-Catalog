@@ -46,11 +46,15 @@ final class YouTubeVideoViewModel: ObservableObject, YouTubeVideoViewModelProtoc
         let model = YouTubeVideoModel(videoID: videoID)
         self.model = model
 
-        // Set initial embed URL
-        self.embedURL = model.embedURL
-
-        // Validate the video ID
+        // Validate first before setting embedURL
         validateVideoID(videoID)
+
+        // Only set embedURL if there's no error (i.e., if validation passed)
+        if error == nil {
+            self.embedURL = model.embedURL
+        } else {
+            self.embedURL = nil
+        }
     }
 
     /// Validates the provided YouTube video ID
