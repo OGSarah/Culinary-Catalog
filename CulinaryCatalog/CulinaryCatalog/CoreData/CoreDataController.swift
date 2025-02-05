@@ -44,6 +44,35 @@ struct CoreDataController {
         return result
     }()
 
+    /// Creates a `CoreDataController` instance for unit testing.
+    ///
+    /// This method sets up an in-memory Core Data stack for testing, allowing for quick setup and teardown.
+    static func testController() -> CoreDataController {
+        let result = CoreDataController(inMemory: true)
+        let viewContext = result.container.viewContext
+
+        // Populate the context with sample data for testing purposes
+        for _ in 0..<10 {
+            let newRecipe = Recipe(context: viewContext)
+            newRecipe.id = UUID()
+            newRecipe.cuisineType = "Canadian"
+            newRecipe.recipeName = "BeaverTails"
+            newRecipe.photoSmall = "https://d3jbb8n5wk0qxi.cloudfront.net/photos/3b33a385-3e55-4ea5-9d98-13e78f840299/small.jpg"
+            newRecipe.photoLarge = "https://d3jbb8n5wk0qxi.cloudfront.net/photos/3b33a385-3e55-4ea5-9d98-13e78f840299/large.jpg"
+            newRecipe.sourceURL = "https://www.tastemade.com/videos/beavertails"
+            newRecipe.youTubeURL = "https://www.youtube.com/watch?v=2G07UOqU2e8"
+        }
+
+        do {
+            try viewContext.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+
+        return result
+    }
+
     /// The Core Data persistent container which manages the persistent stores.
     let container: NSPersistentContainer
 
@@ -78,5 +107,4 @@ struct CoreDataController {
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     }
-
 }
