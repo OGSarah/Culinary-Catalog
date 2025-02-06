@@ -106,37 +106,37 @@ struct ContentView: View {
 
 // MARK: - Preview
 #Preview("Light Mode") {
-    ContentView(viewContext: CoreDataController.preview.container.viewContext)
+    ContentView(viewContext: CoreDataController.preview.persistentContainer.viewContext)
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark Mode") {
-    ContentView(viewContext: CoreDataController.preview.container.viewContext)
+    ContentView(viewContext: CoreDataController.preview.persistentContainer.viewContext)
         .preferredColorScheme(.dark)
 }
 
 #Preview("Empty Recipes - Light Mode") {
-    let emptyContext = CoreDataController(inMemory: true).container.viewContext
+    let emptyController = CoreDataController(.inMemory)
     let emptyViewModel = RecipeListViewModel(
         recipeRepository: EmptyMockRecipeRepository(),
-        viewContext: emptyContext,
+        viewContext: emptyController.persistentContainer.viewContext,
         networkManager: MockNetworkManager()
     )
-
-    return ContentView(viewContext: emptyContext)
+    
+    return ContentView(viewContext: emptyController.persistentContainer.viewContext)
         .environmentObject(emptyViewModel)
         .preferredColorScheme(.light)
 }
 
 #Preview("Empty Recipes - Dark Mode") {
-    let emptyContext = CoreDataController(inMemory: true).container.viewContext
+    let emptyController = CoreDataController(.inMemory)
     let emptyViewModel = RecipeListViewModel(
         recipeRepository: EmptyMockRecipeRepository(),
-        viewContext: emptyContext,
+        viewContext: emptyController.persistentContainer.viewContext,
         networkManager: MockNetworkManager()
     )
-
-    return ContentView(viewContext: emptyContext)
+    
+    return ContentView(viewContext: emptyController.persistentContainer.viewContext)
         .environmentObject(emptyViewModel)
         .preferredColorScheme(.dark)
 }
@@ -147,7 +147,7 @@ struct EmptyMockRecipeRepository: RecipeDataRepositoryProtocol {
     func fetchRecipes() async throws -> [RecipeModel] {
         return []
     }
-
+    
     func refreshRecipes() async throws -> [RecipeModel] {
         return []
     }

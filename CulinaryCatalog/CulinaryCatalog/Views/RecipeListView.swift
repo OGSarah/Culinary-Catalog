@@ -83,16 +83,16 @@ struct RecipeListView: View {
 
 // MARK: - Previews
 #Preview("Light Mode") {
-    let inMemoryContainer = CoreDataController(inMemory: true).container
+    let inMemoryController = CoreDataController(.inMemory)
     let mockRepository = MockRecipeRepository()
-    return RecipeListView(recipeRepository: mockRepository, viewContext: inMemoryContainer.viewContext)
+    return RecipeListView(recipeRepository: mockRepository, viewContext: inMemoryController.persistentContainer.viewContext)
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark Mode") {
-    let inMemoryContainer = CoreDataController(inMemory: true).container
+    let inMemoryController = CoreDataController(.inMemory)
     let mockRepository = MockRecipeRepository()
-    return RecipeListView(recipeRepository: mockRepository, viewContext: inMemoryContainer.viewContext)
+    return RecipeListView(recipeRepository: mockRepository, viewContext: inMemoryController.persistentContainer.viewContext)
         .preferredColorScheme(.dark)
 }
 
@@ -112,7 +112,7 @@ struct MockRecipeRepository: RecipeDataRepositoryProtocol {
             )
         ]
     }
-
+    
     func refreshRecipes() async throws -> [RecipeModel] {
         return [
             RecipeModel(

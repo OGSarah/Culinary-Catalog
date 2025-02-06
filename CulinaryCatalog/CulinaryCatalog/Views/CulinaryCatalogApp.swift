@@ -13,8 +13,8 @@ struct CulinaryCatalogApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView(viewContext: coreDataController.container.viewContext)
-                .environment(\.managedObjectContext, coreDataController.container.viewContext)
+            ContentView(viewContext: coreDataController.persistentContainer.viewContext)
+                .environment(\.managedObjectContext, coreDataController.persistentContainer.viewContext)
         }
     }
 }

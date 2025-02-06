@@ -63,16 +63,10 @@ final class RecipeDataRepository: RecipeDataRepositoryProtocol {
         let newRecipes = try await networkManager.fetchRecipesFromNetwork()
 
         try await viewContext.perform {
-            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Recipe.fetchRequest()
-            let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-
-            // Execute batch delete on the correct context
-            let batchDeleteResult = try self.viewContext.execute(batchDeleteRequest) as? NSBatchDeleteResult
-
-            // Refresh the context after batch delete
-            if let result = batchDeleteResult?.result as? [AnyObject],
-                let persistentStore = batchDeleteResult?.result {
-                NSManagedObjectContext.mergeChanges(fromRemoteContextSave: [NSDeletedObjectsKey: result], into: [self.viewContext])
+            let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
+            let objects = try self.viewContext.fetch(fetchRequest)
+            for object in objects {
+                self.viewContext.delete(object)
             }
 
             // Create and save new recipes
@@ -86,11 +80,8 @@ final class RecipeDataRepository: RecipeDataRepositoryProtocol {
                 newRecipe.sourceURL = recipeModel.sourceURL
                 newRecipe.youTubeURL = recipeModel.youTubeURL
             }
-
-            // Save context with error handling
             try self.viewContext.save()
         }
-
         return newRecipes
     }
 
