@@ -57,7 +57,7 @@ struct RecipeDTO: Codable {
             photoLarge: photoUrlLarge ?? "",
             photoSmall: photoUrlSmall ?? "",
             sourceURL: sourceUrl ?? "",
-            id: UUID(uuidString: uuid) ?? UUID(),
+            id: UUID(uuidString: uuid.lowercased()) ?? UUID(),
             youTubeURL: youtubeUrl ?? ""
         )
     }
