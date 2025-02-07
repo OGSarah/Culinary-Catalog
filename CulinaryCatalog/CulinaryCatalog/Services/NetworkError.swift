@@ -22,6 +22,7 @@ enum NetworkError: Error {
 
 // For unit testing to check for equality.
 extension NetworkError {
+
     func isSameAs(_ other: NetworkError) -> Bool {
         switch (self, other) {
         case (.invalidURL, .invalidURL),
@@ -31,4 +32,5 @@ extension NetworkError {
             return false
         }
     }
+
 }
