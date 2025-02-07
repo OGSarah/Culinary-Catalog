@@ -18,9 +18,9 @@ extension String {
     func extractYouTubeID() -> String? {
         // Define patterns for matching different YouTube URL formats
         let patterns = [
-            #/(?:https?://)?(?:www\.)?(?:youtube\.com/(?:[^/\n\s]+/\S+/|(?:v|e(?:mbed)?)/|\S*?[?&]v=)|youtu\.be/)([a-zA-Z0-9_-]{11})/#,
-            #/v=([a-zA-Z0-9_-]{11})/#,
-            #/be\/([a-zA-Z0-9_-]{11})/#
+            #/(?i)(?:https?://)?(?:www\.)?(?:youtube\.com/(?:[^/\n\s]+/\S+/|(?:v|e(?:mbed)?)/|\S*?[?&]v=)|youtu\.be/)([a-zA-Z0-9_-]{11})/#,
+            #/(?i)v=([a-zA-Z0-9_-]{11})/#,
+            #/(?i)be\/([a-zA-Z0-9_-]{11})/#
         ]
 
         // Try to match the string against each pattern
