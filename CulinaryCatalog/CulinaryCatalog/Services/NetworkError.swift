@@ -24,11 +24,11 @@ enum NetworkError: Error {
 extension NetworkError {
     func isSameAs(_ other: NetworkError) -> Bool {
         switch (self, other) {
-            case (.invalidURL, .invalidURL),
-                (.invalidResponse, .invalidResponse):
-                return true
-            default:
-                return false
+        case (.invalidURL, .invalidURL),
+            (.invalidResponse, .invalidResponse):
+            return true
+        default:
+            return false
         }
     }
 }

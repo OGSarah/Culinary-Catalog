@@ -27,7 +27,7 @@ class CoreDataController {
             self.persistentContainer.persistentStoreDescriptions = [description]
         }
 
-        self.persistentContainer.loadPersistentStores(completionHandler: { (storeDescription, error) in
+        self.persistentContainer.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
