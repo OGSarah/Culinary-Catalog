@@ -14,24 +14,40 @@ struct RecipeDataRepositoryTests {
 
     private let mockNetworkManager = MockNetworkManager()
 
+    private func clearCoreData(context: NSManagedObjectContext) {
+        context.performAndWait {
+            do {
+                let fetchRequest: NSFetchRequest = Recipe.fetchRequest()
+                let objects = try context.fetch(fetchRequest)
+                for object in objects {
+                    context.delete(object)
+                }
+                try context.save()
+            } catch {
+                print("Error clearing Core Data: \(error)")
+            }
+        }
+    }
+
     @Test func testFetchRecipes() async throws {
         let coreDataController = CoreDataController(.inMemory)
         let repository = RecipeDataRepository(networkManager: mockNetworkManager, viewContext: coreDataController.persistentContainer.viewContext)
 
-        // Seed data for testing (since we're not using MockCoreDataController anymore)
         seedCoreDataWithMockData(context: coreDataController.persistentContainer.viewContext)
 
         let recipes = try await repository.fetchRecipes()
 
-        // Expect 10 recipes because we've seeded 10
         #expect(recipes.count == 10)
-        // Checking if the first recipe matches what we seeded
         #expect(recipes.first?.recipeName == "BeaverTails")
+
+        clearCoreData(context: coreDataController.persistentContainer.viewContext)
     }
 
     @Test func testRefreshRecipes() async throws {
         let coreDataController = CoreDataController(.inMemory)
         let repository = RecipeDataRepository(networkManager: mockNetworkManager, viewContext: coreDataController.persistentContainer.viewContext)
+
+        seedCoreDataWithMockData(context: coreDataController.persistentContainer.viewContext)
 
         // Mock network fetch to return a single recipe, different from what's in Core Data
         mockNetworkManager.mockRecipes = [
@@ -56,13 +72,14 @@ struct RecipeDataRepositoryTests {
         let fetchedEntities = try coreDataController.persistentContainer.viewContext.fetch(fetchRequest)
         #expect(fetchedEntities.count == 1)
         #expect(fetchedEntities.first?.recipeName == "Apam Balik")
+
+        clearCoreData(context: coreDataController.persistentContainer.viewContext)
     }
 
     @Test func testRefreshRecipesError() async throws {
         let coreDataController = CoreDataController(.inMemory)
         let repository = RecipeDataRepository(networkManager: mockNetworkManager, viewContext: coreDataController.persistentContainer.viewContext)
 
-        // Mock network fetch to throw an error
         mockNetworkManager.shouldThrowError = true
 
         do {
@@ -76,9 +93,10 @@ struct RecipeDataRepositoryTests {
         let fetchRequest: NSFetchRequest = Recipe.fetchRequest()
         let fetchedEntities = try coreDataController.persistentContainer.viewContext.fetch(fetchRequest)
         #expect(fetchedEntities.isEmpty == true)
+
+        clearCoreData(context: coreDataController.persistentContainer.viewContext)
     }
 
-    // Helper method to seed Core Data with mock data for testing
     private func seedCoreDataWithMockData(context: NSManagedObjectContext) {
         for _ in 0..<10 {
             let newRecipe = Recipe(context: context)
@@ -90,7 +108,11 @@ struct RecipeDataRepositoryTests {
             newRecipe.sourceURL = "mockSourceURL"
             newRecipe.youTubeURL = "mockYouTubeURL"
         }
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            print("Error saving mock data: \(error)")
+        }
     }
 
 }

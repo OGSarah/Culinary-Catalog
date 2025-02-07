@@ -11,7 +11,7 @@ import CoreData
 ///
 /// This model conforms to `Identifiable` and `Codable` protocols, allowing easy integration
 /// with SwiftUI views and JSON encoding/decoding.
-struct RecipeModel: Identifiable, Codable {
+struct RecipeModel: Identifiable, Codable, Equatable {
     /// The type of cuisine for the recipe.
     let cuisineType: String
 
@@ -66,6 +66,17 @@ struct RecipeModel: Identifiable, Codable {
         self.sourceURL = entity.sourceURL ?? ""
         self.id = entity.id ?? UUID()
         self.youTubeURL = entity.youTubeURL ?? ""
+    }
+
+    // MARK: - Equatable Conformance for Unit testing
+    static func == (lhs: RecipeModel, rhs: RecipeModel) -> Bool {
+        return lhs.id == rhs.id &&
+        lhs.cuisineType == rhs.cuisineType &&
+        lhs.recipeName == rhs.recipeName &&
+        lhs.photoLarge == rhs.photoLarge &&
+        lhs.photoSmall == rhs.photoSmall &&
+        lhs.sourceURL == rhs.sourceURL &&
+        lhs.youTubeURL == rhs.youTubeURL
     }
 
 }
