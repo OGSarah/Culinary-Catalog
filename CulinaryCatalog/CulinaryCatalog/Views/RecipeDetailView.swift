@@ -9,14 +9,22 @@ import SwiftUI
 
 /// A view displaying detailed information about a specific recipe.
 ///
-/// This view provides an in-depth look at a recipe, including its image, name, cuisine, source, and an optional YouTube video.
+/// This SwiftUI view presents an in-depth look at a recipe, including:
+/// - A large header image of the dish
+/// - The recipe's name and cuisine type
+/// - A link to the original recipe source
+/// - An optional embedded YouTube video demonstrating the recipe
+///
+/// The view is designed to be visually appealing with a scrollable content area, adapting to both light and dark modes for better user experience across different devices.
 struct RecipeDetailView: View {
     /// The view model managing the state and logic for this recipe detail view.
+    ///
+    /// This `@ObservedObject` ensures that the view updates automatically when the view model's published properties change.
     @ObservedObject private var viewModel: RecipeDetailViewModel
 
     /// Initializes the `RecipeDetailView` with a given recipe.
     ///
-    /// - Parameter recipe: The `RecipeModel` containing the recipe data to be displayed.
+    /// - Parameter viewModel: The `RecipeDetailViewModel` which holds all the necessary data and logic for displaying the recipe details.
     init(viewModel: RecipeDetailViewModel) {
         self.viewModel = viewModel
     }
@@ -42,6 +50,8 @@ struct RecipeDetailView: View {
 
     // MARK: - Private Variables for View
     /// The header section of the recipe view, displaying the recipe's main image.
+    ///
+    /// Uses `AsyncImage` for efficient loading of the large recipe image, showing a progress view as a placeholder while loading.
     private var recipeHeaderSection: some View {
         AsyncImage(url: URL(string: viewModel.recipeDetails.photoLarge)) { image in
             image.resizable()
@@ -57,6 +67,8 @@ struct RecipeDetailView: View {
     }
 
     /// Displays detailed information about the recipe including name and cuisine type.
+    ///
+    /// This card-like view provides a summary of the recipe, with the name in bold and a country flag emoji representing the cuisine.
     private var recipeDetailsCard: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -82,6 +94,8 @@ struct RecipeDetailView: View {
     }
 
     /// A section showing a link to the original recipe if available.
+    ///
+    /// If the source URL exists, this section presents a button-like link to view the original recipe on the web.
     private var sourceURLSection: some View {
         Group {
             if let url = URL(string: viewModel.recipeDetails.sourceURL) {
@@ -106,6 +120,8 @@ struct RecipeDetailView: View {
     }
 
     /// Displays a YouTube video related to the recipe if a video ID is available.
+    ///
+    /// This section embeds a YouTube video for visual learners, enhancing the user's engagement with the recipe through video demonstration.
     private var youtubeVideoSection: some View {
         Group {
             if let videoID = viewModel.recipeDetails.youtubeVideoID {
@@ -134,6 +150,9 @@ struct RecipeDetailView: View {
 }
 
 // MARK: - Preview
+/// Previews for `RecipeDetailView` in different UI modes.
+///
+/// These previews help in visualizing how the view will look with sample data in both light and dark mode, ensuring a consistent and appealing UI across different settings.
 #Preview("Light Mode") {
     let sampleRecipe = RecipeModel(
         cuisineType: "British",

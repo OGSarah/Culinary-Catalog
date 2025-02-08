@@ -9,14 +9,21 @@ import SwiftUI
 
 /// A view representing a single recipe row in a list.
 ///
-/// This view displays a recipe's photo, cuisine type, and name in a horizontal layout.
+/// This view is designed to display a concise summary of a recipe in a horizontal format, showing:
+/// - A photo of the dish
+/// - The cuisine type
+/// - The recipe's name
+///
+/// It's optimized for use within lists or collections where space is limited but visual representation is key.
 struct RecipeRowView: View {
     /// The view model for the recipe row, managing the data and logic for this view.
+    ///
+    /// Using `@StateObject` ensures that the view model's lifecycle is tied to this view's lifetime, automatically updating the UI when the model changes.
     @StateObject private var viewModel: RecipeRowViewModel
 
     /// Initializes a new `RecipeRowView` with the provided recipe.
     ///
-    /// - Parameter recipe: The `RecipeModel` to display in this row.
+    /// - Parameter recipe: The `RecipeModel` to display in this row, which will be converted into a view model for managing display logic.
     init(recipe: RecipeModel) {
         _viewModel = StateObject(wrappedValue: RecipeRowViewModel(recipe: recipe))
     }
@@ -36,7 +43,7 @@ struct RecipeRowView: View {
 
     /// The photo view component of the recipe row.
     ///
-    /// It displays an image from a URL or a placeholder while loading.
+    /// This view uses `AsyncImage` to load and display the recipe's photo asynchronously, with a progress view as a placeholder for loading states.
     private var photoView: some View {
         AsyncImage(url: viewModel.getPhotoURL()) { image in
             image.resizable()
@@ -53,6 +60,8 @@ struct RecipeRowView: View {
     }
 
     /// The text content of the recipe row, showing cuisine type and recipe name.
+    ///
+    /// This component organizes the textual information in a vertical stack, with the cuisine type in a smaller, secondary font, followed by the recipe name in a more prominent style.
     private var textContent: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(viewModel.getFormattedCuisineType())
@@ -68,6 +77,9 @@ struct RecipeRowView: View {
 }
 
 // MARK: - Preview
+/// Provides previews for `RecipeRowView` to visualize how it looks in both light and dark modes.
+///
+/// These previews use a sample `RecipeModel` to demonstrate the view's appearance, wrapped in dividers to simulate list separation.
 #Preview("Light Mode") {
     let sampleRecipe = RecipeModel(
         cuisineType: "British",

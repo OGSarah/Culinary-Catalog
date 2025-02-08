@@ -8,13 +8,27 @@
 import CoreData
 import SwiftUI
 
+/// A view that displays a list of recipes with search functionality.
+///
+/// This view uses SwiftUI's `List` to show recipes, supports searching, refreshing, and error handling. It interacts with a `RecipeListViewModel` to manage the data and state of the recipe list.
 struct RecipeListView: View {
+    /// Holds the current search text for filtering recipes.
     @State private var searchText = ""
 
+    /// The view model managing the list of recipes, including loading and refreshing operations.
     @StateObject private var viewModel: RecipeListViewModel
+
+    /// Indicates whether the list is currently loading more recipes.
     @State private var isLoading = false
+
+    /// Stores any error messages that should be displayed to the user.
     @State private var errorMessage: String?
 
+    /// Initializes the `RecipeListView` with necessary dependencies for data management.
+    ///
+    /// - Parameters:
+    ///   - recipeRepository: The repository for fetching and managing recipe data.
+    ///   - viewContext: The Core Data managed object context for local data operations.
     init(recipeRepository: RecipeDataRepositoryProtocol, viewContext: NSManagedObjectContext) {
         _viewModel = StateObject(wrappedValue: RecipeListViewModel(recipeRepository: recipeRepository, viewContext: viewContext, networkManager: NetworkManager.shared))
     }
@@ -27,7 +41,9 @@ struct RecipeListView: View {
                 }
             }
         }
+        /// Adds search functionality to the list, allowing users to filter recipes.
         .searchable(text: $searchText, prompt: "Search")
+        /// Reacts to changes in the search text, updating the list accordingly.
         .onChange(of: searchText) { _, newValue in
             Task {
                 do {
@@ -41,6 +57,7 @@ struct RecipeListView: View {
                 }
             }
         }
+        /// Loads recipes when the view appears, either all recipes or filtered if there's a search text.
         .task {
             // Load recipes on view appearance, respecting any existing search text
             if searchText.isEmpty {
@@ -53,6 +70,7 @@ struct RecipeListView: View {
                 }
             }
         }
+        /// Implements pull-to-refresh functionality to update the recipe list.
         .refreshable {
             do {
                 try await viewModel.refreshRecipes()
@@ -64,12 +82,14 @@ struct RecipeListView: View {
                 errorMessage = error.localizedDescription
             }
         }
+        /// Shows a loading indicator overlay when refreshing recipes.
         .overlay {
             if viewModel.isRefreshing {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
             }
         }
+        /// Displays an alert with any error messages encountered during operations.
         .alert("Error", isPresented: .constant(errorMessage != nil)) {
             Button("OK") {
                 errorMessage = nil
@@ -78,10 +98,12 @@ struct RecipeListView: View {
             Text(errorMessage ?? "")
         }
     }
-
 }
 
 // MARK: - Previews
+/// Provides preview configurations for `RecipeListView` in different UI appearances.
+///
+/// These previews use mock data to simulate the view's appearance without needing a real backend or database.
 #Preview("Light Mode") {
     let inMemoryController = CoreDataController(.inMemory)
     let mockRepository = MockRecipeRepository()
@@ -98,7 +120,11 @@ struct RecipeListView: View {
 
 // MARK: - Mock Repository for Previews
 #if DEBUG
+/// A mock implementation of `RecipeDataRepositoryProtocol` for use in previews and testing.
+///
+/// This struct simulates data fetching and refreshing operations with predefined recipe data.
 struct MockRecipeRepository: RecipeDataRepositoryProtocol {
+    /// Returns a predefined list of recipes for testing or preview purposes.
     func fetchRecipes() async throws -> [RecipeModel] {
         return [
             RecipeModel(
@@ -112,7 +138,8 @@ struct MockRecipeRepository: RecipeDataRepositoryProtocol {
             )
         ]
     }
-    
+
+    /// Simulates refreshing the recipes by returning a different predefined list for testing or preview.
     func refreshRecipes() async throws -> [RecipeModel] {
         return [
             RecipeModel(
