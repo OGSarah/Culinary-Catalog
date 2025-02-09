@@ -31,12 +31,32 @@ A modern iOS recipe management app built with SwiftUI that seamlessly integrates
 - Singleton
 - Dependency Injection
 
-### Focus Areas: What specific areas of the project did you prioritize? Why did you choose to focus on these areas?
+### Focus Areas:
+1. Core Data Integration:
+I focused on getting the Core Data setup right (CoreDataController, RecipeDataRepository).
 
-### Time Spent: Approximately how long did you spend working on this project? How did you allocate your time?
+2. SwiftUI Implementation
 
-### Trade-offs and Decisions: Did you make any significant trade-offs in your approach?
+3. Networking and Data Flow:
+I put a lot of effort into designing a solid network layer with NetworkManager and the RecipeDataRepositoryProtocol.
 
-### Weakest Part of the Project: What do you think is the weakest part of your project?
+4. Error Handling:
+I made sure to handle errors well (NetworkError, error handling in view models) because I wanted the app to be robust.
 
-### Additional Information: Is there anything else we should know? Feel free to share any insights or constraints you encountered.
+### Time Spent:
+I spent roughly a 5-day work week on this project. Here's how I split my time:
+
+- 40% on data modeling, Core Data setup, and repository patterns.
+- 30% went into crafting those SwiftUI views and view models.
+- 20% on networking, error handling, and keeping data consistent between offline and online states.
+- 10% was dedicated to testing, debugging, and documenting. 
+
+### Trade-offs and Decisions:
+
+### Weakest Part of the Project:
+
+### Additional Information:
+A few insights and constraints:
+
+- Testing: If I had more time I would add more unit tests, I would do accessibility testing, and added UI testing.
+
