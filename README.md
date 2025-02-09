@@ -54,6 +54,7 @@ I spent roughly a 5-day work week on this project. Here's how I split my time:
 ### Trade-offs and Decisions:
 
 ### Weakest Part of the Project:
+- Testing. See below.
 
 ### Additional Information:
 A few insights and constraints:
