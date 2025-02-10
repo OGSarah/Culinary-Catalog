@@ -29,11 +29,10 @@ struct ContentView: View {
     ///
     /// - Parameter viewContext: The Core Data managed object context provided by the environment.
     init(viewContext: NSManagedObjectContext) {
-        let recipeRepository = RecipeDataRepository(
+        _viewModel = StateObject(wrappedValue: RecipeListViewModel(recipeRepository: RecipeDataRepository(
             networkManager: NetworkManager.shared,
             viewContext: viewContext
-        )
-        _viewModel = StateObject(wrappedValue: RecipeListViewModel(recipeRepository: recipeRepository, viewContext: viewContext, networkManager: NetworkManager.shared))
+        ), viewContext: viewContext, networkManager: NetworkManager.shared))
     }
 
     /// Defines the background gradient for the content view.
