@@ -79,6 +79,18 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
         }
     }
 
+    func getRecipesFromNetwork() async throws {
+        do {
+            let fetchedRecipes = try await networkManager.fetchRecipesFromNetwork()
+            await MainActor.run {
+                self.recipes = fetchedRecipes
+                self.errorMessage = nil
+            }
+        } catch {
+            await handleError(error)
+        }
+    }
+
     /// Refreshes the list of recipes, potentially fetching new or updated data from the network.
     ///
     /// This operation ensures that only one refresh is active at a time, managing the `isRefreshing` state for UI feedback. It fetches from the network and updates local storage.

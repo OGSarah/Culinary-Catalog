@@ -27,6 +27,8 @@ protocol RecipeListViewModelProtocol: ObservableObject {
     /// This can be used to display error information to the user or log errors.
     var errorMessage: String? { get async }
 
+    func getRecipesFromNetwork() async throws
+
     /// Loads recipes from the repository or data source.
     ///
     /// This method should be called when initially loading the view or when

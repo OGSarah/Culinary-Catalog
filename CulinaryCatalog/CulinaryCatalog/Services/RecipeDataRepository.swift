@@ -42,12 +42,10 @@ final class RecipeDataRepository: RecipeDataRepositoryProtocol {
     /// - Returns: An array of `RecipeModel` objects representing all recipes in local storage, sorted alphabetically by recipe name.
     /// - Throws: An error if there's an issue with fetching data from Core Data, such as database corruption or access issues.
     func fetchRecipes() async throws -> [RecipeModel] {
-        let fetchRequest: NSFetchRequest = Recipe.fetchRequest()
-
+        let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
         do {
             let entities = try viewContext.fetch(fetchRequest)
-            return entities
-                .compactMap { RecipeModel(entity: $0) }
+            return entities.compactMap { RecipeModel(entity: $0) }
                 .sorted { $0.recipeName.localizedCaseInsensitiveCompare($1.recipeName) == .orderedAscending }
         } catch {
             throw error
@@ -69,7 +67,7 @@ final class RecipeDataRepository: RecipeDataRepositoryProtocol {
         let newRecipes = try await networkManager.fetchRecipesFromNetwork()
 
         try await viewContext.perform {
-            let fetchRequest: NSFetchRequest = Recipe.fetchRequest()
+            let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
             let objects = try self.viewContext.fetch(fetchRequest)
             for object in objects {
                 self.viewContext.delete(object)

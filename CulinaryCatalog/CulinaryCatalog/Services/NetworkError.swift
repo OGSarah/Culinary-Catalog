@@ -42,11 +42,11 @@ extension NetworkError {
     /// - Returns: `true` if the errors match in type, `false` otherwise. Note that for `networkError`, it does not compare the wrapped errors for equality.
     func isSameAs(_ other: NetworkError) -> Bool {
         switch (self, other) {
-            case (.invalidURL, .invalidURL),
-                (.invalidResponse, .invalidResponse):
-                return true
-            default:
-                return false
+        case (.invalidURL, .invalidURL),
+            (.invalidResponse, .invalidResponse):
+            return true
+        default:
+            return false
         }
     }
 
