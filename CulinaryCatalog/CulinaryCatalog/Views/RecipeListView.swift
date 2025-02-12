@@ -29,8 +29,8 @@ struct RecipeListView: View {
     /// - Parameters:
     ///   - recipeRepository: The repository for fetching and managing recipe data.
     ///   - viewContext: The Core Data managed object context for local data operations.
-    init(recipeRepository: RecipeDataRepositoryProtocol, viewContext: NSManagedObjectContext) {
-        _viewModel = StateObject(wrappedValue: RecipeListViewModel(recipeRepository: recipeRepository, viewContext: viewContext, networkManager: NetworkManager.shared))
+    init(viewContext: NSManagedObjectContext) {
+        _viewModel = StateObject(wrappedValue: RecipeListViewModel(viewContext: viewContext, networkManager: NetworkManager.shared))
     }
 
     var body: some View {

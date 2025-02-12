@@ -29,16 +29,17 @@ protocol RecipeListViewModelProtocol: ObservableObject {
 
     func getRecipesFromNetwork() async throws
 
-    /// Loads recipes from the repository or data source.
+    /// Loads sorted recipes from CoreData.
     ///
     /// This method should be called when initially loading the view or when
     /// the user explicitly requests to load recipes.
+    /// - Returns: An alphabetically sorted list of recipes.
     /// - Throws: An error if the loading process fails.
-    func loadRecipes() async throws
+    func loadSortedRecipesFromCoreData() async throws -> [RecipeModel]
 
-    /// Refreshes the current list of recipes, potentially fetching new or updated data.
+    /// Refreshes the current list of recipes by making a network call to update the Recipe Model.
     ///
-    /// This could be used for pull-to-refresh functionality in UI components.
+    /// This method is triggered by the Refresh button on the Recipe List screen.
     /// - Throws: An error if the refresh operation fails.
     func refreshRecipes() async throws
 

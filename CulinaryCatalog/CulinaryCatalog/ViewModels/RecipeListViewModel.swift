@@ -16,7 +16,6 @@ import CoreData
 /// It ensures thread-safe updates by running operations on the `MainActor`, which is crucial for SwiftUI updates.
 ///
 /// - Note: All operations that update UI state are performed on the main thread to ensure SwiftUI can react to state changes immediately.
-
 final class RecipeListViewModel: RecipeListViewModelProtocol {
     /// The list of recipes to be displayed in the view.
     ///
@@ -32,11 +31,6 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
     ///
     /// This property can be used to display error messages in the UI or for internal error tracking.
     @Published private(set) var errorMessage: String?
-
-    /// The repository responsible for fetching and managing recipe data.
-    ///
-    /// This abstraction layer allows for switching between different data sources or using mock data in testing scenarios.
-    let recipeRepository: RecipeDataRepositoryProtocol
 
     /// The managed object context for Core Data operations.
     ///
@@ -54,28 +48,25 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
     ///   - recipeRepository: The repository for managing recipe data.
     ///   - viewContext: The Core Data managed object context for local storage operations.
     ///   - networkManager: The network manager for handling API calls to fetch or update data.
-    init(recipeRepository: RecipeDataRepositoryProtocol, viewContext: NSManagedObjectContext, networkManager: NetworkManagerProtocol) {
-        self.recipeRepository = recipeRepository
+    init(viewContext: NSManagedObjectContext, networkManager: NetworkManagerProtocol) {
         self.viewContext = viewContext
         self.networkManager = networkManager
     }
 
-    /// Loads recipes from the repository into the view model.
+    /// Retrieves all recipes currently stored in Core Data.
     ///
-    /// This method fetches recipes from the local data source, updating the `recipes` array. It's designed to be called when initially loading or refreshing the view.
+    /// This method queries the local database for all `Recipe` entities, transforms them into `RecipeModel` objects, and sorts them alphabetically by name for presentation or further processing.
     ///
-    /// - Note: Safe to call multiple times; it will overwrite the current list of recipes, clearing any previous error messages on success.
-    func loadRecipes() async {
+    /// - Returns: An array of `RecipeModel` objects representing all recipes in local storage, sorted alphabetically by recipe name.
+    /// - Throws: An error if there's an issue with fetching data from Core Data, such as database corruption or access issues.
+    func loadSortedRecipesFromCoreData() async throws -> [RecipeModel] {
+        let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
         do {
-            // Fetch recipes from the repository
-            let fetchedRecipes = try await recipeRepository.fetchRecipes()
-            await MainActor.run {
-                self.recipes = fetchedRecipes
-                self.errorMessage = nil
-            }
+            let entities = try viewContext.fetch(fetchRequest)
+            return entities.compactMap { RecipeModel(entity: $0) }
+                .sorted { $0.recipeName.localizedCaseInsensitiveCompare($1.recipeName) == .orderedAscending }
         } catch {
-            // Handle errors by storing them for UI feedback
-            await handleError(error)
+            throw error
         }
     }
 
