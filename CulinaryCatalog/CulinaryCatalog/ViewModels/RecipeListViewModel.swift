@@ -82,37 +82,41 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
         }
     }
 
-    /// Refreshes the list of recipes, potentially fetching new or updated data from the network.
+    /// Synchronizes local data with the latest from the server.
     ///
-    /// This operation ensures that only one refresh is active at a time, managing the `isRefreshing` state for UI feedback. It fetches from the network and updates local storage.
+    /// This method ensures that the local database reflects the most current state from the server by:
+    /// 1. Deleting all existing recipes from Core Data to start fresh.
+    /// 2. Fetching the latest recipes from the network.
+    /// 3. Saving these new recipes into Core Data.
     ///
-    /// - Note: Throws an error if the refresh operation fails, allowing for error handling in calling contexts.
-    func refreshRecipes() async throws {
-        // Avoid multiple simultaneous refresh attempts
-        guard !isRefreshing else { return }
+    /// - Returns: An array of `RecipeModel` objects representing the newly fetched and stored recipes, useful for immediate UI updates or confirmation of the refresh operation.
+    /// - Throws: An error if:
+    ///   - Network fetching fails due to connectivity issues, server errors, or data decoding problems.
+    ///   - There's a problem clearing or saving to Core Data, such as permission issues, storage errors, or if the context save fails.
+    func refreshRecipes() async throws -> [RecipeModel] {
+        let newRecipes = try await networkManager.fetchRecipesFromNetwork()
 
-        await MainActor.run {
-            self.isRefreshing = true
-        }
-
-        defer {
-            Task { @MainActor in
-                self.isRefreshing = false
+        try await viewContext.perform {
+            let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
+            let objects = try self.viewContext.fetch(fetchRequest)
+            for object in objects {
+                self.viewContext.delete(object)
             }
-        }
 
-        do {
-            // Refresh recipes from the repository
-            let refreshedRecipes = try await recipeRepository.refreshRecipes()
-            await MainActor.run {
-                self.recipes = refreshedRecipes
-                self.errorMessage = nil
+            // Create and save new recipes
+            for recipeModel in newRecipes {
+                let newRecipe = Recipe(context: self.viewContext)
+                newRecipe.id = recipeModel.id
+                newRecipe.recipeName = recipeModel.recipeName
+                newRecipe.cuisineType = recipeModel.cuisineType
+                newRecipe.photoSmall = recipeModel.photoSmall
+                newRecipe.photoLarge = recipeModel.photoLarge
+                newRecipe.sourceURL = recipeModel.sourceURL
+                newRecipe.youTubeURL = recipeModel.youTubeURL
             }
-        } catch {
-            // Handle errors that occur during refresh
-            await handleError(error)
-            throw error // Re-throw for error propagation if needed
+            try self.viewContext.save()
         }
+        return newRecipes
     }
 
     /// Filters recipes based on a search text.

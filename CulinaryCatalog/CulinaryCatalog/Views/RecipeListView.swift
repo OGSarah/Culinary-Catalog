@@ -48,7 +48,7 @@ struct RecipeListView: View {
             Task {
                 do {
                     if newValue.isEmpty {
-                        await viewModel.loadRecipes()
+                        await viewModel.loadSortedRecipesFromCoreData()
                     } else {
                         viewModel.recipes = try await viewModel.filteredRecipes(searchText: newValue)
                     }
@@ -61,7 +61,7 @@ struct RecipeListView: View {
         .task {
             // Load recipes on view appearance, respecting any existing search text
             if searchText.isEmpty {
-                await viewModel.loadRecipes()
+                try await viewModel.loadSortedRecipesFromCoreData()
             } else {
                 do {
                     viewModel.recipes = try await viewModel.filteredRecipes(searchText: searchText)
@@ -120,10 +120,7 @@ struct RecipeListView: View {
 
 // MARK: - Mock Repository for Previews
 #if DEBUG
-/// A mock implementation of `RecipeDataRepositoryProtocol` for use in previews and testing.
-///
-/// This struct simulates data fetching and refreshing operations with predefined recipe data.
-struct MockRecipeRepository: RecipeDataRepositoryProtocol {
+struct MockRecipeRepository {
     /// Returns a predefined list of recipes for testing or preview purposes.
     func fetchRecipes() async throws -> [RecipeModel] {
         return [

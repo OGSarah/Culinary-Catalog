@@ -41,7 +41,7 @@ protocol RecipeListViewModelProtocol: ObservableObject {
     ///
     /// This method is triggered by the Refresh button on the Recipe List screen.
     /// - Throws: An error if the refresh operation fails.
-    func refreshRecipes() async throws
+    func refreshRecipes() async throws -> [RecipeModel]
 
     /// Filters the list of recipes based on the provided search text.
     ///

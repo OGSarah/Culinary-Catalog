@@ -9,7 +9,7 @@ import Foundation
 import Testing
 @testable import CulinaryCatalog
 
-class MockRecipeDataRepository: RecipeDataRepositoryProtocol {
+class MockRecipeDataRepository {
     var recipesToReturn: [RecipeModel] = []
     var shouldThrowError = false
 
