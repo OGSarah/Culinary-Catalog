@@ -41,7 +41,7 @@ I focused on getting the Core Data setup right (CoreDataController, RecipeDataRe
 I put a lot of effort into designing a solid network layer with NetworkManager and the RecipeDataRepositoryProtocol.
 
 4. Error Handling:
-I made sure to handle errors well (NetworkError, error handling in view models) because I wanted the app to be robust.
+I made sure to handle errors well (NetworkError, error handling in view models) because I wanted the app to be robust. I made sure to test various network conditions using the Network Link Conditioner in Xcode.
 
 ### Time Spent:
 I spent roughly a 5-day work week on this project. Here's how I split my time:
