@@ -67,7 +67,7 @@ struct ContentView: View {
             }
             .task {
                 do {
-                    try await viewModel.loadSortedRecipesFromCoreData()
+                    try await viewModel.getRecipesFromNetwork()
                 } catch {
                     error.localizedDescription
                 }

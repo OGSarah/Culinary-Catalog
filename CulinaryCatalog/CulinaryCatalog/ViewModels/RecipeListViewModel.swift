@@ -57,13 +57,12 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
     ///
     /// This method queries the local database for all `Recipe` entities, transforms them into `RecipeModel` objects, and sorts them alphabetically by name for presentation or further processing.
     ///
-    /// - Returns: An array of `RecipeModel` objects representing all recipes in local storage, sorted alphabetically by recipe name.
     /// - Throws: An error if there's an issue with fetching data from Core Data, such as database corruption or access issues.
-    func loadSortedRecipesFromCoreData() async throws -> [RecipeModel] {
+    func loadSortedRecipesFromCoreData() async throws {
         let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
         do {
             let entities = try viewContext.fetch(fetchRequest)
-            return entities.compactMap { RecipeModel(entity: $0) }
+            self.recipes = entities.compactMap { RecipeModel(entity: $0) }
                 .sorted { $0.recipeName.localizedCaseInsensitiveCompare($1.recipeName) == .orderedAscending }
         } catch {
             throw error
