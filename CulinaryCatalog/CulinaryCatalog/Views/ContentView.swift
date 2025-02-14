@@ -29,10 +29,7 @@ struct ContentView: View {
     ///
     /// - Parameter viewContext: The Core Data managed object context provided by the environment.
     init(viewContext: NSManagedObjectContext) {
-        _viewModel = StateObject(wrappedValue: RecipeListViewModel(recipeRepository: RecipeDataRepository(
-            networkManager: NetworkManager.shared,
-            viewContext: viewContext
-        ), viewContext: viewContext, networkManager: NetworkManager.shared))
+        _viewModel = StateObject(wrappedValue: RecipeListViewModel(viewContext: viewContext, networkManager: NetworkManager.shared))
     }
 
     /// Defines the background gradient for the content view.
@@ -59,7 +56,7 @@ struct ContentView: View {
                         description: Text("Try tapping on the Refresh button to reload recipes.")
                     )
                 } else {
-                    RecipeListView(recipeRepository: viewModel.recipeRepository, viewContext: viewModel.viewContext)
+                    RecipeListView(viewContext: viewModel.viewContext)
                 }
             }
             .navigationTitle("Recipes")
@@ -69,7 +66,11 @@ struct ContentView: View {
                 refreshButton
             }
             .task {
-                await viewModel.loadRecipes()
+                do {
+                    try await viewModel.loadSortedRecipesFromCoreData()
+                } catch {
+                    error.localizedDescription
+                }
             }
         }
     }
@@ -144,7 +145,6 @@ struct ContentView: View {
 #Preview("Empty Recipes - Light Mode") {
     let emptyController = CoreDataController(.inMemory)
     let emptyViewModel = RecipeListViewModel(
-        recipeRepository: EmptyMockRecipeRepository(),
         viewContext: emptyController.persistentContainer.viewContext,
         networkManager: MockNetworkManager()
     )
@@ -157,7 +157,6 @@ struct ContentView: View {
 #Preview("Empty Recipes - Dark Mode") {
     let emptyController = CoreDataController(.inMemory)
     let emptyViewModel = RecipeListViewModel(
-        recipeRepository: EmptyMockRecipeRepository(),
         viewContext: emptyController.persistentContainer.viewContext,
         networkManager: MockNetworkManager()
     )
@@ -167,23 +166,9 @@ struct ContentView: View {
         .preferredColorScheme(.dark)
 }
 
-// MARK: - Mock Repository for Empty Recipes
-#if DEBUG
-/// A mock implementation of `RecipeDataRepositoryProtocol` for testing empty states.
-struct EmptyMockRecipeRepository: RecipeDataRepositoryProtocol {
-    func fetchRecipes() async throws -> [RecipeModel] {
-        return []
-    }
-
-    func refreshRecipes() async throws -> [RecipeModel] {
-        return []
-    }
-}
-
 /// A mock implementation of `NetworkManagerProtocol` for testing network operations in debug mode.
 struct MockNetworkManager: NetworkManagerProtocol {
     func fetchRecipesFromNetwork() async throws -> [RecipeModel] {
         return []
     }
 }
-#endif

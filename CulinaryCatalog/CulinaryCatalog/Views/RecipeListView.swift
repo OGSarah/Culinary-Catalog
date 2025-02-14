@@ -48,7 +48,7 @@ struct RecipeListView: View {
             Task {
                 do {
                     if newValue.isEmpty {
-                        await viewModel.loadSortedRecipesFromCoreData()
+                        try await viewModel.loadSortedRecipesFromCoreData()
                     } else {
                         viewModel.recipes = try await viewModel.filteredRecipes(searchText: newValue)
                     }
@@ -59,15 +59,15 @@ struct RecipeListView: View {
         }
         /// Loads recipes when the view appears, either all recipes or filtered if there's a search text.
         .task {
-            // Load recipes on view appearance, respecting any existing search text
-            if searchText.isEmpty {
-                try await viewModel.loadSortedRecipesFromCoreData()
-            } else {
-                do {
+            do {
+                // Load recipes on view appearance, respecting any existing search text
+                if searchText.isEmpty {
+                    try await viewModel.loadSortedRecipesFromCoreData()
+                } else {
                     viewModel.recipes = try await viewModel.filteredRecipes(searchText: searchText)
-                } catch {
-                    errorMessage = error.localizedDescription
                 }
+            } catch {
+                errorMessage = error.localizedDescription
             }
         }
         /// Implements pull-to-refresh functionality to update the recipe list.
@@ -107,14 +107,14 @@ struct RecipeListView: View {
 #Preview("Light Mode") {
     let inMemoryController = CoreDataController(.inMemory)
     let mockRepository = MockRecipeRepository()
-    return RecipeListView(recipeRepository: mockRepository, viewContext: inMemoryController.persistentContainer.viewContext)
+    return RecipeListView(viewContext: inMemoryController.persistentContainer.viewContext)
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark Mode") {
     let inMemoryController = CoreDataController(.inMemory)
     let mockRepository = MockRecipeRepository()
-    return RecipeListView(recipeRepository: mockRepository, viewContext: inMemoryController.persistentContainer.viewContext)
+    return RecipeListView(viewContext: inMemoryController.persistentContainer.viewContext)
         .preferredColorScheme(.dark)
 }
 
