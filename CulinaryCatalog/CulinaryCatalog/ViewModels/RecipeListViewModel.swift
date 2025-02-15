@@ -16,6 +16,7 @@ import CoreData
 /// It ensures thread-safe updates by running operations on the `MainActor`, which is crucial for SwiftUI updates.
 ///
 /// - Note: All operations that update UI state are performed on the main thread to ensure SwiftUI can react to state changes immediately.
+@MainActor
 final class RecipeListViewModel: RecipeListViewModelProtocol {
     /// The list of recipes to be displayed in the view.
     ///
