@@ -65,8 +65,8 @@ class CoreDataController {
             newRecipe.id = UUID()
             newRecipe.cuisineType = "Canadian"
             newRecipe.recipeName = "BeaverTails"
-            newRecipe.photoSmall = "https://d3jbb8n5wk0qxi.cloudfront.net/photos/3b33a385-3e55-4ea5-9d98-13e78f840299/small.jpg"
-            newRecipe.photoLarge = "https://d3jbb8n5wk0qxi.cloudfront.net/photos/3b33a385-3e55-4ea5-9d98-13e78f840299/large.jpg"
+            newRecipe.photoURLSmall = "https://d3jbb8n5wk0qxi.cloudfront.net/photos/3b33a385-3e55-4ea5-9d98-13e78f840299/small.jpg"
+            newRecipe.photoURLLarge = "https://d3jbb8n5wk0qxi.cloudfront.net/photos/3b33a385-3e55-4ea5-9d98-13e78f840299/large.jpg"
             newRecipe.sourceURL = "https://www.tastemade.com/videos/beavertails"
             newRecipe.youTubeURL = "https://www.youtube.com/watch?v=2G07UOqU2e8"
         }

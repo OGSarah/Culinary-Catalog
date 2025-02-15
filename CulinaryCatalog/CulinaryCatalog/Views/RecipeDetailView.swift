@@ -159,6 +159,8 @@ struct RecipeDetailView: View {
         recipeName: "Apple & Blackberry Crumble",
         photoLarge: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/large.jpg",
         photoSmall: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/small.jpg",
+        recipeImageSmall: Data(),
+        recipeImageLarge: Data(),
         sourceURL: "https://www.bbcgoodfood.com/recipes/778642/apple-and-blackberry-crumble",
         id: UUID(),
         youTubeURL: "https://www.youtube.com/watch?v=4vhcOwVBDO4"
@@ -174,6 +176,8 @@ struct RecipeDetailView: View {
         recipeName: "Apple & Blackberry Crumble",
         photoLarge: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/large.jpg",
         photoSmall: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/small.jpg",
+        recipeImageSmall: Data(),
+        recipeImageLarge: Data(),
         sourceURL: "https://www.bbcgoodfood.com/recipes/778642/apple-and-blackberry-crumble",
         id: UUID(),
         youTubeURL: "https://www.youtube.com/watch?v=4vhcOwVBDO4"

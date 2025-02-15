@@ -51,8 +51,8 @@ struct CoreDataControllerTests {
 
         #expect(recipe.cuisineType == "Italian")
         #expect(recipe.recipeName == "Pasta Carbonara")
-        #expect(recipe.photoLarge == "large.jpg")
-        #expect(recipe.photoSmall == "small.jpg")
+        #expect(recipe.photoURLLarge == "large.jpg")
+        #expect(recipe.photoURLSmall == "small.jpg")
         #expect(recipe.sourceURL == "source.com")
         #expect(recipe.id == id)
         #expect(recipe.youTubeURL == "youtube.com")
@@ -76,8 +76,8 @@ struct CoreDataControllerTests {
 
         #expect(model.cuisineType == "French")
         #expect(model.recipeName == "Baguette")
-        #expect(model.photoLarge == "french_large.jpg")
-        #expect(model.photoSmall == "french_small.jpg")
+        #expect(model.photoURLLarge == "french_large.jpg")
+        #expect(model.photoURLSmall == "french_small.jpg")
         #expect(model.sourceURL == "french_recipe.com")
         #expect(model.youTubeURL == "french_youtube.com")
         #expect(model.id != nil) // Check if ID is set, since we set it in the entity
@@ -95,8 +95,8 @@ struct CoreDataControllerTests {
 
         #expect(model.cuisineType.isEmpty == true)
         #expect(model.recipeName.isEmpty == true)
-        #expect(model.photoLarge.isEmpty == true)
-        #expect(model.photoSmall.isEmpty == true)
+        #expect(model.photoURLLarge.isEmpty == true)
+        #expect(model.photoURLSmall.isEmpty == true)
         #expect(model.sourceURL.isEmpty == true)
         #expect(model.youTubeURL.isEmpty == true)
         #expect(model.id != nil) // ID should be set to a new UUID since it was nil

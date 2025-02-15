@@ -66,7 +66,7 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
             self.recipes = entities.compactMap { RecipeModel(entity: $0) }
                 .sorted { $0.recipeName.localizedCaseInsensitiveCompare($1.recipeName) == .orderedAscending }
         } catch {
-            throw error
+            print("Failed to return recipes: \(error.localizedDescription)")
         }
     }
 
@@ -109,8 +109,8 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
                 newRecipe.id = recipeModel.id
                 newRecipe.recipeName = recipeModel.recipeName
                 newRecipe.cuisineType = recipeModel.cuisineType
-                newRecipe.photoSmall = recipeModel.photoSmall
-                newRecipe.photoLarge = recipeModel.photoLarge
+                newRecipe.photoURLSmall = recipeModel.photoURLSmall
+                newRecipe.photoURLLarge = recipeModel.photoURLLarge
                 newRecipe.sourceURL = recipeModel.sourceURL
                 newRecipe.youTubeURL = recipeModel.youTubeURL
             }

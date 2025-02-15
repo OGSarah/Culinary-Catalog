@@ -26,7 +26,7 @@ final class RecipeRowViewModel: ObservableObject, RecipeRowViewModelProtocol {
             id: recipe.id,
             cuisineType: recipe.cuisineType,
             recipeName: recipe.recipeName,
-            photoSmallURL: recipe.photoSmall
+            photoSmallURL: recipe.photoURLSmall
         )
     }
 

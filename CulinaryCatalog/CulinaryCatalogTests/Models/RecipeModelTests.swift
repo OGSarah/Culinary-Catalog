@@ -47,8 +47,8 @@ struct RecipeModelTests {
 
         #expect(model.cuisineType == "Italian")
         #expect(model.recipeName == "Pizza Margherita")
-        #expect(model.photoLarge == "large.jpg")
-        #expect(model.photoSmall == "small.jpg")
+        #expect(model.photoURLLarge == "large.jpg")
+        #expect(model.photoURLSmall == "small.jpg")
         #expect(model.sourceURL == "example.com/pizza")
         #expect(model.id == id)
         #expect(model.youTubeURL == "youtube.com/pizza")
@@ -107,8 +107,8 @@ struct RecipeModelTests {
 
         #expect(model.cuisineType == "Italian")
         #expect(model.recipeName == "Pizza Margherita")
-        #expect(model.photoLarge == "large.jpg")
-        #expect(model.photoSmall == "small.jpg")
+        #expect(model.photoURLLarge == "large.jpg")
+        #expect(model.photoURLSmall == "small.jpg")
         #expect(model.sourceURL == "example.com/pizza")
         #expect(model.id != nil)
         #expect(model.youTubeURL == "youtube.com/pizza")

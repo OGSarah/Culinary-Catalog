@@ -67,11 +67,15 @@ struct ContentView: View {
             }
             .task {
                 do {
-                    try await viewModel.getRecipesFromNetwork()
+                    try await viewModel.loadSortedRecipesFromCoreData()
+                    if viewModel.recipes.isEmpty {
+                        try await viewModel.getRecipesFromNetwork()
+                    }
                 } catch {
-                    error.localizedDescription
+                    print("Error loading recipes: \(error.localizedDescription)")
                 }
             }
+
         }
     }
 

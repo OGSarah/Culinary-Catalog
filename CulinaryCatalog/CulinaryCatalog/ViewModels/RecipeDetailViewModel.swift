@@ -42,7 +42,7 @@ final class RecipeDetailViewModel: ObservableObject, CountryFlagProtocol {
         self.recipeDetails = RecipeDetailState(
             recipeName: recipe.recipeName,
             cuisineType: recipe.cuisineType,
-            photoLarge: recipe.photoLarge,
+            photoLarge: recipe.photoURLLarge,
             sourceURL: recipe.sourceURL,
             youtubeVideoID: recipe.youTubeURL.extractYouTubeID()
         )

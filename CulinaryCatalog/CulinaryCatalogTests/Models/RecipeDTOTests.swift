@@ -84,8 +84,8 @@ struct RecipeDTOTests {
 
         #expect(domainModel.cuisineType == "Italian")
         #expect(domainModel.recipeName == "Pizza Margherita")
-        #expect(domainModel.photoLarge == "large.jpg")
-        #expect(domainModel.photoSmall == "small.jpg")
+        #expect(domainModel.photoURLLarge == "large.jpg")
+        #expect(domainModel.photoURLSmall == "small.jpg")
         #expect(domainModel.sourceURL == "example.com/pizza")
         #expect(domainModel.id.uuidString.lowercased() == "123e4567-e89b-12d3-a456-426614174000")
         #expect(domainModel.youTubeURL == "youtube.com/pizza")
