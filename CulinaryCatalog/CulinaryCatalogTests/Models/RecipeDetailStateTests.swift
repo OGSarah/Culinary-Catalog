@@ -5,6 +5,7 @@
 //  Created by Sarah Clark on 2/7/25.
 //
 
+import Foundation
 import Testing
 @testable import CulinaryCatalog
 
@@ -15,14 +16,14 @@ struct RecipeDetailStateTests {
         let state = RecipeDetailState(
             recipeName: "Blackberry Fool",
             cuisineType: "British",
-            photoLarge: "large_image.jpg",
+            photoLarge: Data(),
             sourceURL: "example.com/blackberry-fool",
             youtubeVideoID: "dQw4w9WgXcQ"
         )
 
         #expect(state.recipeName == "Blackberry Fool")
         #expect(state.cuisineType == "British")
-        #expect(state.photoLarge == "large_image.jpg")
+        #expect(state.photoLarge == Data())
         #expect(state.sourceURL == "example.com/blackberry-fool")
         #expect(state.youtubeVideoID == "dQw4w9WgXcQ")
     }
@@ -32,14 +33,14 @@ struct RecipeDetailStateTests {
         let stateWithNoVideo = RecipeDetailState(
             recipeName: "Apple Pie",
             cuisineType: "American",
-            photoLarge: "apple_pie.jpg",
+            photoLarge: Data(),
             sourceURL: "example.com/apple-pie",
             youtubeVideoID: nil
         )
 
         #expect(stateWithNoVideo.recipeName == "Apple Pie")
         #expect(stateWithNoVideo.cuisineType == "American")
-        #expect(stateWithNoVideo.photoLarge == "apple_pie.jpg")
+        #expect(stateWithNoVideo.photoLarge == Data())
         #expect(stateWithNoVideo.sourceURL == "example.com/apple-pie")
         #expect(stateWithNoVideo.youtubeVideoID == nil)
     }
@@ -49,7 +50,7 @@ struct RecipeDetailStateTests {
         let state = RecipeDetailState(
             recipeName: "Sushi Roll",
             cuisineType: "Japanese",
-            photoLarge: "sushi.jpg",
+            photoLarge: Data(),
             sourceURL: "example.com/sushi-roll",
             youtubeVideoID: "videoID"
         )
@@ -57,7 +58,7 @@ struct RecipeDetailStateTests {
         // Check if all properties can be accessed correctly
         #expect(state.recipeName == "Sushi Roll")
         #expect(state.cuisineType == "Japanese")
-        #expect(state.photoLarge == "sushi.jpg")
+        #expect(state.photoLarge == Data())
         #expect(state.sourceURL == "example.com/sushi-roll")
         #expect(state.youtubeVideoID == "videoID")
     }
