@@ -11,16 +11,12 @@ Here are some screenshots showcasing the app's features:
 
   <div align="center">
     <div style="margin: 10px;">
-    <img width = "33%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipelistdarkmode.png">
-    <img width = "33%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipelistlightmode.png">
-    <img width = "33%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipedetaildarkmode.png">
-  </div>
-</div>
-  <div align="center">
-    <div style="margin: 10px;">
-    <img width = "33%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipedetaillightmode.png">
-    <img width = "33%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/searchfunctionality.png">
-    <img width = "33%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/webview.png">
+    <img width = "16%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipelistdarkmode.png">
+    <img width = "16%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipelistlightmode.png">
+    <img width = "16%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipedetaildarkmode.png">
+    <img width = "16%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipedetaillightmode.png">
+    <img width = "16%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/searchfunctionality.png">
+    <img width = "16%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/webview.png">
   </div>
 </div>
 
