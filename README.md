@@ -15,7 +15,7 @@ Here are some screenshots showcasing the app's features:
     <p style="text-align: center; font-size: small;">Recipe List Dark Mode</p>
   </div>
   <div style="margin: 10px;">
-    <img src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipelistlightmode.png" alt="Recipe List Light Mode:" width="200">
+    <img src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipelistlightmode.png" alt="Recipe List Light Mode" width="200">
     <p style="text-align: center; font-size: small;">Recipe List Light Mode</p>
   </div>
   <div style="margin: 10px;">
@@ -34,12 +34,11 @@ Here are some screenshots showcasing the app's features:
     <img src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/webview.png" alt="WebView" width="200">
     <p style="text-align: center; font-size: small;">WebView</p>
   </div>
-  <div style="margin: 10px;">
-    <img src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/CulinaryCatalogVideo.mov" alt="Recorded Demo" width="200">
-    <p style="text-align: center; font-size: small;">Recorded Demo</p>
-  </div>
 </div>
 
+## Recorded Demo:
+
+[Watch the Recorded Demo](https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/CulinaryCatalogVideo.mov)
 
 ## Key Features:
 - SwiftUI interface
