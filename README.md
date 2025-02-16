@@ -5,7 +5,7 @@
 
 A very simple iOS recipe management app built with SwiftUI that seamlessly integrates CoreData and async/await networking to provide a smooth, responsive recipe browsing experience. The app fetches and displays recipe data from a remote API, allowing users to explore, search, and interact with a comprehensive collection of culinary inspirations.
 
-## Screenshots
+## Screenshots:
 
 Here are some screenshots showcasing the app's features:
 
