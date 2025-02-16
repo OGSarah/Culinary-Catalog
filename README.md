@@ -69,6 +69,7 @@ I spent roughly a 5-day work week on this project. Here's how I split my time:
 - 10% was dedicated to testing, debugging, and documenting. 
 
 ### Trade-offs and Decisions:
+- I went with CoreData to save the download images and the rest of the data from the network. 
 
 ### Weakest Part of the Project:
 - Testing. See below.
@@ -76,5 +77,5 @@ I spent roughly a 5-day work week on this project. Here's how I split my time:
 ### Additional Information:
 A few insights and constraints:
 
-- Testing: If I had more time I would add more unit tests, I would do accessibility testing, and added UI testing.
+- Testing: If I had more time I would have updated the unit tests after I did the latest code changes, I would do accessibility testing, and added UI testing.
 
