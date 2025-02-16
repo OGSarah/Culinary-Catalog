@@ -5,6 +5,7 @@
 //  Created by Sarah Clark on 1/31/25.
 //
 
+import Foundation
 /// Represents the detailed state of a recipe for display in the user interface.
 ///
 /// This struct encapsulates all the necessary information about a recipe that will be presented in the detail view. It's designed to hold immutable data, which aids in thread safety and predictable state management within UI frameworks like SwiftUI or UIKit.
@@ -25,12 +26,12 @@ struct RecipeDetailState {
     /// - Example: "Italian", "Russian", "British"
     let cuisineType: String
 
-    /// The URL of the large-sized photo representing the recipe.
+    /// Data for the large photo of the recipe.
     ///
-    /// Used for displaying a high-resolution image of the finished dish, enhancing the visual appeal and user engagement with the recipe details.
+    /// This property contains the binary data for a high-resolution image of the finished dish. It's used to enhance the visual appeal and user engagement by displaying detailed images in the recipe view.
     ///
-    /// - Note: Should be a valid, accessible image URL.
-    let photoLarge: String
+    /// - Note: This data should be derived from a valid, accessible image URL and stored locally for quick access.
+    let photoLarge: Data
 
     /// The original source URL of the recipe.
     ///

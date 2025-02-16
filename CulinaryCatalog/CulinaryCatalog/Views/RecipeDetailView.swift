@@ -48,22 +48,26 @@ struct RecipeDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    // MARK: - Private Variables for View
-    /// The header section of the recipe view, displaying the recipe's main image.
-    ///
-    /// Uses `AsyncImage` for efficient loading of the large recipe image, showing a progress view as a placeholder while loading.
+// MARK: - Private Variables for View
+/// The header section of the recipe view, displaying the recipe's main image.
+///
+/// This section uses a conditional `ZStack` to display either the large recipe image, if available, or a progress view as a placeholder. The image data is stored in `viewModel.recipeDetails.photoLarge` and converted to a `UIImage` for display. If the image data is not available, a `ProgressView` is shown instead. The entire section is framed to occupy 30% of the screen height and has a light gray background.
     private var recipeHeaderSection: some View {
-        AsyncImage(url: URL(string: viewModel.recipeDetails.photoLarge)) { image in
-            image.resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(height: UIScreen.main.bounds.height * 0.3)
-                .clipped()
-        } placeholder: {
-            ProgressView()
-                .frame(height: UIScreen.main.bounds.height * 0.3)
-                .frame(maxWidth: .infinity)
-                .background(Color.gray.opacity(0.1))
+        ZStack {
+            if let uiImage = UIImage(data: viewModel.recipeDetails.photoLarge) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: UIScreen.main.bounds.height * 0.3)
+                    .clipped()
+            } else {
+                ProgressView()
+                    .frame(height: UIScreen.main.bounds.height * 0.3)
+                    .frame(maxWidth: .infinity)
+            }
         }
+        .frame(height: UIScreen.main.bounds.height * 0.3)
+        .background(Color.gray.opacity(0.1))
     }
 
     /// Displays detailed information about the recipe including name and cuisine type.
@@ -157,8 +161,8 @@ struct RecipeDetailView: View {
     let sampleRecipe = RecipeModel(
         cuisineType: "British",
         recipeName: "Apple & Blackberry Crumble",
-        photoLarge: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/large.jpg",
-        photoSmall: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/small.jpg",
+        photoURLLarge: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/large.jpg",
+        photoURLSmall: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/small.jpg",
         recipeImageSmall: Data(),
         recipeImageLarge: Data(),
         sourceURL: "https://www.bbcgoodfood.com/recipes/778642/apple-and-blackberry-crumble",
@@ -174,8 +178,8 @@ struct RecipeDetailView: View {
     let sampleRecipe = RecipeModel(
         cuisineType: "British",
         recipeName: "Apple & Blackberry Crumble",
-        photoLarge: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/large.jpg",
-        photoSmall: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/small.jpg",
+        photoURLLarge: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/large.jpg",
+        photoURLSmall: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/small.jpg",
         recipeImageSmall: Data(),
         recipeImageLarge: Data(),
         sourceURL: "https://www.bbcgoodfood.com/recipes/778642/apple-and-blackberry-crumble",

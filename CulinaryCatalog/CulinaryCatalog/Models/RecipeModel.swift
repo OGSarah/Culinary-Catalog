@@ -35,13 +35,13 @@ struct RecipeModel: Identifiable, Codable, Equatable {
     ///
     /// Provides a smaller image for the RecipeListView, with the image stored locally.
     /// This property is not part of the JSON data and is stored in Core Data.
-    let recipeImageSmall: Data?
+    var recipeImageSmall: Data?
 
     /// Downloaded version of the photoURLLarge.
     ///
     /// Provides a larger image for the RecipeDetailView, with the image stored locally.
     /// This property is not part of the JSON data and is stored in Core Data.
-    let recipeImageLarge: Data?
+    var recipeImageLarge: Data?
 
     /// URL to the original source of the recipe.
     ///
@@ -57,45 +57,6 @@ struct RecipeModel: Identifiable, Codable, Equatable {
     ///
     /// Provides a video link for users to see the recipe preparation, enhancing user engagement.
     let youTubeURL: String
-
-    /// Initializes a new RecipeModel with properties from JSON data.
-    ///
-    /// - Parameters:
-    ///   - cuisineType: The type of cuisine
-    ///   - recipeName: The name of the recipe
-    ///   - photoURLLarge: URL for the large photo
-    ///   - photoURLSmall: URL for the small photo
-    ///   - sourceURL: URL to the original recipe source
-    ///   - id: Unique identifier for the recipe
-    ///   - youTubeURL: URL to the recipe's YouTube video
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        cuisineType = try container.decode(String.self, forKey: .cuisineType)
-        recipeName = try container.decode(String.self, forKey: .recipeName)
-        photoURLLarge = try container.decode(String.self, forKey: .photoURLLarge)
-        photoURLSmall = try container.decode(String.self, forKey: .photoURLSmall)
-        sourceURL = try container.decode(String.self, forKey: .sourceURL)
-        id = try container.decode(UUID.self, forKey: .id)
-        youTubeURL = try container.decode(String.self, forKey: .youTubeURL)
-
-        // Initialize image data properties as nil since they're not part of JSON
-        recipeImageSmall = nil
-        recipeImageLarge = nil
-    }
-
-    /// Encodes the RecipeModel for JSON serialization.
-    ///
-    /// - Parameter encoder: The encoder to use for encoding the model.
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(cuisineType, forKey: .cuisineType)
-        try container.encode(recipeName, forKey: .recipeName)
-        try container.encode(photoURLLarge, forKey: .photoURLLarge)
-        try container.encode(photoURLSmall, forKey: .photoURLSmall)
-        try container.encode(sourceURL, forKey: .sourceURL)
-        try container.encode(id, forKey: .id)
-        try container.encode(youTubeURL, forKey: .youTubeURL)
-    }
 
     /// Initializes a RecipeModel from a CoreData Recipe entity.
     ///
@@ -157,20 +118,6 @@ struct RecipeModel: Identifiable, Codable, Equatable {
         lhs.recipeImageLarge == rhs.recipeImageLarge &&
         lhs.sourceURL == rhs.sourceURL &&
         lhs.youTubeURL == rhs.youTubeURL
-    }
-
-    // MARK: - CodingKeys
-    /// Defines the coding keys for JSON serialization/deserialization.
-    ///
-    /// These keys correspond to the properties that are part of the JSON data.
-    enum CodingKeys: String, CodingKey {
-        case cuisineType
-        case recipeName
-        case photoURLLarge
-        case photoURLSmall
-        case sourceURL
-        case id
-        case youTubeURL
     }
 
 }

@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import Combine
 
 /// Manages the view model logic for a list of recipes.
 ///
@@ -13,6 +14,7 @@ import CoreData
 /// - Loading recipes from a local data source.
 /// - Refreshing recipes from a network source.
 /// - Filtering recipes based on user input.
+/// - Downloading and caching images from URLs to Core Data.
 /// It ensures thread-safe updates by running operations on the `MainActor`, which is crucial for SwiftUI updates.
 ///
 /// - Note: All operations that update UI state are performed on the main thread to ensure SwiftUI can react to state changes immediately.
@@ -43,10 +45,14 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
     /// Manages network requests, allowing for dependency injection or testing with mock network responses.
     private let networkManager: NetworkManagerProtocol
 
+    /// A set of cancellables for managing Combine subscriptions.
+    ///
+    /// This set is used to store and manage any Combine publishers used within the view model.
+    private var cancellables = Set<AnyCancellable>()
+
     /// Initializes the view model with necessary dependencies.
     ///
     /// - Parameters:
-    ///   - recipeRepository: The repository for managing recipe data.
     ///   - viewContext: The Core Data managed object context for local storage operations.
     ///   - networkManager: The network manager for handling API calls to fetch or update data.
     init(viewContext: NSManagedObjectContext, networkManager: NetworkManagerProtocol) {
@@ -70,6 +76,11 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
         }
     }
 
+    /// Fetches recipes from the network and updates the local data store.
+    ///
+    /// This method fetches recipes from the network, updates the local Core Data store, and then updates the UI with the new data.
+    ///
+    /// - Throws: An error if there's an issue with fetching data from the network or updating Core Data.
     func getRecipesFromNetwork() async throws {
         do {
             let fetchedRecipes = try await networkManager.fetchRecipesFromNetwork()
@@ -77,6 +88,9 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
                 self.recipes = fetchedRecipes
                 self.errorMessage = nil
             }
+
+            try await saveRecipesToCoreData(fetchedRecipes)
+            await downloadAndCacheImages(for: fetchedRecipes)
         } catch {
             await handleError(error)
         }
@@ -88,6 +102,7 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
     /// 1. Deleting all existing recipes from Core Data to start fresh.
     /// 2. Fetching the latest recipes from the network.
     /// 3. Saving these new recipes into Core Data.
+    /// 4. Downloading and caching images for the new recipes.
     ///
     /// - Returns: An array of `RecipeModel` objects representing the newly fetched and stored recipes, useful for immediate UI updates or confirmation of the refresh operation.
     /// - Throws: An error if:
@@ -116,6 +131,14 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
             }
             try self.viewContext.save()
         }
+
+        await MainActor.run {
+            self.recipes = newRecipes
+            self.errorMessage = nil
+        }
+
+        await downloadAndCacheImages(for: newRecipes)
+
         return newRecipes
     }
 
@@ -145,6 +168,107 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
         await MainActor.run {
             // Update the error message for user feedback
             self.errorMessage = error.localizedDescription
+        }
+    }
+
+    /// Saves the given recipes to Core Data.
+    ///
+    /// This method saves the provided recipes to the local Core Data store.
+    ///
+    /// - Parameter recipes: The array of `RecipeModel` objects to be saved.
+    /// - Throws: An error if there's an issue with saving data to Core Data.
+    private func saveRecipesToCoreData(_ recipes: [RecipeModel]) async throws {
+        try await viewContext.perform {
+            for recipeModel in recipes {
+                let newRecipe = Recipe(context: self.viewContext)
+                newRecipe.id = recipeModel.id
+                newRecipe.recipeName = recipeModel.recipeName
+                newRecipe.cuisineType = recipeModel.cuisineType
+                newRecipe.photoURLSmall = recipeModel.photoURLSmall
+                newRecipe.photoURLLarge = recipeModel.photoURLLarge
+                newRecipe.recipeImageSmall = recipeModel.recipeImageSmall
+                newRecipe.recipeImageLarge = recipeModel.recipeImageLarge
+                newRecipe.sourceURL = recipeModel.sourceURL
+                newRecipe.youTubeURL = recipeModel.youTubeURL
+            }
+            try self.viewContext.save()
+        }
+    }
+
+    /// Downloads and caches images for the given recipes.
+    ///
+    /// This method downloads the small and large photo URLs for each recipe and saves them to Core Data.
+    ///
+    /// - Parameter recipes: The array of `RecipeModel` objects for which to download and cache images.
+    private func downloadAndCacheImages(for recipes: [RecipeModel]) async {
+        for recipe in recipes {
+            await downloadAndCacheImage(from: recipe.photoURLSmall, for: recipe, isLarge: false)
+            await downloadAndCacheImage(from: recipe.photoURLLarge, for: recipe, isLarge: true)
+        }
+    }
+
+    /// Downloads an image from a given URL and caches it in Core Data.
+    ///
+    /// This method uses `URLSession` to download the image and then saves it to Core Data.
+    /// It updates the `recipes` property with the new image data once the download is complete.
+    ///
+    /// - Parameters:
+    ///   - urlString: The URL string from which to download the image.
+    ///   - recipe: The `RecipeModel` object for which the image is being downloaded.
+    ///   - isLarge: A boolean indicating whether the image should be saved as the large image.
+    private func downloadAndCacheImage(from urlString: String, for recipe: RecipeModel, isLarge: Bool) async {
+        guard let url = URL(string: urlString) else {
+            print("Invalid URL: \(urlString)")
+            return
+        }
+
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            try await saveImageData(data, for: recipe, isLarge: isLarge)
+        } catch {
+            print("Failed to download image: \(error.localizedDescription)")
+        }
+    }
+
+    /// Saves the image data to Core Data and updates the recipe details.
+    ///
+    /// This method saves the provided image data to the corresponding `Recipe` entity in Core Data
+    /// and updates the `recipes` property with the new image data.
+    ///
+    /// - Parameters:
+    ///   - data: The image data to be saved.
+    ///   - recipe: The `RecipeModel` object for which the image data is being saved.
+    ///   - isLarge: A boolean indicating whether the image should be saved as the large image.
+    private func saveImageData(_ data: Data, for recipe: RecipeModel, isLarge: Bool) async throws {
+        try await viewContext.perform {
+            let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", recipe.id as CVarArg)
+
+            do {
+                let results = try self.viewContext.fetch(fetchRequest)
+                if let existingRecipe = results.first {
+                    if isLarge {
+                        existingRecipe.recipeImageLarge = data
+                    } else {
+                        existingRecipe.recipeImageSmall = data
+                    }
+                    try self.viewContext.save()
+
+                    // Update the recipes array with the new image data
+                    if let index = self.recipes.firstIndex(where: { $0.id == recipe.id }) {
+                        var updatedRecipe = self.recipes[index]
+                        if isLarge {
+                            updatedRecipe.recipeImageLarge = data
+                        } else {
+                            updatedRecipe.recipeImageSmall = data
+                        }
+                        self.recipes[index] = updatedRecipe
+                    }
+                }
+            } catch {
+                print("Failed to save image data: \(error.localizedDescription)")
+                throw error
+            }
         }
     }
 

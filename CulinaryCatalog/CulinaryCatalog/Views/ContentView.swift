@@ -75,7 +75,6 @@ struct ContentView: View {
                     print("Error loading recipes: \(error.localizedDescription)")
                 }
             }
-
         }
     }
 

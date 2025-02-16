@@ -35,12 +35,12 @@ struct RecipeDTO: Codable {
     /// URL for the large photo of the recipe, if available.
     ///
     /// This optional property provides a link to a high-resolution image of the dish.
-    let photoUrlLarge: String?
+    let photoURLLarge: String?
 
     /// URL for the small photo of the recipe, if available.
     ///
     /// This optional property provides a link to a thumbnail or smaller image of the dish.
-    let photoUrlSmall: String?
+    let photoURLSmall: String?
 
     /// A universally unique identifier for the recipe.
     ///
@@ -63,8 +63,8 @@ struct RecipeDTO: Codable {
     enum CodingKeys: String, CodingKey {
         case cuisine
         case name
-        case photoUrlLarge = "photo_url_large"
-        case photoUrlSmall = "photo_url_small"
+        case photoURLLarge = "photo_url_large"
+        case photoURLSmall = "photo_url_small"
         case uuid
         case sourceUrl = "source_url"
         case youtubeUrl = "youtube_url"
@@ -79,8 +79,10 @@ struct RecipeDTO: Codable {
         RecipeModel(
             cuisineType: cuisine,
             recipeName: name,
-            photoLarge: photoUrlLarge ?? "",
-            photoSmall: photoUrlSmall ?? "",
+            photoURLLarge: photoURLLarge ?? "",
+            photoURLSmall: photoURLSmall ?? "",
+            recipeImageSmall: nil,
+            recipeImageLarge: nil,
             sourceURL: sourceUrl ?? "",
             id: UUID(uuidString: uuid.lowercased()) ?? UUID(),
             youTubeURL: youtubeUrl ?? ""

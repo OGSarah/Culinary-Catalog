@@ -127,8 +127,8 @@ struct MockRecipeRepository {
             RecipeModel(
                 cuisineType: "British",
                 recipeName: "Apple & Blackberry Crumble",
-                photoLarge: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/large.jpg",
-                photoSmall: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/small.jpg",
+                photoURLLarge: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/large.jpg",
+                photoURLSmall: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/535dfe4e-5d61-4db6-ba8f-7a27b1214f5d/small.jpg",
                 recipeImageSmall: Data(),
                 recipeImageLarge: Data(),
                 sourceURL: "https://www.bbcgoodfood.com/recipes/778642/apple-and-blackberry-crumble",
@@ -144,8 +144,8 @@ struct MockRecipeRepository {
             RecipeModel(
                 cuisineType: "British",
                 recipeName: "Blackberry Fool",
-                photoLarge: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/ff52841a-df5b-498c-b2ae-1d2e09ea658d/large.jpg",
-                photoSmall: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/ff52841a-df5b-498c-b2ae-1d2e09ea658d/small.jpg",
+                photoURLLarge: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/ff52841a-df5b-498c-b2ae-1d2e09ea658d/large.jpg",
+                photoURLSmall: "https://d3jbb8n5wk0qxi.cloudfront.net/photos/ff52841a-df5b-498c-b2ae-1d2e09ea658d/small.jpg",
                 recipeImageSmall: Data(),
                 recipeImageLarge: Data(),
                 sourceURL: "https://www.bbc.co.uk/food/recipes/blackberry_fool_with_11859",
