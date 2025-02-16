@@ -31,7 +31,7 @@ Here are some screenshots showcasing the app's features:
 - Responsive search functionality
 - Smooth recipe browsing experience
 - Code quality enforcement through SwiftLint
-- Test coverage with comprehensive unit and UI tests
+- Test coverage with unit tests.
 
 ## Technologies:
 - Swift 6
