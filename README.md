@@ -9,30 +9,18 @@ A modern iOS recipe management app built with SwiftUI that seamlessly integrates
 
 Here are some screenshots showcasing the app's features:
 
-<div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
-  <div style="margin: 10px;">
-    <img src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipelistdarkmode.png" alt="Recipe List Dark Mode" width="200">
-    <p style="text-align: center; font-size: small;">Recipe List Dark Mode</p>
+  <div align="center">
+    <div style="margin: 10px;">
+    <img width = "33%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipelistdarkmode.png">
+    <img width = "33%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipelistlightmode.png">
+    <img width = "33%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipedetaildarkmode.png">
   </div>
-  <div style="margin: 10px;">
-    <img src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipelistlightmode.png" alt="Recipe List Light Mode" width="200">
-    <p style="text-align: center; font-size: small;">Recipe List Light Mode</p>
-  </div>
-  <div style="margin: 10px;">
-    <img src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipedetaildarkmode.png" alt="Recipe Details Dark Mode" width="200">
-    <p style="text-align: center; font-size: small;">Recipe Details Dark Mode</p>
-  </div>
-  <div style="margin: 10px;">
-    <img src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipedetaillightmode.png" alt="Recipe Details Light Mode" width="200">
-    <p style="text-align: center; font-size: small;">Recipe Details Light Mode</p>
-  </div>
-  <div style="margin: 10px;">
-    <img src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/searchfunctionality.png" alt="Search Functionality" width="200">
-    <p style="text-align: center; font-size: small;">Search Functionality</p>
-  </div>
-  <div style="margin: 10px;">
-    <img src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/webview.png" alt="WebView" width="200">
-    <p style="text-align: center; font-size: small;">WebView</p>
+</div>
+  <div align="center">
+    <div style="margin: 10px;">
+    <img width = "33%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipedetaillightmode.png">
+    <img width = "33%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/searchfunctionality.png">
+    <img width = "33%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/webview.png">
   </div>
 </div>
 
