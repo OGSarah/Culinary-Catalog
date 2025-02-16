@@ -55,7 +55,7 @@ I focused on getting the Core Data setup right (CoreDataController, RecipeDataRe
 2. SwiftUI Implementation
 
 3. Networking and Data Flow:
-I put a lot of effort into designing a solid network layer with NetworkManager and the RecipeDataRepositoryProtocol.
+I put a lot of effort into designing a solid network layer with NetworkManager and making sure to cache the data using CoreData.
 
 4. Error Handling:
 I made sure to handle errors well (NetworkError, error handling in view models) because I wanted the app to be robust. I made sure to test various network conditions using the Network Link Conditioner in Xcode.
