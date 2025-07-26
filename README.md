@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/dd591db49ac547498df52a153c09fb687839a26b/CulinaryCatalog/CulinaryCatalog/Assets.xcassets/AppIcon.appiconset/chefhat.jpg" width="150" style="border: 3px solid white; border-radius: 15px; vertical-align: middle; margin-right: 20px;">
+  <img src="https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/CulinaryCatalog/CulinaryCatalog/Resources/Assets.xcassets/AppIcon.appiconset/chefhat.jpg" width="150" style="border: 3px solid white; border-radius: 15px; vertical-align: middle; margin-right: 20px;">
   <h1 style="display: inline-block; vertical-align: middle;">Culinary Catalog</h1>
 </div>
 
@@ -11,18 +11,18 @@ Here are some screenshots showcasing the app's features:
 
 <div align="center">
   <div style="border: 2px solid white; border-radius: 10px;">
-    <img width="16%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipelistdarkmode.png">
-    <img width="16%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipelistlightmode.png">
-    <img width="16%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipedetaildarkmode.png">
-    <img width="16%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/recipedetaillightmode.png">
-    <img width="16%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/searchfunctionality.png">
-    <img width="16%" src="https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/webview.png">
+    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/recipelistdarkmode.png">
+    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/recipelistlightmode.png">
+    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/recipedetaildarkmode.png">
+    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/recipelistlightmode.png">
+    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/searchfunctionality.png">
+    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/webview.png">
   </div>
 </div>
 
 ## Recorded Demo:
 
-[Watch the Recorded Demo](https://raw.githubusercontent.com/Pearljam66/Culinary-Catalog/main/screenshots/CulinaryCatalogVideo.mov)
+[Watch the Recorded Demo](https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/CulinaryCatalogVideo.mov)
 
 ## Key Features:
 - SwiftUI interface
