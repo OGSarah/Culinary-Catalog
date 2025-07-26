@@ -20,10 +20,6 @@ Here are some screenshots showcasing the app's features:
   </div>
 </div>
 
-## Recorded Demo:
-
-[Watch the Recorded Demo](https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/CulinaryCatalogVideo.mov)
-
 ## Key Features:
 - SwiftUI interface
 - CoreData local storage
