@@ -11,12 +11,12 @@ Here are some screenshots showcasing the app's features:
 
 <div align="center">
   <div style="border: 2px solid white; border-radius: 10px;">
-    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/recipelistdarkmode.png">
-    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/recipelistlightmode.png">
+    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/315cb3822a1957dda208750d117d26a357d1b883/screenshots/recipelistdarkmode.png">
+    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/315cb3822a1957dda208750d117d26a357d1b883/screenshots/recipelistlightmode.png">
+    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/315cb3822a1957dda208750d117d26a357d1b883/screenshots/searchfunctionalitydarkmode.png">
+    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/315cb3822a1957dda208750d117d26a357d1b883/screenshots/searchfunctionalitylightmode.png">
     <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/recipedetaildarkmode.png">
-    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/recipelistlightmode.png">
-    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/searchfunctionality.png">
-    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/webview.png">
+    <img width="16%" src="https://github.com/OGSarah/Culinary-Catalog/blob/b91e80f9bfbf8e00c8ce36ac5d311e66a049072e/screenshots/recipedetaillightmode.png">
   </div>
 </div>
 
