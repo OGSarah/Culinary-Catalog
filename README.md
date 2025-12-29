@@ -37,7 +37,7 @@ Here are some screenshots showcasing the app's features:
 - Async/Await
 - WebKit
 - RESTful API Integration
-- iOS 17 minimum OS target
+- iOS 26 minimum OS target
 
 ## Architecture & Design Patterns:
 - MVVM
