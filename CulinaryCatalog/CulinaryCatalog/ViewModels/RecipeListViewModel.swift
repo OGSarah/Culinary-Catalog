@@ -5,8 +5,8 @@
 //  Created by Sarah Clark on 1/27/25.
 //
 
-import CoreData
 import Combine
+import CoreData
 
 /// Manages the view model logic for a list of recipes.
 ///
@@ -19,7 +19,7 @@ import Combine
 ///
 /// - Note: All operations that update UI state are performed on the main thread to ensure SwiftUI can react to state changes immediately.
 @MainActor
-final class RecipeListViewModel: RecipeListViewModelProtocol {
+final class RecipeListViewModel: @MainActor RecipeListViewModelProtocol {
     /// The list of recipes to be displayed in the view.
     ///
     /// This property is automatically published, triggering UI updates whenever its value changes.
@@ -254,15 +254,17 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
                     }
                     try self.viewContext.save()
 
-                    // Update the recipes array with the new image data
-                    if let index = self.recipes.firstIndex(where: { $0.id == recipe.id }) {
-                        var updatedRecipe = self.recipes[index]
-                        if isLarge {
-                            updatedRecipe.recipeImageLarge = data
-                        } else {
-                            updatedRecipe.recipeImageSmall = data
+                    // Update the recipes array with the new image data on the main actor
+                    Task { @MainActor in
+                        if let index = self.recipes.firstIndex(where: { $0.id == recipe.id }) {
+                            var updatedRecipe = self.recipes[index]
+                            if isLarge {
+                                updatedRecipe.recipeImageLarge = data
+                            } else {
+                                updatedRecipe.recipeImageSmall = data
+                            }
+                            self.recipes[index] = updatedRecipe
                         }
-                        self.recipes[index] = updatedRecipe
                     }
                 }
             } catch {
