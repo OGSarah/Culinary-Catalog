@@ -58,15 +58,21 @@ struct RecipeDetailView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(height: UIScreen.main.bounds.height * 0.3)
+                    .containerRelativeFrame(.vertical) { height, _ in
+                        height * 0.3
+                    }
                     .clipped()
             } else {
                 ProgressView()
-                    .frame(height: UIScreen.main.bounds.height * 0.3)
+                    .containerRelativeFrame(.vertical) { height, _ in
+                        height * 0.3
+                    }
                     .frame(maxWidth: .infinity)
             }
         }
-        .frame(height: UIScreen.main.bounds.height * 0.3)
+        .containerRelativeFrame(.vertical) { height, _ in
+            height * 0.3
+        }
         .background(Color.gray.opacity(0.1))
     }
 
