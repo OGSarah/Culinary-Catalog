@@ -5,7 +5,6 @@
 
 A polished iOS recipe management app built with SwiftUI that seamlessly integrates CoreData and async/await networking to provide a smooth, responsive recipe browsing experience. The app fetches and displays recipe data from a remote API, allowing users to explore, search, and interact with a comprehensive collection of culinary inspirations, with full accessibility support and end-to-end test coverage.
 
-
 ## Screenshots:
 
 Here are some screenshots showcasing the app's features:
@@ -104,15 +103,6 @@ Here are some screenshots showcasing the app's features:
 - 10% on testing, accessibility wiring, and documentation
 
 ### Trade-offs and Decisions:
-- I went with CoreData to save the download images and the rest of the data from the network. 
-
-### Weakest Part of the Project:
-- Testing. See below.
-
-### Additional Information:
-A few insights and constraints:
-
-- Testing: If I had more time I would have updated the unit tests after I did the latest code changes, I would do accessibility testing, and added UI testing.
 - **CoreData over file/SQLite** for caching: chosen so downloaded image data can travel with each recipe record and benefit from CoreData's faulting and migration story if the schema evolves.
 - **Live in-memory seed for UI tests** rather than mocking `NetworkManager` at the SwiftUI layer: the launch-argument approach (`-uiTesting`) keeps production code paths untouched while still giving tests a deterministic state.
 - **Mirror copy of accessibility identifiers** in the UI test target: UI test targets cannot use `@testable import`, so a thin mirror is the pragmatic alternative to a shared package.
