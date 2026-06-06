@@ -8,7 +8,7 @@
 import Foundation
 @testable import CulinaryCatalog
 
-class MockURLSession: URLSessionProtocol {
+final class MockURLSession: URLSessionProtocol, @unchecked Sendable {
     var data: Data?
     var response: URLResponse?
     var error: Error?

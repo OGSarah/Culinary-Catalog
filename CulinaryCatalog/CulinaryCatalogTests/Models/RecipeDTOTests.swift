@@ -131,10 +131,10 @@ struct RecipeDTOTests {
 
         let domainModel = dto.toDomain()
 
-        #expect(domainModel.photoURLLarge == "")
-        #expect(domainModel.photoURLSmall == "")
-        #expect(domainModel.sourceURL == "")
-        #expect(domainModel.youTubeURL == "")
+        #expect(domainModel.photoURLLarge.isEmpty)
+        #expect(domainModel.photoURLSmall.isEmpty)
+        #expect(domainModel.sourceURL.isEmpty)
+        #expect(domainModel.youTubeURL.isEmpty)
     }
 
     @Test func testToDomainConversionWithInvalidUUID() throws {

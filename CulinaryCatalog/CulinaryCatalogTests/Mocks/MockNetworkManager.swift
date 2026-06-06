@@ -12,7 +12,7 @@ import Foundation
 ///
 /// Configure `mockRecipes`, `responseType`, or `shouldThrowError` to drive the desired branch
 /// in tests that exercise `RecipeListViewModel` or other consumers of the network layer.
-final class MockNetworkManager: NetworkManagerProtocol {
+final class MockNetworkManager: NetworkManagerProtocol, @unchecked Sendable {
     var mockRecipes: [RecipeModel] = []
     var shouldThrowError: Bool = false
     var responseType: MockResponseType

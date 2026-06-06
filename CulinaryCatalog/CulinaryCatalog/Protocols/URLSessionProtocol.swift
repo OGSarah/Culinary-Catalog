@@ -12,7 +12,7 @@ import Foundation
 /// This protocol is designed to abstract away the specific implementation of network requests, allowing for easier testing and dependency injection. By conforming to this protocol, different network layer implementations can be used interchangeably without changing the rest of the codebase.
 ///
 /// - Note: This protocol assumes asynchronous operations with error handling, aligning with modern Swift practices for network calls.
-protocol URLSessionProtocol {
+protocol URLSessionProtocol: Sendable {
     /// Performs an asynchronous data task to fetch data from a specified URL.
     ///
     /// This method mirrors the `data(for:delegate:)` method of `URLSession`, but it's designed to work asynchronously with Swift's `async/await` syntax. It allows for a more straightforward, sequential handling of network operations in your code.

@@ -75,7 +75,7 @@ struct RecipeListView: View {
         /// Implements pull-to-refresh functionality to update the recipe list.
         .refreshable {
             do {
-                try await viewModel.refreshRecipes()
+                _ = try await viewModel.refreshRecipes()
                 // If there's a search text, re-filter after refresh
                 if !searchText.isEmpty {
                     viewModel.recipes = viewModel.filteredRecipes(searchText: searchText)
@@ -110,14 +110,12 @@ struct RecipeListView: View {
 /// These previews use mock data to simulate the view's appearance without needing a real backend or database.
 #Preview("Light Mode") {
     let inMemoryController = CoreDataController(.inMemory)
-    let mockRepository = MockRecipeRepository()
     return RecipeListView(viewContext: inMemoryController.persistentContainer.viewContext)
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark Mode") {
     let inMemoryController = CoreDataController(.inMemory)
-    let mockRepository = MockRecipeRepository()
     return RecipeListView(viewContext: inMemoryController.persistentContainer.viewContext)
         .preferredColorScheme(.dark)
 }

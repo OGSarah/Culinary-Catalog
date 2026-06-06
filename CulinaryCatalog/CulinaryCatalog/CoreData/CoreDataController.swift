@@ -23,6 +23,7 @@ class CoreDataController {
     /// The shared instance of `CoreDataController` for use throughout the app.
     ///
     /// This singleton ensures that there's only one instance of the Core Data stack managing data operations across the application, ensuring consistency and efficient resource management.
+    @MainActor
     static let shared = CoreDataController()
 
     /// The persistent container managing the Core Data stack.

@@ -117,7 +117,7 @@ struct ContentView: View {
         }
 
         do {
-            try await viewModel.refreshRecipes()
+            _ = try await viewModel.refreshRecipes()
         } catch {
             print("Refresh failed: \(error.localizedDescription)")
         }

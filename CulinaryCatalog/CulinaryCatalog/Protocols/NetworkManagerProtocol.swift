@@ -8,7 +8,7 @@
 import Foundation
 
 /// Protocol defining the contract for network operations
-protocol NetworkManagerProtocol {
+protocol NetworkManagerProtocol: Sendable {
     /// Fetches recipes from a network source
     ///
     /// - Returns: An array of recipe models retrieved from the network

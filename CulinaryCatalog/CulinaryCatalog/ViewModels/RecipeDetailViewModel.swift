@@ -58,7 +58,7 @@ final class RecipeDetailViewModel: CountryFlagProtocol {
     ///
     /// - Note: Returns a globe emoji (🌍) for unrecognized cuisine types.
     /// - Complexity: O(1) - Constant time complexity due to switch statement.
-    func getCountryFlag(for cuisineType: String) -> String {
+    nonisolated func getCountryFlag(for cuisineType: String) -> String {
         switch cuisineType.lowercased() {
         case "american": return "🇺🇸"
         case "british": return "🇬🇧"

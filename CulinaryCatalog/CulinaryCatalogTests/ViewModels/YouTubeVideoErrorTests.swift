@@ -17,7 +17,7 @@ struct YouTubeVideoErrorTests {
         ]
 
         for error in errorCases {
-            #expect(error as Error != nil)
+            #expect((error as Any) is Error)
         }
     }
 
