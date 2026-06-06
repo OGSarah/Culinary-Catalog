@@ -34,16 +34,19 @@ enum NetworkError: Error {
 
 // For unit testing to check for equality.
 extension NetworkError {
-    /// Checks if two `NetworkError` instances are considered the same for testing purposes.
+    /// Checks whether two `NetworkError` instances represent the same case.
     ///
-    /// This method simplifies unit testing by allowing comparison of `NetworkError` instances without needing to check underlying error details, especially useful for cases where only the type of error matters for test assertions.
+    /// This compares by case only. For `.networkError`, the wrapped underlying error is *not* compared
+    /// — two `.networkError(_)` values are always considered the same case.
     ///
     /// - Parameter other: Another `NetworkError` to compare against.
-    /// - Returns: `true` if the errors match in type, `false` otherwise. Note that for `networkError`, it does not compare the wrapped errors for equality.
+    /// - Returns: `true` if both errors share the same case, `false` otherwise.
     func isSameAs(_ other: NetworkError) -> Bool {
         switch (self, other) {
         case (.invalidURL, .invalidURL),
-            (.invalidResponse, .invalidResponse):
+             (.invalidResponse, .invalidResponse),
+             (.decodingError, .decodingError),
+             (.networkError, .networkError):
             return true
         default:
             return false

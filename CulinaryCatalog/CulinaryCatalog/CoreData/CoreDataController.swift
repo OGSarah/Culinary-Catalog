@@ -38,7 +38,7 @@ class CoreDataController {
 
         if storageType == .inMemory {
             let description = NSPersistentStoreDescription()
-            description.url = URL(fileURLWithPath: "/dev/null")
+            description.type = NSInMemoryStoreType
             self.persistentContainer.persistentStoreDescriptions = [description]
         }
 
@@ -80,4 +80,62 @@ class CoreDataController {
 
         return result
     }()
+
+    /// A deterministic in-memory controller used by the UI test target.
+    ///
+    /// Seeded with a small, predictable recipe set so that UI tests can assert against
+    /// well-known names, cuisines, and ordering without depending on the live network.
+    @MainActor
+    static func uiTestingSeeded() -> CoreDataController {
+        let controller = CoreDataController(.inMemory)
+        let context = controller.persistentContainer.viewContext
+
+        struct Fixture {
+            let name: String
+            let cuisine: String
+            let source: String
+            let youTube: String
+        }
+
+        let fixtures: [Fixture] = [
+            Fixture(
+                name: "Apple & Blackberry Crumble",
+                cuisine: "British",
+                source: "https://www.bbcgoodfood.com/recipes/778642/apple-and-blackberry-crumble",
+                youTube: "https://www.youtube.com/watch?v=4vhcOwVBDO4"
+            ),
+            Fixture(
+                name: "Banoffee Pie",
+                cuisine: "British",
+                source: "https://www.bbcgoodfood.com/recipes/1071/banoffee-pie",
+                youTube: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            ),
+            Fixture(
+                name: "Pizza Margherita",
+                cuisine: "Italian",
+                source: "https://www.example.com/pizza",
+                youTube: "https://www.youtube.com/watch?v=abc12345678"
+            )
+        ]
+
+        for fixture in fixtures {
+            let recipe = Recipe(context: context)
+            recipe.id = UUID()
+            recipe.recipeName = fixture.name
+            recipe.cuisineType = fixture.cuisine
+            recipe.photoURLSmall = ""
+            recipe.photoURLLarge = ""
+            recipe.sourceURL = fixture.source
+            recipe.youTubeURL = fixture.youTube
+        }
+
+        do {
+            try context.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+
+        return controller
+    }
 }

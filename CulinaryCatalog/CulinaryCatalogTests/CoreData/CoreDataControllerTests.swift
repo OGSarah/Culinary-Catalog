@@ -9,6 +9,7 @@ import CoreData
 import Testing
 @testable import CulinaryCatalog
 
+@Suite(.serialized)
 struct CoreDataControllerTests {
 
     private let controller = CoreDataController(.inMemory)
@@ -31,99 +32,106 @@ struct CoreDataControllerTests {
         }
     }
 
-    private func setUp() {
+    @Test func testInMemoryStorageInitialization() throws {
+        let inMemoryController = CoreDataController(.inMemory)
+        let description = inMemoryController.persistentContainer.persistentStoreDescriptions.first
+
+        #expect(description?.type == NSInMemoryStoreType)
+    }
+
+    @Test func testPersistentContainerName() throws {
+        #expect(controller.persistentContainer.name == "CulinaryCatalog")
+    }
+
+    @Test func testInsertAndFetchRecipe() throws {
+        clearCoreData()
+
+        let id = UUID()
+        let entity = Recipe(context: context)
+        entity.id = id
+        entity.cuisineType = "Italian"
+        entity.recipeName = "Pasta Carbonara"
+        entity.photoURLLarge = "large.jpg"
+        entity.photoURLSmall = "small.jpg"
+        entity.sourceURL = "source.com"
+        entity.youTubeURL = "youtube.com"
+
+        try context.save()
+
+        let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
+        let results = try context.fetch(fetchRequest)
+
+        #expect(results.count == 1)
+        #expect(results.first?.id == id)
+        #expect(results.first?.recipeName == "Pasta Carbonara")
+
         clearCoreData()
     }
 
-    @Test func testInitialization() async throws {
-        setUp()
-
-        let id = UUID()
-        let recipe = RecipeModel(
-            cuisineType: "Italian",
-            recipeName: "Pasta Carbonara",
-            photoLarge: "large.jpg",
-            photoSmall: "small.jpg",
-            sourceURL: "source.com",
-            id: id,
-            youTubeURL: "youtube.com"
-        )
-
-        #expect(recipe.cuisineType == "Italian")
-        #expect(recipe.recipeName == "Pasta Carbonara")
-        #expect(recipe.photoURLLarge == "large.jpg")
-        #expect(recipe.photoURLSmall == "small.jpg")
-        #expect(recipe.sourceURL == "source.com")
-        #expect(recipe.id == id)
-        #expect(recipe.youTubeURL == "youtube.com")
-
-        clearCoreData() // Clean up after the test
-    }
-
-    @Test func testInitializationFromEntity() async throws {
-        setUp()
+    @Test func testDeleteRecipe() throws {
+        clearCoreData()
 
         let entity = Recipe(context: context)
         entity.id = UUID()
-        entity.cuisineType = "French"
-        entity.recipeName = "Baguette"
-        entity.photoLarge = "french_large.jpg"
-        entity.photoSmall = "french_small.jpg"
-        entity.sourceURL = "french_recipe.com"
-        entity.youTubeURL = "french_youtube.com"
+        entity.recipeName = "Pasta"
+        entity.cuisineType = "Italian"
+        try context.save()
 
-        let model = RecipeModel(entity: entity)
+        context.delete(entity)
+        try context.save()
 
-        #expect(model.cuisineType == "French")
-        #expect(model.recipeName == "Baguette")
-        #expect(model.photoURLLarge == "french_large.jpg")
-        #expect(model.photoURLSmall == "french_small.jpg")
-        #expect(model.sourceURL == "french_recipe.com")
-        #expect(model.youTubeURL == "french_youtube.com")
-        #expect(model.id != nil) // Check if ID is set, since we set it in the entity
+        let results = try context.fetch(Recipe.fetchRequest())
+        #expect(results.isEmpty)
+    }
+
+    @Test func testFetchByPredicate() throws {
+        clearCoreData()
+
+        let targetID = UUID()
+        let target = Recipe(context: context)
+        target.id = targetID
+        target.recipeName = "Target Recipe"
+
+        let other = Recipe(context: context)
+        other.id = UUID()
+        other.recipeName = "Other Recipe"
+
+        try context.save()
+
+        let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", targetID as CVarArg)
+        let results = try context.fetch(fetchRequest)
+
+        #expect(results.count == 1)
+        #expect(results.first?.recipeName == "Target Recipe")
 
         clearCoreData()
     }
 
-    @Test func testInitializationFromEntityWithNilValues() async throws {
-        setUp()
+    @Test func testImageBinaryDataPersists() throws {
+        clearCoreData()
 
         let entity = Recipe(context: context)
-        // Here, we leave all attributes as nil
+        entity.id = UUID()
+        entity.recipeImageSmall = Data([0xDE, 0xAD, 0xBE, 0xEF])
+        entity.recipeImageLarge = Data([0xCA, 0xFE, 0xBA, 0xBE])
+        try context.save()
 
-        let model = RecipeModel(entity: entity)
-
-        #expect(model.cuisineType.isEmpty == true)
-        #expect(model.recipeName.isEmpty == true)
-        #expect(model.photoURLLarge.isEmpty == true)
-        #expect(model.photoURLSmall.isEmpty == true)
-        #expect(model.sourceURL.isEmpty == true)
-        #expect(model.youTubeURL.isEmpty == true)
-        #expect(model.id != nil) // ID should be set to a new UUID since it was nil
+        let result = try context.fetch(Recipe.fetchRequest()).first
+        #expect(result?.recipeImageSmall == Data([0xDE, 0xAD, 0xBE, 0xEF]))
+        #expect(result?.recipeImageLarge == Data([0xCA, 0xFE, 0xBA, 0xBE]))
 
         clearCoreData()
     }
 
-    @Test func testCodableConformance() async throws {
-        setUp()
+    @MainActor
+    @Test func testPreviewControllerPopulatesData() throws {
+        let preview = CoreDataController.preview
+        let previewContext = preview.persistentContainer.viewContext
 
-        let id = UUID()
-        let recipe = RecipeModel(
-            cuisineType: "Mexican",
-            recipeName: "Tacos",
-            photoLarge: "tacos_large.jpg",
-            photoSmall: "tacos_small.jpg",
-            sourceURL: "tacos.com",
-            id: id,
-            youTubeURL: "tacos_youtube.com"
-        )
+        let results = try previewContext.fetch(Recipe.fetchRequest())
 
-        let jsonData = try JSONEncoder().encode(recipe)
-        let decodedRecipe = try JSONDecoder().decode(RecipeModel.self, from: jsonData)
-
-        #expect(recipe == decodedRecipe)
-
-        clearCoreData()
+        #expect(results.count >= 10)
     }
 
 }

@@ -39,8 +39,10 @@ struct RecipeListView: View {
                 NavigationLink(destination: RecipeDetailView(viewModel: RecipeDetailViewModel(recipe: recipe))) {
                     RecipeRowView(recipe: recipe)
                 }
+                .accessibilityIdentifier(AccessibilityIdentifiers.RecipeList.row(for: recipe.recipeName))
             }
         }
+        .accessibilityIdentifier(AccessibilityIdentifiers.RecipeList.list)
         /// Adds search functionality to the list, allowing users to filter recipes.
         .searchable(text: $searchText, prompt: "Search")
         /// Reacts to changes in the search text, updating the list accordingly.
@@ -87,6 +89,8 @@ struct RecipeListView: View {
             if viewModel.isRefreshing {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
+                    .accessibilityIdentifier(AccessibilityIdentifiers.RecipeList.loadingOverlay)
+                    .accessibilityLabel("Loading recipes")
             }
         }
         /// Displays an alert with any error messages encountered during operations.

@@ -55,11 +55,13 @@ struct ContentView: View {
                         systemImage: "fork.knife",
                         description: Text("Try tapping on the Refresh button to reload recipes.")
                     )
+                    .accessibilityIdentifier(AccessibilityIdentifiers.ContentView.emptyState)
                 } else {
                     RecipeListView(viewContext: viewModel.viewContext)
                 }
             }
             .navigationTitle("Recipes")
+            .accessibilityIdentifier(AccessibilityIdentifiers.ContentView.navigationTitle)
             .background(backgroundGradient)
             .scrollContentBackground(.hidden)
             .toolbar {
@@ -82,20 +84,23 @@ struct ContentView: View {
     ///
     /// The button features an animated icon that rotates when refreshing, providing visual feedback to the user.
     private var refreshButton: some View {
-        Image(systemName: "arrow.clockwise.circle")
-            .foregroundStyle(
-                isRotating ? .blue : .blue.opacity(0.5),
-                isRotating ? .white : .gray
-            )
-            .rotationEffect(Angle(degrees: isRotating ? 360 : 0))
-            .shadow(color: isRotating ? .white : .clear, radius: isRotating ? 15 : 0)
-            .scaleEffect(isRotating ? 1.3 : 1)
-            .animation(.linear(duration: 1), value: isRotating)
-            .onTapGesture {
-                Task {
-                    await self.refreshRecipes()
-                }
-            }
+        Button {
+            Task { await self.refreshRecipes() }
+        } label: {
+            Image(systemName: "arrow.clockwise.circle")
+                .foregroundStyle(
+                    isRotating ? .blue : .blue.opacity(0.5),
+                    isRotating ? .white : .gray
+                )
+                .rotationEffect(Angle(degrees: isRotating ? 360 : 0))
+                .shadow(color: isRotating ? .white : .clear, radius: isRotating ? 15 : 0)
+                .scaleEffect(isRotating ? 1.3 : 1)
+                .animation(.linear(duration: 1), value: isRotating)
+        }
+        .accessibilityIdentifier(AccessibilityIdentifiers.ContentView.refreshButton)
+        .accessibilityLabel("Refresh recipes")
+        .accessibilityHint("Reloads the recipe list from the network")
+        .accessibilityAddTraits(.isButton)
     }
 
     /// Handles the refresh operation for recipes, including managing the animation state.

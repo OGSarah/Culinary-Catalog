@@ -3,7 +3,11 @@
   <h1 style="display: inline-block; vertical-align: middle;">Culinary Catalog</h1>
 </div>
 
+<<<<<<< Updated upstream
 A iOS recipe management app built with SwiftUI that seamlessly integrates CoreData and async/await networking to provide a smooth, responsive recipe browsing experience. The app fetches and displays recipe data from a remote API, allowing users to explore, search, and interact with a comprehensive collection of culinary inspirations.
+=======
+A polished iOS recipe management app built with SwiftUI that seamlessly integrates CoreData and async/await networking to provide a smooth, responsive recipe browsing experience. The app fetches and displays recipe data from a remote API, allowing users to explore, search, and interact with a comprehensive collection of culinary inspirations — with full accessibility support and end-to-end test coverage.
+>>>>>>> Stashed changes
 
 ## Screenshots:
 
@@ -21,18 +25,25 @@ Here are some screenshots showcasing the app's features:
 </div>
 
 ## Key Features:
-- SwiftUI interface
-- CoreData local storage
-- Asynchronous API data fetching
-- Responsive search functionality
-- Smooth recipe browsing experience
+- SwiftUI interface with light and dark mode support
+- CoreData local storage with on-disk and in-memory store types
+- Asynchronous API data fetching with `async/await`
+- Image caching backed by CoreData binary attributes
+- Responsive search across recipe names and cuisine types
+- Pull-to-refresh and animated toolbar refresh button
+- Embedded YouTube video player for selected recipes
+- Robust error handling with user-facing alerts
+- Full VoiceOver support with descriptive labels and hints
+- Dynamic Type support up to accessibility content size categories
+- Centralized accessibility identifiers shared between app and UI test target
 - Code quality enforcement through SwiftLint
-- Test coverage with unit tests.
+- Comprehensive test coverage (unit + UI + accessibility tests)
 
 ## Technologies:
 - Swift 6
 - SwiftUI
-- Swift Testing
+- Swift Testing framework (unit tests)
+- XCTest + XCUIAutomation (UI tests)
 - CoreData
 - Async/Await
 - WebKit
@@ -41,30 +52,62 @@ Here are some screenshots showcasing the app's features:
 
 ## Architecture & Design Patterns:
 - MVVM
-- Singleton
-- Dependency Injection
+- Dependency Injection (network manager and URL session protocols)
+- Protocol-oriented design (`NetworkManagerProtocol`, `URLSessionProtocol`, `RecipeListViewModelProtocol`, `RecipeRowViewModelProtocol`, `YouTubeVideoViewModelProtocol`, `CountryFlagProtocol`)
+- Repository-like CoreData access through `CoreDataController`
+- Strict `@MainActor` boundaries on view models
+- Single source of truth for accessibility identifiers (`AccessibilityIdentifiers`)
 
 ### Focus Areas:
-1. Core Data Integration:
-I focused on getting the Core Data setup right.
+1. **CoreData Integration**
+   - Clean separation between persistent and in-memory stores
+   - Proper use of `NSInMemoryStoreType` for tests and previews
+   - A dedicated `uiTestingSeeded()` factory provides deterministic fixtures for UI tests, eliminating the need to hit the live network during automation.
 
-2. SwiftUI Implementation
+2. **SwiftUI Implementation**
+   - Composable view structure with private computed sub-views (`recipeHeaderSection`, `recipeDetailsCard`, `sourceURLSection`, `youtubeVideoSection`)
+   - Modern `containerRelativeFrame` sizing rather than deprecated geometry readers
+   - Multiple preview configurations (light/dark, empty state) per view
 
-3. Networking and Data Flow:
-I put a lot of effort into designing a solid network layer with NetworkManager.
+3. **Networking and Data Flow**
+   - `NetworkManager` is an `actor` for thread-safe network access
+   - `URLSession` is hidden behind `URLSessionProtocol` so tests can inject `MockURLSession` and assert on every error branch
+   - JSON decoded via Codable DTOs (`RecipeDTO`) and mapped into domain models (`RecipeModel`) to keep transport and domain concerns separate
 
-4. Error Handling:
-I made sure to handle errors well (NetworkError, error handling in view models) because I wanted the app to be robust. I made sure to test various network conditions using the Network Link Conditioner in Xcode.
+4. **Error Handling**
+   - Typed errors (`NetworkError`, `YouTubeVideoError`) with case-by-case test coverage
+   - `RecipeListViewModel.errorMessage` surfaces failures to the UI via SwiftUI alerts
+   - Network failures during refresh do not leave the UI stuck in a loading state
+
+5. **Accessibility**
+   - Every interactive element has an accessibility identifier and a descriptive label
+   - Country flag emojis are read as `"<Cuisine> cuisine"` instead of the underlying glyph
+   - Recipe rows combine cuisine and name into a single VoiceOver-friendly announcement
+   - Dynamic Type behavior is exercised in `CulinaryCatalogAccessibilityTests`
+
+### Testing
+
+- **99 total tests** (unit + UI), all passing
+- **Unit tests** use the Swift Testing framework with `@Test` and `#expect`, organized by feature:
+  - `CoreDataControllerTests`, `RecipeModelTests`, `RecipeDTOTests`, `RecipeDetailStateTests`, `YouTubeVideoModelTests`
+  - `NetworkManagerTests` (uses `MockURLSession` — no network access required)
+  - `NetworkErrorTests`, `YouTubeVideoErrorTests`
+  - `RecipeListViewModelTests`, `RecipeDetailViewModelTests`, `RecipeRowViewModelTests`, `YouTubeViewModelTests`
+  - `StringExtensionTests` (YouTube ID extraction across multiple URL formats)
+- **UI tests** (XCUITest) launch the app with `-uiTesting`, swapping the persistent stack for a seeded in-memory store so tests are deterministic and network-independent:
+  - `CulinaryCatalogUITests` — list, search, navigation, refresh
+  - `CulinaryCatalogAccessibilityTests` — VoiceOver labels, descriptive hints, Dynamic Type at `AccessibilityXL`
+- CoreData test suites use `.serialized` so parallel `NSPersistentContainer` initialization cannot race
+- Test plan keeps unit tests parallel (fast) and UI tests sequential (reliable)
 
 ### Time Spent:
-I spent roughly a 5-day work week on this project. Here's how I split my time:
-
-- 40% on data modeling, Core Data setup, and repository patterns.
-- 30% went into crafting those SwiftUI views and view models.
-- 20% on networking, error handling, and keeping data consistent between offline and online states.
-- 10% was dedicated to testing, debugging, and documenting. 
+- 40% on data modeling, Core Data setup, and protocol boundaries
+- 30% on SwiftUI views, view models, and previews
+- 20% on networking, error handling, and offline/online consistency
+- 10% on testing, accessibility wiring, and documentation
 
 ### Trade-offs and Decisions:
+<<<<<<< Updated upstream
 - I went with CoreData to save the download images and the rest of the data from the network. 
 
 ### Weakest Part of the Project:
@@ -74,3 +117,17 @@ I spent roughly a 5-day work week on this project. Here's how I split my time:
 A few insights and constraints:
 
 - Testing: If I had more time I would have updated the unit tests after I did the latest code changes, I would do accessibility testing, and added UI testing.
+=======
+- **CoreData over file/SQLite** for caching: chosen so downloaded image data can travel with each recipe record and benefit from CoreData's faulting and migration story if the schema evolves.
+- **Live in-memory seed for UI tests** rather than mocking `NetworkManager` at the SwiftUI layer: the launch-argument approach (`-uiTesting`) keeps production code paths untouched while still giving tests a deterministic state.
+- **Mirror copy of accessibility identifiers** in the UI test target: UI test targets cannot use `@testable import`, so a thin mirror is the pragmatic alternative to a shared package.
+- **Serialized CoreData test suites**: parallel `NSPersistentContainer(name:)` initialization can hit a model-cache race; `.serialized` is a low-cost fix that keeps the rest of the unit-test run parallel and fast.
+
+## License
+Proprietary Software
+
+© 2026 SarahUniverse
+
+This software and its source code are the exclusive property of SarahUniverse.
+No part of this software may be reproduced, distributed, or transmitted in any form or by any means without prior written permission.
+>>>>>>> Stashed changes

@@ -39,6 +39,10 @@ struct RecipeRowView: View {
         .background(Color.gray.opacity(0.2))
         .cornerRadius(12)
         .shadow(color: .secondary.opacity(0.4), radius: 4, x: 0, y: 2)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(viewModel.getFormattedCuisineType()) recipe, \(viewModel.getFormattedRecipeName())")
+        .accessibilityHint("Double tap to view recipe details")
+        .accessibilityAddTraits(.isButton)
     }
 
     /// The photo view component of the recipe row.
@@ -57,6 +61,7 @@ struct RecipeRowView: View {
                 .background(Color.gray.opacity(0.1))
                 .cornerRadius(10)
         }
+        .accessibilityIdentifier(AccessibilityIdentifiers.RecipeRow.photo)
     }
 
     /// The text content of the recipe row, showing cuisine type and recipe name.
@@ -67,11 +72,13 @@ struct RecipeRowView: View {
             Text(viewModel.getFormattedCuisineType())
                 .font(.caption)
                 .foregroundColor(.secondary)
+                .accessibilityIdentifier(AccessibilityIdentifiers.RecipeRow.cuisineLabel)
 
             Text(viewModel.getFormattedRecipeName())
                 .font(.headline)
                 .foregroundStyle(.secondary)
                 .lineLimit(2)
+                .accessibilityIdentifier(AccessibilityIdentifiers.RecipeRow.nameLabel)
         }
     }
 }

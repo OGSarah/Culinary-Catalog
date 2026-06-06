@@ -11,35 +11,30 @@ import Testing
 
 struct NetworkErrorTests {
 
-    @Test func testNetworkErrorEquivalence() {
-        // Test invalidURL
-        let invalidURL1 = NetworkError.invalidURL
-        let invalidURL2 = NetworkError.invalidURL
-        #expect(invalidURL1.isSameAs(invalidURL2))
+    @Test func testInvalidURLMatchesItself() {
+        #expect(NetworkError.invalidURL.isSameAs(.invalidURL))
+    }
 
-        // Test invalidResponse
-        let invalidResponse1 = NetworkError.invalidResponse
-        let invalidResponse2 = NetworkError.invalidResponse
-        #expect(invalidResponse1.isSameAs(invalidResponse2))
+    @Test func testInvalidResponseMatchesItself() {
+        #expect(NetworkError.invalidResponse.isSameAs(.invalidResponse))
+    }
 
-        // Test different error types
-        #expect(invalidURL1.isSameAs(invalidResponse1) == false)
+    @Test func testDecodingErrorMatchesItself() {
+        #expect(NetworkError.decodingError.isSameAs(.decodingError))
+    }
 
-        // Test networkError with same underlying error
-        let error1 = NSError(domain: "test", code: 1, userInfo: nil)
-        let networkError1 = NetworkError.networkError(error1)
-        let networkError2 = NetworkError.networkError(error1)
-        #expect(networkError1.isSameAs(networkError2) == false) // Note: isSameAs doesn't check for error equality, just type
+    @Test func testNetworkErrorMatchesAnotherNetworkErrorRegardlessOfUnderlying() {
+        let error1 = NSError(domain: "test", code: 1)
+        let error2 = NSError(domain: "test", code: 2)
+        #expect(NetworkError.networkError(error1).isSameAs(.networkError(error2)))
+    }
 
-        // Test networkError with different underlying errors
-        let error2 = NSError(domain: "test", code: 2, userInfo: nil)
-        let networkError3 = NetworkError.networkError(error2)
-        #expect(networkError1.isSameAs(networkError3) == false)
-
-        // Test decodingError
-        let decodingError1 = NetworkError.decodingError
-        let decodingError2 = NetworkError.decodingError
-        #expect(decodingError1.isSameAs(decodingError2) == false) // Since `isSameAs` doesn't handle this case, this test will fail
+    @Test func testDifferentCasesDoNotMatch() {
+        #expect(NetworkError.invalidURL.isSameAs(.invalidResponse) == false)
+        #expect(NetworkError.decodingError.isSameAs(.invalidURL) == false)
+        #expect(NetworkError.invalidResponse.isSameAs(.decodingError) == false)
+        let underlying = NSError(domain: "test", code: 1)
+        #expect(NetworkError.networkError(underlying).isSameAs(.invalidURL) == false)
     }
 
 }

@@ -5,11 +5,12 @@
 //  Created by Sarah Clark on 2/6/25.
 //
 
-// TODO: Fix tests after updating code
 import CoreData
 import Testing
 @testable import CulinaryCatalog
 
+@MainActor
+@Suite(.serialized)
 struct RecipeListViewModelTests {
 
     private let controller = CoreDataController(.inMemory)
@@ -32,94 +33,168 @@ struct RecipeListViewModelTests {
         }
     }
 
-    private func setUp() {
+    private func makeSUT(
+        recipes: [RecipeModel] = [],
+        shouldThrowError: Bool = false
+    ) -> (viewModel: RecipeListViewModel, network: MockNetworkManager) {
+        let mockNetwork = MockNetworkManager()
+        mockNetwork.mockRecipes = recipes
+        mockNetwork.shouldThrowError = shouldThrowError
+        let viewModel = RecipeListViewModel(viewContext: context, networkManager: mockNetwork)
+        return (viewModel, mockNetwork)
+    }
+
+    private func makeRecipe(
+        cuisineType: String = "Italian",
+        recipeName: String = "Pizza",
+        id: UUID = UUID()
+    ) -> RecipeModel {
+        RecipeModel(
+            cuisineType: cuisineType,
+            recipeName: recipeName,
+            photoURLLarge: "https://example.com/large.jpg",
+            photoURLSmall: "https://example.com/small.jpg",
+            recipeImageSmall: nil,
+            recipeImageLarge: nil,
+            sourceURL: "https://example.com/source",
+            id: id,
+            youTubeURL: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        )
+    }
+
+    @Test func testGetRecipesFromNetworkSuccess() async throws {
         clearCoreData()
-    }
+        let testRecipe = makeRecipe(cuisineType: "Malaysian", recipeName: "Apam Balik")
+        let (sut, _) = makeSUT(recipes: [testRecipe])
 
-    private func makeSUT(recipes: [RecipeModel] = [], shouldThrowError: Bool = false) -> (viewModel: RecipeListViewModel, repository: MockRecipeDataRepository) {
-        let mockRepository = MockRecipeDataRepository()
-        mockRepository.recipesToReturn = recipes
-        mockRepository.shouldThrowError = shouldThrowError
-        let viewModel = RecipeListViewModel(recipeRepository: mockRepository, viewContext: context, networkManager: MockNetworkManager())
-        return (viewModel, mockRepository)
-    }
+        try await sut.getRecipesFromNetwork()
 
-    @Test func testLoadRecipesSuccess() async {
-        setUp()
-
-        let testRecipes = [RecipeModel(
-            cuisineType: "Malaysian",
-            recipeName: "Apam Balik",
-            photoLarge: "someURL",
-            photoSmall: "someURL",
-            sourceURL: "someURL",
-            id: UUID(uuidString: "0c6ca6e7-e32a-4053-b824-1dbf749910d8")!,
-            youTubeURL: "someURL"
-        )]
-        let (sut, _) = makeSUT(recipes: testRecipes)
-
-        await sut.loadRecipes()
-
-        #expect(sut.recipes == testRecipes)
+        #expect(sut.recipes.count == 1)
+        #expect(sut.recipes.first?.recipeName == "Apam Balik")
         #expect(sut.errorMessage == nil)
     }
 
-    @Test func testLoadRecipesFailure() async {
-        setUp()
+    @Test func testGetRecipesFromNetworkFailure() async throws {
+        clearCoreData()
         let (sut, _) = makeSUT(shouldThrowError: true)
 
-        await sut.loadRecipes()
+        try await sut.getRecipesFromNetwork()
 
-        #expect(sut.recipes.isEmpty == true)
+        // Errors are handled internally and surfaced via errorMessage
         #expect(sut.errorMessage != nil)
     }
 
-    @Test func testRefreshRecipesFailure() async {
-        setUp()
-        let (sut, _) = makeSUT(shouldThrowError: true)
-        await sut.loadRecipes()
-        do {
-            try await sut.refreshRecipes()
-            #expect(Bool(false)) // Should not reach here if an error is thrown
-        } catch {
-            #expect(sut.recipes.isEmpty == true)
-            #expect(sut.errorMessage != nil)
-            #expect(sut.isRefreshing == false) // Should be false after refresh fails
-        }
+    @Test func testRefreshRecipesSuccess() async throws {
+        clearCoreData()
+        let testRecipe = makeRecipe(cuisineType: "Italian", recipeName: "Pizza")
+        let (sut, _) = makeSUT(recipes: [testRecipe])
+
+        let returned = try await sut.refreshRecipes()
+
+        #expect(returned.count == 1)
+        #expect(sut.recipes.count == 1)
+        #expect(sut.recipes.first?.recipeName == "Pizza")
+        #expect(sut.errorMessage == nil)
     }
 
-    @Test func testFilteredRecipes() async {
-        setUp()
+    @Test func testRefreshRecipesFailure() async {
+        clearCoreData()
+        let (sut, _) = makeSUT(shouldThrowError: true)
+
+        await #expect(throws: (any Error).self) {
+            _ = try await sut.refreshRecipes()
+        }
+        #expect(sut.isRefreshing == false)
+    }
+
+    @Test func testLoadSortedRecipesFromCoreData() async throws {
+        clearCoreData()
+
+        // Insert recipes directly into Core Data
+        for name in ["Carrot Cake", "Apple Pie", "Banana Bread"] {
+            let entity = Recipe(context: context)
+            entity.id = UUID()
+            entity.recipeName = name
+            entity.cuisineType = "American"
+            entity.photoURLSmall = ""
+            entity.photoURLLarge = ""
+            entity.sourceURL = ""
+            entity.youTubeURL = ""
+        }
+        try context.save()
+
+        let sut = RecipeListViewModel(viewContext: context, networkManager: MockNetworkManager())
+        try await sut.loadSortedRecipesFromCoreData()
+
+        #expect(sut.recipes.count == 3)
+        // Verify alphabetical sort
+        #expect(sut.recipes.map { $0.recipeName } == ["Apple Pie", "Banana Bread", "Carrot Cake"])
+    }
+
+    @Test func testFilteredRecipesByName() async throws {
+        clearCoreData()
         let recipes = [
-            RecipeModel(cuisineType: "Italian", recipeName: "Pizza", photoLarge: "", photoSmall: "", sourceURL: "", id: UUID(), youTubeURL: ""),
-            RecipeModel(cuisineType: "French", recipeName: "Baguette", photoLarge: "", photoSmall: "", sourceURL: "", id: UUID(), youTubeURL: "")
+            makeRecipe(cuisineType: "Italian", recipeName: "Pizza"),
+            makeRecipe(cuisineType: "French", recipeName: "Baguette")
         ]
         let (sut, _) = makeSUT(recipes: recipes)
-        await sut.loadRecipes()
-        #expect(sut.recipes.count == 2)
+        try await sut.getRecipesFromNetwork()
 
-        let filtered = sut.filteredRecipes(searchText: "ita")
+        let filtered = sut.filteredRecipes(searchText: "pizz")
 
         #expect(filtered.count == 1)
-        #expect(filtered.first?.cuisineType == "Italian")
+        #expect(filtered.first?.recipeName == "Pizza")
     }
 
-    @Test func testFilteredRecipesEmptySearch() async {
-        setUp()
-        let recipes = [RecipeModel(
-            cuisineType: "Italian",
-            recipeName: "Pizza",
-            photoLarge: "",
-            photoSmall: "",
-            sourceURL: "",
-            id: UUID(),
-            youTubeURL: "")]
+    @Test func testFilteredRecipesByCuisine() async throws {
+        clearCoreData()
+        let recipes = [
+            makeRecipe(cuisineType: "Italian", recipeName: "Pizza"),
+            makeRecipe(cuisineType: "French", recipeName: "Baguette")
+        ]
         let (sut, _) = makeSUT(recipes: recipes)
-        await sut.loadRecipes()
+        try await sut.getRecipesFromNetwork()
+
+        let filtered = sut.filteredRecipes(searchText: "fren")
+
+        #expect(filtered.count == 1)
+        #expect(filtered.first?.cuisineType == "French")
+    }
+
+    @Test func testFilteredRecipesEmptySearchReturnsAll() async throws {
+        clearCoreData()
+        let recipes = [
+            makeRecipe(cuisineType: "Italian", recipeName: "Pizza"),
+            makeRecipe(cuisineType: "French", recipeName: "Baguette")
+        ]
+        let (sut, _) = makeSUT(recipes: recipes)
+        try await sut.getRecipesFromNetwork()
 
         let filtered = sut.filteredRecipes(searchText: "")
 
-        #expect(filtered == recipes)
+        #expect(filtered.count == 2)
+    }
+
+    @Test func testFilteredRecipesIsCaseInsensitive() async throws {
+        clearCoreData()
+        let recipes = [makeRecipe(cuisineType: "Italian", recipeName: "Pizza")]
+        let (sut, _) = makeSUT(recipes: recipes)
+        try await sut.getRecipesFromNetwork()
+
+        let filtered = sut.filteredRecipes(searchText: "PIZ")
+
+        #expect(filtered.count == 1)
+    }
+
+    @Test func testFilteredRecipesNoMatch() async throws {
+        clearCoreData()
+        let recipes = [makeRecipe(cuisineType: "Italian", recipeName: "Pizza")]
+        let (sut, _) = makeSUT(recipes: recipes)
+        try await sut.getRecipesFromNetwork()
+
+        let filtered = sut.filteredRecipes(searchText: "sushi")
+
+        #expect(filtered.isEmpty)
     }
 
 }

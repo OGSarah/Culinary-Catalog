@@ -31,7 +31,10 @@ struct YouTubeVideoView: UIViewRepresentable {
     /// - Parameter context: The context provided by SwiftUI for managing the view lifecycle, including coordinator if needed.
     /// - Returns: A new `WKWebView` instance configured for YouTube video playback.
     func makeUIView(context: Context) -> WKWebView {
-        return WKWebView()
+        let webView = WKWebView()
+        webView.accessibilityIdentifier = AccessibilityIdentifiers.YouTubeVideo.webView
+        webView.accessibilityLabel = "Recipe video player"
+        return webView
     }
 
     /// Updates the `WKWebView` with the URL of the YouTube video to be displayed.

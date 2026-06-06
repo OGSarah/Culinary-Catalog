@@ -15,16 +15,21 @@ import SwiftUI
 struct CulinaryCatalogApp: App {
     /// An instance of `CoreDataController` for managing Core Data operations throughout the app.
     ///
-    /// This uses the shared instance to ensure a single point of access to Core Data across the application,
-    /// facilitating data consistency and management.
-    let coreDataController = CoreDataController.shared
+    /// In normal launches this uses the shared persistent store. When the process is launched with
+    /// `-uiTesting`, the controller is swapped for an in-memory store pre-seeded with fixture data
+    /// so UI tests can run deterministically without network access.
+    let coreDataController: CoreDataController
+
+    @MainActor
+    init() {
+        if CommandLine.arguments.contains("-uiTesting") {
+            coreDataController = CoreDataController.uiTestingSeeded()
+        } else {
+            coreDataController = CoreDataController.shared
+        }
+    }
 
     var body: some Scene {
-        /// Defines the main scene of the application, which is a single window group for iOS or macOS.
-        ///
-        /// The `WindowGroup` here contains the `ContentView`, which is the root view of our UI hierarchy,
-        /// and injects the managed object context into the environment for use by any child views that
-        /// need to interact with Core Data.
         WindowGroup {
             ContentView(viewContext: coreDataController.persistentContainer.viewContext)
                 .environment(\.managedObjectContext, coreDataController.persistentContainer.viewContext)

@@ -43,6 +43,7 @@ struct RecipeDetailView: View {
                 .padding()
             }
         }
+        .accessibilityIdentifier(AccessibilityIdentifiers.RecipeDetail.scrollView)
         .background(Color(UIColor.systemGroupedBackground))
         .edgesIgnoringSafeArea(.top)
         .navigationBarTitleDisplayMode(.inline)
@@ -62,18 +63,21 @@ struct RecipeDetailView: View {
                         height * 0.3
                     }
                     .clipped()
+                    .accessibilityLabel("Photo of \(viewModel.recipeDetails.recipeName)")
             } else {
                 ProgressView()
                     .containerRelativeFrame(.vertical) { height, _ in
                         height * 0.3
                     }
                     .frame(maxWidth: .infinity)
+                    .accessibilityLabel("Loading recipe photo")
             }
         }
         .containerRelativeFrame(.vertical) { height, _ in
             height * 0.3
         }
         .background(Color.gray.opacity(0.1))
+        .accessibilityIdentifier(AccessibilityIdentifiers.RecipeDetail.headerImage)
     }
 
     /// Displays detailed information about the recipe including name and cuisine type.
@@ -86,10 +90,14 @@ struct RecipeDetailView: View {
                     Text(viewModel.recipeDetails.recipeName)
                         .font(.title2)
                         .fontWeight(.bold)
+                        .accessibilityIdentifier(AccessibilityIdentifiers.RecipeDetail.nameLabel)
+                        .accessibilityAddTraits(.isHeader)
                 }
                 Spacer()
                 Text(viewModel.getCountryFlag(for: viewModel.recipeDetails.cuisineType))
                     .font(.largeTitle)
+                    .accessibilityIdentifier(AccessibilityIdentifiers.RecipeDetail.cuisineFlag)
+                    .accessibilityLabel("\(viewModel.recipeDetails.cuisineType) cuisine")
             }
         }
         .frame(maxWidth: .infinity)
@@ -108,7 +116,7 @@ struct RecipeDetailView: View {
     /// If the source URL exists, this section presents a button-like link to view the original recipe on the web.
     private var sourceURLSection: some View {
         Group {
-            if let url = URL(string: viewModel.recipeDetails.sourceURL) {
+            if let url = URL(string: viewModel.recipeDetails.sourceURL), !viewModel.recipeDetails.sourceURL.isEmpty {
                 Link(destination: url) {
                     HStack {
                         Image(systemName: "safari")
@@ -125,6 +133,9 @@ struct RecipeDetailView: View {
                     .cornerRadius(10)
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
                 }
+                .accessibilityIdentifier(AccessibilityIdentifiers.RecipeDetail.sourceLink)
+                .accessibilityLabel("View original recipe")
+                .accessibilityHint("Opens the source web page in your browser")
             }
         }
     }
@@ -139,6 +150,7 @@ struct RecipeDetailView: View {
                     Text("Watch the Recipe in Action:")
                         .font(.headline)
                         .padding(.bottom, 8)
+                        .accessibilityAddTraits(.isHeader)
 
                     YouTubeVideoView(videoID: videoID)
                         .frame(height: 250)
@@ -153,6 +165,7 @@ struct RecipeDetailView: View {
                 }))
                 .cornerRadius(10)
                 .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
+                .accessibilityIdentifier(AccessibilityIdentifiers.RecipeDetail.videoSection)
             }
         }
     }
