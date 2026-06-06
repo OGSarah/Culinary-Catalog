@@ -46,6 +46,10 @@ Here are some screenshots showcasing the app's features:
 - RESTful API Integration
 - iOS 26 minimum OS target
 
+## Data Source:
+
+Recipe data is fetched from a companion repository, [Culinary-Catalog-Data](https://github.com/OGSarah/Culinary-Catalog-Data), which hosts a static `desserts.json` file via GitHub Pages. Keeping the data in a separate repo makes it easy to update the recipe catalog (adding new recipes, fixing video links, tweaking descriptions) without shipping a new build of the app. The same JSON is bundled inside the app as `recipes.json` and used as an offline fallback when the network is unreachable.
+
 ## Architecture & Design Patterns:
 - MVVM
 - Dependency Injection (network manager and URL session protocols)
