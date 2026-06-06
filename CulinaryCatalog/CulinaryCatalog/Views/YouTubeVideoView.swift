@@ -14,14 +14,14 @@ import WebKit
 struct YouTubeVideoView: UIViewRepresentable {
     /// The view model that holds the logic and state for managing the YouTube video.
     ///
-    /// This `@StateObject` lifecycle manages the `YouTubeVideoViewModel`, ensuring that changes in the model (like video ID changes) trigger UI updates.
-    @StateObject private var viewModel: YouTubeVideoViewModel
+    /// Backed by `@State` to own the `@Observable` `YouTubeVideoViewModel`, ensuring changes in the model (like video ID changes) trigger UI updates.
+    @State private var viewModel: YouTubeVideoViewModel
 
     /// Initializes the view with a specific YouTube video ID.
     ///
     /// - Parameter videoID: The unique identifier for the YouTube video to be embedded. This ID is used to construct the YouTube embed URL.
     init(videoID: String) {
-        _viewModel = StateObject(wrappedValue: YouTubeVideoViewModel(videoID: videoID))
+        _viewModel = State(wrappedValue: YouTubeVideoViewModel(videoID: videoID))
     }
 
     /// Creates and returns an instance of `WKWebView` for embedding the video.

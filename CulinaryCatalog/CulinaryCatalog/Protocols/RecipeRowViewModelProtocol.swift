@@ -8,7 +8,8 @@
 import SwiftUI
 
 /// Defines the interface for view models used to manage and display data for a single recipe row in a list or table view.
-protocol RecipeRowViewModelProtocol: ObservableObject {
+@MainActor
+protocol RecipeRowViewModelProtocol {
     /// The model containing the data for a recipe row, used for UI rendering.
     var recipe: RecipeRowModel { get }
 

@@ -19,8 +19,8 @@ import SwiftUI
 struct RecipeDetailView: View {
     /// The view model managing the state and logic for this recipe detail view.
     ///
-    /// This `@ObservedObject` ensures that the view updates automatically when the view model's published properties change.
-    @ObservedObject private var viewModel: RecipeDetailViewModel
+    /// Holds a reference to an `@Observable` view model so SwiftUI automatically tracks reads and re-renders when the model changes.
+    private let viewModel: RecipeDetailViewModel
 
     /// Initializes the `RecipeDetailView` with a given recipe.
     ///

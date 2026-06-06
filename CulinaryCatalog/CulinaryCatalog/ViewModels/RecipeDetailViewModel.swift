@@ -12,8 +12,10 @@ import SwiftUI
 /// This view model handles recipe-specific operations, including transforming recipe data
 /// and providing country flags for different cuisine types.
 ///
-/// - Note: Conforms to `ObservableObject` for reactive UI updates and `CountryFlagProtocol` for flag retrieval.
-final class RecipeDetailViewModel: ObservableObject, CountryFlagProtocol {
+/// - Note: Uses the `@Observable` macro for reactive UI updates, isolated to the `MainActor`, and conforms to `CountryFlagProtocol` for flag retrieval.
+@MainActor
+@Observable
+final class RecipeDetailViewModel: CountryFlagProtocol {
 
     /// The original recipe model used as the source of truth.
     ///
@@ -21,13 +23,12 @@ final class RecipeDetailViewModel: ObservableObject, CountryFlagProtocol {
     /// while preventing external modification.
     private let recipe: RecipeModel
 
-    /// A published state representing the current recipe details.
+    /// The current recipe details exposed to the view.
     ///
-    /// This property is marked as `@Published` to trigger UI updates when its value changes.
-    /// It is privately settable to maintain encapsulation.
+    /// Mutations trigger UI updates via the `@Observable` macro. It is privately settable to maintain encapsulation.
     ///
     /// - SeeAlso: `RecipeDetailState`
-    @Published private(set) var recipeDetails: RecipeDetailState
+    private(set) var recipeDetails: RecipeDetailState
 
     /// Initializes a new RecipeDetailViewModel with a given recipe.
     ///

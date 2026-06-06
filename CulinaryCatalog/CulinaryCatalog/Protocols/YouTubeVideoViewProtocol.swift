@@ -8,7 +8,8 @@
 import Foundation
 
 /// Protocol to define the interface for view models managing YouTube video data within the application.
-protocol YouTubeVideoViewModelProtocol: ObservableObject {
+@MainActor
+protocol YouTubeVideoViewModelProtocol {
     /// The URL for embedding the YouTube video, if valid and available.
     var embedURL: URL? { get }
 

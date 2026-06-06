@@ -11,7 +11,8 @@ import SwiftUI
 ///
 /// This protocol outlines the requirements for any view model that manages
 /// a list of recipes, including loading, refreshing, and filtering operations.
-protocol RecipeListViewModelProtocol: ObservableObject {
+@MainActor
+protocol RecipeListViewModelProtocol {
     /// The list of recipes currently available for display.
     ///
     /// This property is asynchronous to allow for loading recipes from a remote or local source.

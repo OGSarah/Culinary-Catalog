@@ -8,6 +8,7 @@
 import Testing
 @testable import CulinaryCatalog
 
+@MainActor
 struct YouTubeViewModelTests {
 
     @Test func testValidVideoIDInitialization() async throws {

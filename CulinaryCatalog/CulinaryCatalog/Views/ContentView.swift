@@ -16,7 +16,7 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     /// The view model that handles the recipe list logic.
-    @StateObject private var viewModel: RecipeListViewModel
+    @State private var viewModel: RecipeListViewModel
 
     /// State for controlling the refresh button's animation.
     @State private var isRotating = false
@@ -29,7 +29,7 @@ struct ContentView: View {
     ///
     /// - Parameter viewContext: The Core Data managed object context provided by the environment.
     init(viewContext: NSManagedObjectContext) {
-        _viewModel = StateObject(wrappedValue: RecipeListViewModel(viewContext: viewContext, networkManager: NetworkManager.shared))
+        _viewModel = State(wrappedValue: RecipeListViewModel(viewContext: viewContext, networkManager: NetworkManager.shared))
     }
 
     /// Defines the background gradient for the content view.
@@ -152,25 +152,13 @@ struct ContentView: View {
 
 #Preview("Empty Recipes - Light Mode") {
     let emptyController = CoreDataController(.inMemory)
-    let emptyViewModel = RecipeListViewModel(
-        viewContext: emptyController.persistentContainer.viewContext,
-        networkManager: MockNetworkManager()
-    )
-
     return ContentView(viewContext: emptyController.persistentContainer.viewContext)
-        .environmentObject(emptyViewModel)
         .preferredColorScheme(.light)
 }
 
 #Preview("Empty Recipes - Dark Mode") {
     let emptyController = CoreDataController(.inMemory)
-    let emptyViewModel = RecipeListViewModel(
-        viewContext: emptyController.persistentContainer.viewContext,
-        networkManager: MockNetworkManager()
-    )
-
     return ContentView(viewContext: emptyController.persistentContainer.viewContext)
-        .environmentObject(emptyViewModel)
         .preferredColorScheme(.dark)
 }
 

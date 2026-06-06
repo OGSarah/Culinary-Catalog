@@ -9,8 +9,10 @@ import Foundation
 
 /// A concrete implementation of `RecipeRowViewModelProtocol` for handling recipe row data in a list view.
 ///
-/// This class is designed to manage the data and presentation logic for individual rows in a recipe list, transforming complex `RecipeModel` data into a more UI-friendly `RecipeRowModel`. It conforms to `ObservableObject` to support reactive UI updates in SwiftUI.
-final class RecipeRowViewModel: ObservableObject, RecipeRowViewModelProtocol {
+/// This class is designed to manage the data and presentation logic for individual rows in a recipe list, transforming complex `RecipeModel` data into a more UI-friendly `RecipeRowModel`. It is isolated to the `MainActor` and uses the `@Observable` macro to support reactive UI updates in SwiftUI.
+@MainActor
+@Observable
+final class RecipeRowViewModel: RecipeRowViewModelProtocol {
     /// The `RecipeRowModel` instance containing the simplified data for the recipe row.
     ///
     /// This property holds all necessary information for displaying a single recipe row, including ID, cuisine type, name, and photo URL.

@@ -9,6 +9,7 @@ import Foundation
 import Testing
 @testable import CulinaryCatalog
 
+@MainActor
 struct RecipeRowViewModelTests {
 
     private func makeRecipe(

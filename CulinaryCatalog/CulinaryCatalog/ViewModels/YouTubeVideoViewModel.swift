@@ -14,9 +14,11 @@ import Foundation
 /// - Generating embed URLs
 /// - Managing error states
 ///
-/// - Note: Conforms to `ObservableObject` for reactive UI updates
+/// - Note: Uses the `@Observable` macro for reactive UI updates and is isolated to the `MainActor`.
 /// - SeeAlso: `YouTubeVideoModel`, `YouTubeVideoView`
-final class YouTubeVideoViewModel: ObservableObject, YouTubeVideoViewModelProtocol {
+@MainActor
+@Observable
+final class YouTubeVideoViewModel: YouTubeVideoViewModelProtocol {
     /// The underlying data model for the YouTube video
     ///
     /// Provides core data and URL generation logic for the video
@@ -24,15 +26,13 @@ final class YouTubeVideoViewModel: ObservableObject, YouTubeVideoViewModelProtoc
 
     /// The generated embed URL for the YouTube video
     ///
-    /// - Note: Published to trigger UI updates when the URL changes
     /// - Returns: A valid YouTube embed URL or `nil` if generation fails
-    @Published var embedURL: URL?
+    var embedURL: URL?
 
     /// Stores any errors that occur during video ID validation or URL generation
     ///
-    /// - Note: Published to allow UI to react to error states
     /// - Important: Can be set to various error types defined in `YouTubeVideoError`
-    @Published var error: Error?
+    var error: Error?
 
     /// Initializes a new YouTube video view model
     ///
@@ -42,14 +42,11 @@ final class YouTubeVideoViewModel: ObservableObject, YouTubeVideoViewModelProtoc
     /// - Note: Automatically validates the video ID and generates an embed URL
     /// - Precondition: Video ID should be a valid 11-character string
     init(videoID: String) {
-        // Create the underlying model
         let model = YouTubeVideoModel(videoID: videoID)
         self.model = model
 
-        // Validate first before setting embedURL
         validateVideoID(videoID)
 
-        // Only set embedURL if there's no error (i.e., if validation passed)
         if error == nil {
             self.embedURL = model.embedURL
         } else {
@@ -69,9 +66,7 @@ final class YouTubeVideoViewModel: ObservableObject, YouTubeVideoViewModelProtoc
     /// - Note: Sets the `error` property if validation fails
     /// - SeeAlso: `YouTubeVideoError.invalidVideoID`
     internal func validateVideoID(_ videoID: String) {
-        // Validate video ID length and non-emptiness
         guard !videoID.isEmpty, videoID.count == 11 else {
-            // Set error if validation fails
             error = YouTubeVideoError.invalidVideoID
             return
         }

@@ -9,6 +9,7 @@ import SwiftUI
 import Testing
 @testable import CulinaryCatalog
 
+@MainActor
 struct RecipeDetailViewModelTests {
 
     private func makeRecipe(

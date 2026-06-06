@@ -16,7 +16,7 @@ struct RecipeListView: View {
     @State private var searchText = ""
 
     /// The view model managing the list of recipes, including loading and refreshing operations.
-    @StateObject private var viewModel: RecipeListViewModel
+    @State private var viewModel: RecipeListViewModel
 
     /// Indicates whether the list is currently loading more recipes.
     @State private var isLoading = false
@@ -30,7 +30,7 @@ struct RecipeListView: View {
     ///   - recipeRepository: The repository for fetching and managing recipe data.
     ///   - viewContext: The Core Data managed object context for local data operations.
     init(viewContext: NSManagedObjectContext) {
-        _viewModel = StateObject(wrappedValue: RecipeListViewModel(viewContext: viewContext, networkManager: NetworkManager.shared))
+        _viewModel = State(wrappedValue: RecipeListViewModel(viewContext: viewContext, networkManager: NetworkManager.shared))
     }
 
     var body: some View {

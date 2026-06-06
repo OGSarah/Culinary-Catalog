@@ -5,7 +5,6 @@
 //  Created by Sarah Clark on 1/27/25.
 //
 
-import Combine
 import CoreData
 
 /// Manages the view model logic for a list of recipes.
@@ -19,21 +18,22 @@ import CoreData
 ///
 /// - Note: All operations that update UI state are performed on the main thread to ensure SwiftUI can react to state changes immediately.
 @MainActor
-final class RecipeListViewModel: @MainActor RecipeListViewModelProtocol {
+@Observable
+final class RecipeListViewModel: RecipeListViewModelProtocol {
     /// The list of recipes to be displayed in the view.
     ///
-    /// This property is automatically published, triggering UI updates whenever its value changes.
-    @Published var recipes: [RecipeModel] = []
+    /// Mutations to this property trigger UI updates via the `@Observable` macro.
+    var recipes: [RecipeModel] = []
 
     /// Indicates whether a recipe refresh operation is currently in progress.
     ///
     /// This state is used to show loading indicators or manage UI behavior during asynchronous operations.
-    @Published private(set) var isRefreshing = false
+    private(set) var isRefreshing = false
 
     /// Stores any error messages that occur during recipe operations.
     ///
     /// This property can be used to display error messages in the UI or for internal error tracking.
-    @Published private(set) var errorMessage: String?
+    private(set) var errorMessage: String?
 
     /// The managed object context for Core Data operations.
     ///
@@ -44,11 +44,6 @@ final class RecipeListViewModel: @MainActor RecipeListViewModelProtocol {
     ///
     /// Manages network requests, allowing for dependency injection or testing with mock network responses.
     private let networkManager: NetworkManagerProtocol
-
-    /// A set of cancellables for managing Combine subscriptions.
-    ///
-    /// This set is used to store and manage any Combine publishers used within the view model.
-    private var cancellables = Set<AnyCancellable>()
 
     /// Initializes the view model with necessary dependencies.
     ///

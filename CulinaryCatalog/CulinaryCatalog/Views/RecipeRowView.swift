@@ -18,14 +18,14 @@ import SwiftUI
 struct RecipeRowView: View {
     /// The view model for the recipe row, managing the data and logic for this view.
     ///
-    /// Using `@StateObject` ensures that the view model's lifecycle is tied to this view's lifetime, automatically updating the UI when the model changes.
-    @StateObject private var viewModel: RecipeRowViewModel
+    /// Using `@State` to own an `@Observable` view model ties its lifecycle to this view's lifetime and automatically updates the UI when the model changes.
+    @State private var viewModel: RecipeRowViewModel
 
     /// Initializes a new `RecipeRowView` with the provided recipe.
     ///
     /// - Parameter recipe: The `RecipeModel` to display in this row, which will be converted into a view model for managing display logic.
     init(recipe: RecipeModel) {
-        _viewModel = StateObject(wrappedValue: RecipeRowViewModel(recipe: recipe))
+        _viewModel = State(wrappedValue: RecipeRowViewModel(recipe: recipe))
     }
 
     var body: some View {
