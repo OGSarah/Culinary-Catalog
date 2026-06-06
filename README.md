@@ -74,11 +74,3 @@ I spent roughly a 5-day work week on this project. Here's how I split my time:
 A few insights and constraints:
 
 - Testing: If I had more time I would have updated the unit tests after I did the latest code changes, I would do accessibility testing, and added UI testing.
-
-## License
-Proprietary Software
-
-© 2026 SarahUniverse
-
-This software and its source code are the exclusive property of SarahUniverse.
-No part of this software may be reproduced, distributed, or transmitted in any form or by any means without prior written permission.
