@@ -100,6 +100,10 @@ Recipe data is fetched from a companion repository, [Culinary-Catalog-Data](http
 - CoreData test suites use `.serialized` so parallel `NSPersistentContainer` initialization cannot race
 - Test plan keeps unit tests parallel (fast) and UI tests sequential (reliable)
 
+### Continuous Integration
+
+The full test plan (unit + UI) runs automatically on GitHub Actions for every push to `main` and every pull request targeting `main`. The workflow lives at [`.github/workflows/tests.yml`](.github/workflows/tests.yml) and uses `xcodebuild test` against an iOS Simulator destination on a `macos-latest` runner. Test results are uploaded as an `.xcresult` bundle artifact on each run.
+
 ### Time Spent:
 - 40% on data modeling, Core Data setup, and protocol boundaries
 - 30% on SwiftUI views, view models, and previews
