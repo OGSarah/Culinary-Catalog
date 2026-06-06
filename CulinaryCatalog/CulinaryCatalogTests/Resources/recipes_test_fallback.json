@@ -1,0 +1,13 @@
+{
+    "recipes": [
+        {
+            "cuisine": "Italian",
+            "name": "Bundled Margherita",
+            "photo_url_large": "https://example.com/large.jpg",
+            "photo_url_small": "https://example.com/small.jpg",
+            "uuid": "11111111-1111-1111-1111-111111111111",
+            "source_url": "https://example.com/source",
+            "youtube_url": "https://example.com/video"
+        }
+    ]
+}

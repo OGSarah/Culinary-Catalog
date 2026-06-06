@@ -120,7 +120,35 @@ struct NetworkManagerTests {
         let mockSession = MockURLSession()
         mockSession.error = NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet)
 
-        let networkManager = NetworkManager(baseURL: validURL, urlSession: mockSession)
+        let networkManager = NetworkManager(baseURL: validURL, urlSession: mockSession, fallbackBundle: nil)
+
+        await #expect(throws: (any Error).self) {
+            _ = try await networkManager.fetchRecipesFromNetwork()
+        }
+    }
+
+    @Test func testTransportErrorFallsBackToBundledRecipes() async throws {
+        let mockSession = MockURLSession()
+        mockSession.error = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotFindHost)
+
+        let networkManager = NetworkManager(
+            baseURL: validURL,
+            urlSession: mockSession,
+            fallbackBundle: Bundle(for: BundleToken.self),
+            fallbackResourceName: "recipes_test_fallback"
+        )
+
+        let recipes = try await networkManager.fetchRecipesFromNetwork()
+
+        #expect(!recipes.isEmpty)
+        #expect(recipes.first?.recipeName == "Bundled Margherita")
+    }
+
+    @Test func testTransportErrorWithoutBundleStillThrows() async {
+        let mockSession = MockURLSession()
+        mockSession.error = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotFindHost)
+
+        let networkManager = NetworkManager(baseURL: validURL, urlSession: mockSession, fallbackBundle: nil)
 
         await #expect(throws: (any Error).self) {
             _ = try await networkManager.fetchRecipesFromNetwork()
@@ -128,3 +156,5 @@ struct NetworkManagerTests {
     }
 
 }
+
+private final class BundleToken {}
