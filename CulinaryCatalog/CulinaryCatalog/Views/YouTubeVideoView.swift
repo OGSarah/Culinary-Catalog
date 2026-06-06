@@ -31,26 +31,51 @@ struct YouTubeVideoView: UIViewRepresentable {
     /// - Parameter context: The context provided by SwiftUI for managing the view lifecycle, including coordinator if needed.
     /// - Returns: A new `WKWebView` instance configured for YouTube video playback.
     func makeUIView(context: Context) -> WKWebView {
-        let webView = WKWebView()
+        let configuration = WKWebViewConfiguration()
+        configuration.allowsInlineMediaPlayback = true
+        configuration.mediaTypesRequiringUserActionForPlayback = []
+
+        let webView = WKWebView(frame: .zero, configuration: configuration)
+        webView.scrollView.isScrollEnabled = false
         webView.accessibilityIdentifier = AccessibilityIdentifiers.YouTubeVideo.webView
         webView.accessibilityLabel = "Recipe video player"
         return webView
     }
 
-    /// Updates the `WKWebView` with the URL of the YouTube video to be displayed.
+    /// Updates the `WKWebView` with the YouTube video to be displayed.
     ///
-    /// This method is called whenever the view needs updating, such as when the video ID changes or the view reappears. It checks for a valid URL from the view model and loads it into the web view.
-    ///
-    /// - Parameters:
-    ///   - uiView: The `WKWebView` instance to update with the new or current video URL.
-    ///   - context: The context provided by SwiftUI for managing updates, can be used for coordinator-related operations.
+    /// Loads the embed inside an HTML iframe with a `https://www.youtube.com` base URL.
+    /// Loading the embed URL directly as a top-level navigation causes YouTube's player
+    /// to report "Error 153: video player configuration error" because the script
+    /// detects it isn't running inside an iframe on a YouTube-origin host page.
     func updateUIView(_ uiView: WKWebView, context: Context) {
-        // Check if there's a valid URL for the YouTube video to embed
         guard let youtubeURL = viewModel.embedURL else { return }
 
-        // Load the video URL into the web view
-        let request = URLRequest(url: youtubeURL)
-        uiView.load(request)
+        let html = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <style>
+        html, body { margin: 0; padding: 0; background: #000; height: 100%; }
+        .wrapper { position: relative; width: 100%; height: 100%; }
+        iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        </style>
+        </head>
+        <body>
+        <div class="wrapper">
+        <iframe src="\(youtubeURL.absoluteString)?playsinline=1&rel=0&modestbranding=1"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+        </body>
+        </html>
+        """
+
+        // Use a non-YouTube baseURL so the iframe is treated as a normal
+        // cross-origin embed. Using `youtube.com` as the base made the player's
+        // initialization sometimes fail with embed errors (e.g. 152).
+        uiView.loadHTMLString(html, baseURL: URL(string: "https://culinarycatalog.local"))
     }
 
 }

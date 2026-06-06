@@ -15,7 +15,7 @@ struct YouTubeVideoModelTests {
         let model = YouTubeVideoModel(videoID: videoID)
 
         #expect(model.embedURL != nil)
-        #expect(model.embedURL?.absoluteString == "https://www.youtube.com/embed/\(videoID)")
+        #expect(model.embedURL?.absoluteString == "https://www.youtube-nocookie.com/embed/\(videoID)")
     }
 
     @Test func testEmbedURLWithSpecialCharactersInID() {
@@ -23,7 +23,7 @@ struct YouTubeVideoModelTests {
         let model = YouTubeVideoModel(videoID: videoIDWithSpecialChars)
 
         #expect(model.embedURL != nil)
-        #expect(model.embedURL?.absoluteString == "https://www.youtube.com/embed/\(videoIDWithSpecialChars)")
+        #expect(model.embedURL?.absoluteString == "https://www.youtube-nocookie.com/embed/\(videoIDWithSpecialChars)")
     }
 
 }
