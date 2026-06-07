@@ -21,12 +21,6 @@ struct ContentView: View {
     /// State for controlling the refresh button's animation.
     @State private var isRotating = false
 
-    /// The network manager used to refresh recipes from the remote source.
-    ///
-    /// Held so the same instance can be passed down to `RecipeListView`, ensuring the entire
-    /// screen graph shares one network manager (and uses the UI-testing stub when applicable).
-    private let networkManager: NetworkManagerProtocol
-
     /// Initializes the view with a managed object context from Core Data.
     ///
     /// This initializer sets up the necessary dependencies for displaying and managing recipes:
@@ -41,7 +35,6 @@ struct ContentView: View {
         viewContext: NSManagedObjectContext,
         networkManager: NetworkManagerProtocol = NetworkManager.shared
     ) {
-        self.networkManager = networkManager
         _viewModel = State(wrappedValue: RecipeListViewModel(viewContext: viewContext, networkManager: networkManager))
     }
 
@@ -70,7 +63,7 @@ struct ContentView: View {
                     )
                     .accessibilityIdentifier(AccessibilityIdentifiers.ContentView.emptyState)
                 } else {
-                    RecipeListView(viewContext: viewModel.viewContext, networkManager: networkManager)
+                    RecipeListView(viewModel: viewModel)
                 }
             }
             .navigationTitle("Recipes")
@@ -147,31 +140,14 @@ struct ContentView: View {
 }
 
 // MARK: - Preview
-/// Previews for different scenarios and UI modes.
-///
-/// These previews simulate various states of the `ContentView`:
-/// - Light and dark mode for general functionality.
-/// - Empty recipe states in both light and dark modes, using mock data to test the "No Recipes" UI.
-
 #Preview("Light Mode") {
-    ContentView(viewContext: CoreDataController.preview.persistentContainer.viewContext)
+    let emptyController = CoreDataController(.inMemory)
+    return ContentView(viewContext: emptyController.persistentContainer.viewContext)
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark Mode") {
-    ContentView(viewContext: CoreDataController.preview.persistentContainer.viewContext)
-        .preferredColorScheme(.dark)
-}
-
-#Preview("Empty Recipes - Light Mode") {
-    let emptyController = CoreDataController(.inMemory)
-    return ContentView(viewContext: emptyController.persistentContainer.viewContext)
-        .preferredColorScheme(.light)
-}
-
-#Preview("Empty Recipes - Dark Mode") {
     let emptyController = CoreDataController(.inMemory)
     return ContentView(viewContext: emptyController.persistentContainer.viewContext)
         .preferredColorScheme(.dark)
 }
-

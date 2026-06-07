@@ -16,26 +16,17 @@ struct RecipeListView: View {
     @State private var searchText = ""
 
     /// The view model managing the list of recipes, including loading and refreshing operations.
-    @State private var viewModel: RecipeListViewModel
+    ///
+    /// Owned by the parent (`ContentView`) and passed in so the entire screen graph shares a single
+    /// view model. This avoids a race on fresh install where a second, separate view model would
+    /// read from Core Data before the initial network fetch had finished persisting.
+    let viewModel: RecipeListViewModel
 
     /// Indicates whether the list is currently loading more recipes.
     @State private var isLoading = false
 
     /// Stores any error messages that should be displayed to the user.
     @State private var errorMessage: String?
-
-    /// Initializes the `RecipeListView` with necessary dependencies for data management.
-    ///
-    /// - Parameters:
-    ///   - viewContext: The Core Data managed object context for local data operations.
-    ///   - networkManager: The network manager used for refresh operations. Defaults to
-    ///     `NetworkManager.shared` so previews and existing call sites keep working.
-    init(
-        viewContext: NSManagedObjectContext,
-        networkManager: NetworkManagerProtocol = NetworkManager.shared
-    ) {
-        _viewModel = State(wrappedValue: RecipeListViewModel(viewContext: viewContext, networkManager: networkManager))
-    }
 
     var body: some View {
         List {
@@ -61,19 +52,6 @@ struct RecipeListView: View {
                 } catch {
                     errorMessage = error.localizedDescription
                 }
-            }
-        }
-        /// Loads recipes when the view appears, either all recipes or filtered if there's a search text.
-        .task {
-            do {
-                // Load recipes on view appearance, respecting any existing search text
-                if searchText.isEmpty {
-                    try await viewModel.loadSortedRecipesFromCoreData()
-                } else {
-                    viewModel.recipes = viewModel.filteredRecipes(searchText: searchText)
-                }
-            } catch {
-                errorMessage = error.localizedDescription
             }
         }
         /// Implements pull-to-refresh functionality to update the recipe list.
@@ -114,13 +92,21 @@ struct RecipeListView: View {
 /// These previews use mock data to simulate the view's appearance without needing a real backend or database.
 #Preview("Light Mode") {
     let inMemoryController = CoreDataController(.inMemory)
-    return RecipeListView(viewContext: inMemoryController.persistentContainer.viewContext)
+    let viewModel = RecipeListViewModel(
+        viewContext: inMemoryController.persistentContainer.viewContext,
+        networkManager: NetworkManager.shared
+    )
+    return RecipeListView(viewModel: viewModel)
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark Mode") {
     let inMemoryController = CoreDataController(.inMemory)
-    return RecipeListView(viewContext: inMemoryController.persistentContainer.viewContext)
+    let viewModel = RecipeListViewModel(
+        viewContext: inMemoryController.persistentContainer.viewContext,
+        networkManager: NetworkManager.shared
+    )
+    return RecipeListView(viewModel: viewModel)
         .preferredColorScheme(.dark)
 }
 
