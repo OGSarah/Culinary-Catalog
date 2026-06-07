@@ -2,7 +2,7 @@
   "fill" : {
     "linear-gradient" : [
       "srgb:0.00000,0.32852,0.57488,1.00000",
-      "srgb:0.00000,0.00000,0.00000,1.00000"
+      "srgb:0.12984,0.12985,0.12984,1.00000"
     ],
     "orientation" : {
       "start" : {
@@ -29,20 +29,7 @@
       "layers" : [
         {
           "fill" : {
-            "linear-gradient" : [
-              "srgb:0.58082,0.08843,0.31864,1.00000",
-              "srgb:0.58072,0.06673,0.00000,1.00000"
-            ],
-            "orientation" : {
-              "start" : {
-                "x" : 0.5,
-                "y" : 0
-              },
-              "stop" : {
-                "x" : 0.5,
-                "y" : 0.7
-              }
-            }
+            "solid" : "srgb:1.00000,0.18574,0.57340,1.00000"
           },
           "image-name" : "fork.knife.circle.fill.png",
           "name" : "fork.knife.circle.fill",
