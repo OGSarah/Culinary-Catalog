@@ -45,14 +45,27 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
     /// Manages network requests, allowing for dependency injection or testing with mock network responses.
     private let networkManager: NetworkManagerProtocol
 
+    /// The session used to download recipe images.
+    ///
+    /// Injectable so unit tests can substitute a mock and avoid real network calls. Defaults to
+    /// `URLSession.shared` for production use.
+    private let imageDownloadSession: URLSessionProtocol
+
     /// Initializes the view model with necessary dependencies.
     ///
     /// - Parameters:
     ///   - viewContext: The Core Data managed object context for local storage operations.
     ///   - networkManager: The network manager for handling API calls to fetch or update data.
-    init(viewContext: NSManagedObjectContext, networkManager: NetworkManagerProtocol) {
+    ///   - imageDownloadSession: The session used to download recipe images. Defaults to
+    ///     `URLSession.shared`; tests should pass a mock to keep image-cache code paths offline.
+    init(
+        viewContext: NSManagedObjectContext,
+        networkManager: NetworkManagerProtocol,
+        imageDownloadSession: URLSessionProtocol = URLSession.shared
+    ) {
         self.viewContext = viewContext
         self.networkManager = networkManager
+        self.imageDownloadSession = imageDownloadSession
     }
 
     /// Retrieves all recipes currently stored in Core Data.
@@ -218,7 +231,7 @@ final class RecipeListViewModel: RecipeListViewModelProtocol {
         }
 
         do {
-            let (data, _) = try await URLSession.shared.data(from: url)
+            let (data, _) = try await imageDownloadSession.data(from: url)
             try await saveImageData(data, for: recipe, isLarge: isLarge)
         } catch {
             print("Failed to download image: \(error.localizedDescription)")

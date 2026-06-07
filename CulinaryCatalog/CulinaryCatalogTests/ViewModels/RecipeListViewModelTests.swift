@@ -40,7 +40,14 @@ struct RecipeListViewModelTests {
         let mockNetwork = MockNetworkManager()
         mockNetwork.mockRecipes = recipes
         mockNetwork.shouldThrowError = shouldThrowError
-        let viewModel = RecipeListViewModel(viewContext: context, networkManager: mockNetwork)
+        // Use an offline mock session so the image-cache step does not hit the real network in CI.
+        let mockSession = MockURLSession()
+        mockSession.error = NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet)
+        let viewModel = RecipeListViewModel(
+            viewContext: context,
+            networkManager: mockNetwork,
+            imageDownloadSession: mockSession
+        )
         return (viewModel, mockNetwork)
     }
 

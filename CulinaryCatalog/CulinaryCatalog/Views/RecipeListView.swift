@@ -27,10 +27,14 @@ struct RecipeListView: View {
     /// Initializes the `RecipeListView` with necessary dependencies for data management.
     ///
     /// - Parameters:
-    ///   - recipeRepository: The repository for fetching and managing recipe data.
     ///   - viewContext: The Core Data managed object context for local data operations.
-    init(viewContext: NSManagedObjectContext) {
-        _viewModel = State(wrappedValue: RecipeListViewModel(viewContext: viewContext, networkManager: NetworkManager.shared))
+    ///   - networkManager: The network manager used for refresh operations. Defaults to
+    ///     `NetworkManager.shared` so previews and existing call sites keep working.
+    init(
+        viewContext: NSManagedObjectContext,
+        networkManager: NetworkManagerProtocol = NetworkManager.shared
+    ) {
+        _viewModel = State(wrappedValue: RecipeListViewModel(viewContext: viewContext, networkManager: networkManager))
     }
 
     var body: some View {

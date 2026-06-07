@@ -21,15 +21,28 @@ struct ContentView: View {
     /// State for controlling the refresh button's animation.
     @State private var isRotating = false
 
+    /// The network manager used to refresh recipes from the remote source.
+    ///
+    /// Held so the same instance can be passed down to `RecipeListView`, ensuring the entire
+    /// screen graph shares one network manager (and uses the UI-testing stub when applicable).
+    private let networkManager: NetworkManagerProtocol
+
     /// Initializes the view with a managed object context from Core Data.
     ///
     /// This initializer sets up the necessary dependencies for displaying and managing recipes:
     /// - A `RecipeDataRepository` for data operations.
     /// - A `RecipeListViewModel` for managing the UI state of the recipe list.
     ///
-    /// - Parameter viewContext: The Core Data managed object context provided by the environment.
-    init(viewContext: NSManagedObjectContext) {
-        _viewModel = State(wrappedValue: RecipeListViewModel(viewContext: viewContext, networkManager: NetworkManager.shared))
+    /// - Parameters:
+    ///   - viewContext: The Core Data managed object context provided by the environment.
+    ///   - networkManager: The network manager used to fetch and refresh recipes. Defaults to
+    ///     `NetworkManager.shared` so previews and existing call sites keep working.
+    init(
+        viewContext: NSManagedObjectContext,
+        networkManager: NetworkManagerProtocol = NetworkManager.shared
+    ) {
+        self.networkManager = networkManager
+        _viewModel = State(wrappedValue: RecipeListViewModel(viewContext: viewContext, networkManager: networkManager))
     }
 
     /// Defines the background gradient for the content view.
@@ -57,7 +70,7 @@ struct ContentView: View {
                     )
                     .accessibilityIdentifier(AccessibilityIdentifiers.ContentView.emptyState)
                 } else {
-                    RecipeListView(viewContext: viewModel.viewContext)
+                    RecipeListView(viewContext: viewModel.viewContext, networkManager: networkManager)
                 }
             }
             .navigationTitle("Recipes")
@@ -162,9 +175,3 @@ struct ContentView: View {
         .preferredColorScheme(.dark)
 }
 
-/// A mock implementation of `NetworkManagerProtocol` for testing network operations in debug mode.
-struct MockNetworkManager: NetworkManagerProtocol {
-    func fetchRecipesFromNetwork() async throws -> [RecipeModel] {
-        return []
-    }
-}
