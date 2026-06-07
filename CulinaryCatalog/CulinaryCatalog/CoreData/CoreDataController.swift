@@ -26,6 +26,21 @@ class CoreDataController {
     @MainActor
     static let shared = CoreDataController()
 
+    /// A single, cached managed object model shared by every `CoreDataController` instance.
+    ///
+    /// Why: `NSPersistentContainer(name:)` searches all loaded bundles for the `.momd` and can
+    /// instantiate distinct `NSManagedObjectModel` objects from the same model file (notably when
+    /// the test bundle and app bundle both contain it). Mixing those instances across stores
+    /// produces `NSCocoaErrorDomain` 134020 ("incompatible model configuration") on save.
+    private nonisolated(unsafe) static let managedObjectModel: NSManagedObjectModel = {
+        let bundle = Bundle(for: CoreDataController.self)
+        guard let url = bundle.url(forResource: "CulinaryCatalog", withExtension: "momd"),
+              let model = NSManagedObjectModel(contentsOf: url) else {
+            fatalError("Failed to load CulinaryCatalog Core Data model")
+        }
+        return model
+    }()
+
     /// The persistent container managing the Core Data stack.
     ///
     /// This container holds the managed object contexts, persistent stores, and model. It's configured either for on-disk persistence or in-memory storage.
@@ -35,7 +50,10 @@ class CoreDataController {
     ///
     /// - Parameter storageType: The type of storage to use, either `.persistent` for disk storage or `.inMemory` for transient storage. Defaults to `.persistent`.
     init(_ storageType: StorageType = .persistent) {
-        self.persistentContainer = NSPersistentContainer(name: "CulinaryCatalog")
+        self.persistentContainer = NSPersistentContainer(
+            name: "CulinaryCatalog",
+            managedObjectModel: Self.managedObjectModel
+        )
 
         if storageType == .inMemory {
             let description = NSPersistentStoreDescription()
