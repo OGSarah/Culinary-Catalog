@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/OGSarah/Culinary-Catalog/blob/5744962eb9e533a2cef942dfb2e6c7651a1c4ac9/screenshots/AppIcon.png" width="300" style="border: 3px solid white; border-radius: 15px; vertical-align: middle; margin-right: 20px;">
+  <img src="/screenshots/AppIcon.png" width="300" style="border: 3px solid white; border-radius: 15px; vertical-align: middle; margin-right: 20px;">
   <h1 style="display: inline-block; vertical-align: middle;">Culinary Catalog</h1>
 </div>
 
