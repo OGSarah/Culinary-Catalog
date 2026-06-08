@@ -6,6 +6,7 @@
 A polished iOS recipe management app built with SwiftUI that seamlessly integrates CoreData and async/await networking to provide a smooth, responsive recipe browsing experience. The app fetches and displays recipe data from a remote API, allowing users to explore, search, and interact with a comprehensive collection of culinary inspirations, with full accessibility support and end-to-end test coverage.
 
 [![Unit Tests](https://github.com/OGSarah/culinary-catalog/actions/workflows/tests.yml/badge.svg)](https://github.com/OGSarah/Culinary-Catalog/actions/workflows/tests.yml)
+**Tests will fail on Github until they add Xcode 27 with iOS 27 support. They pass locally with latest Xcode 27 beta.**
 
 ## Screenshots:
 
