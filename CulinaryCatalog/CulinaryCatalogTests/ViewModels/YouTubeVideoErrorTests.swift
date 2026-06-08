@@ -25,19 +25,10 @@ struct YouTubeVideoErrorTests {
         let invalidVideoIDError = YouTubeVideoError.invalidVideoID
         let networkError = YouTubeVideoError.networkError
 
-        switch invalidVideoIDError {
-        case .invalidVideoID:
-            #expect(Bool(true))
-        case .networkError:
-            Issue.record("Should not be networkError")
-        }
-
-        switch networkError {
-        case .invalidVideoID:
-            Issue.record("Should not be invalidVideoID")
-        case .networkError:
-            #expect(Bool(true))
-        }
+        #expect(invalidVideoIDError == .invalidVideoID)
+        #expect(invalidVideoIDError != .networkError)
+        #expect(networkError == .networkError)
+        #expect(networkError != .invalidVideoID)
     }
 
 }

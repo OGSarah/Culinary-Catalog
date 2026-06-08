@@ -18,6 +18,7 @@ struct RecipeModelTests {
     }
 
     private func clearCoreData() {
+        let context = self.context
         context.performAndWait {
             do {
                 let fetchRequest: NSFetchRequest = Recipe.fetchRequest()

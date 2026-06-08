@@ -19,9 +19,12 @@ final class CulinaryCatalogUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
 
-        app = XCUIApplication()
-        app.launchArguments = ["-uiTesting"]
-        app.launch()
+        app = MainActor.assumeIsolated {
+            let app = XCUIApplication()
+            app.launchArguments = ["-uiTesting"]
+            app.launch()
+            return app
+        }
     }
 
     override func tearDownWithError() throws {

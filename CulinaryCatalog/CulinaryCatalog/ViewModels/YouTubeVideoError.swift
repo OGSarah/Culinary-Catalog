@@ -12,7 +12,7 @@
 ///
 /// - Note: Conforms to Swift's `Error` protocol for use with do-catch error handling
 /// - SeeAlso: `YouTubeVideoView`, `YouTubeVideoViewModel`
-enum YouTubeVideoError: Error {
+enum YouTubeVideoError: Error, Equatable {
     /// Indicates that the provided YouTube video ID is invalid.
     ///
     /// This error is raised when:

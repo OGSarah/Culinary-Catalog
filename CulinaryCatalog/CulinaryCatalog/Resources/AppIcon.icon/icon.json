@@ -1,4 +1,8 @@
 {
+  "features" : [
+    "refractivity",
+    "specular-location"
+  ],
   "fill" : {
     "linear-gradient" : [
       "srgb:0.00000,0.32852,0.57488,1.00000",
@@ -26,6 +30,12 @@
           "value" : "plus-lighter"
         }
       ],
+      "blur-material-specializations" : [
+        {
+          "appearance" : "tinted",
+          "value" : null
+        }
+      ],
       "layers" : [
         {
           "fill" : {
@@ -42,10 +52,33 @@
           }
         }
       ],
+      "refractivity-specializations" : [
+        {
+          "value" : {
+            "depth" : 0.465703125,
+            "enabled" : true,
+            "strength" : 0.0021875
+          }
+        },
+        {
+          "appearance" : "tinted",
+          "value" : {
+            "depth" : 0.437734375,
+            "enabled" : true,
+            "strength" : -0.417109375
+          }
+        }
+      ],
       "shadow" : {
         "kind" : "layer-color",
         "opacity" : 0.5
       },
+      "specular-specializations" : [
+        {
+          "appearance" : "tinted",
+          "value" : "outside"
+        }
+      ],
       "translucency" : {
         "enabled" : true,
         "value" : 0.5
