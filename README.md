@@ -46,7 +46,7 @@ Here are some screenshots showcasing the app's features:
 - Async/Await
 - WebKit
 - RESTful API Integration
-- iOS 26 minimum OS target
+- iOS 27 minimum OS target
 
 ## Data Source:
 
